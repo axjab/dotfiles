@@ -34,7 +34,7 @@ main() {
 }
 
 update_xdg_dirs() {
-  xdg-user-dirs-update --set DESKTOP     "/tmp"
+  xdg-user-dirs-update --set DESKTOP     "$HOME/cfg/desktop"
   xdg-user-dirs-update --set DOWNLOAD    "$HOME/dwl"
   xdg-user-dirs-update --set TEMPLATES   "/tmp"
   xdg-user-dirs-update --set PUBLICSHARE "/tmp"
