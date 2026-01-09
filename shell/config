@@ -9,7 +9,7 @@
 # default values
 #----------------------------------------------
 THIS_SCRIPT=$(readlink -f "${BASH_SOURCE[0]}")
-LOGFILE="$HOME/log/bashrc.log"
+LOGFILE="/var/log/bashrc.log"
 ENV="$HOME/.env"
 #----------------------------------------------
 
@@ -27,7 +27,6 @@ main() {
     run_startup_script    2>>"$LOGFILE"
     update_repos          2>>"$LOGFILE" # TODO:
     disable_linewrap
-    add_ssh_key
 
     # bashprompt
     eval "$(starship init bash)"
@@ -35,13 +34,6 @@ main() {
     # $HOME/bin/check_email.sh &
     # print_final_message
     # print_reminders
-}
-
-add_ssh_key() {
-  if [ -z "$SSH_AUTH_SOCK" ] ; then
-  eval `ssh-agent -s`
-  ssh-add ~/.ssh/aran-2025-11-09
-  fi
 }
 
 today_is() {
