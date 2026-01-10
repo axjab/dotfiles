@@ -6,11 +6,14 @@
 
 # TODO: CREATE A SIMPLIFIED INTERFACE FOR BASHRC USING A YAML FILE
 
+# if shell is NOT interactive, do not continue
+! [[ $- =~ i ]] && return
+
 # default values
 #----------------------------------------------
 THIS_SCRIPT=$(readlink -f "${BASH_SOURCE[0]}")
 LOGFILE="/var/log/bashrc.log"
-ENV="$HOME/.env"
+ENV="$HOME/.env" # if not here, download from internet
 #----------------------------------------------
 
 # The entire bashrc script is summarized here in main()
@@ -211,20 +214,8 @@ load_functions() {
  	return "$?"
 }
 
-run_startup_script() {
-    if [ -n "$STARTUP_SCRIPT" ]; then
-        source "$STARTUP_SCRIPT"
-        >&2 echo $?
-    else
-        >&2 echo "No startup script detected."
-    fi
-}
-
 # default bashrc on debian
 run_default() {
-
-  # If not running interactively, don't do anything
-  [[ $- != *i* ]] && return
 
   # don't put duplicate lines or lines starting with space in the history.
   # See bash(1) for more options
@@ -252,18 +243,6 @@ run_default() {
   # uncomment for a colored prompt, if the terminal has the capability
   force_color_prompt=yes
 
-  if [ -n "$force_color_prompt" ]; then
-      if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    # We have color support; assume it's compliant with Ecma-48
-    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-    # a case would tend to support setf rather than setaf.)
-    color_prompt=yes
-      else
-    color_prompt=
-      fi
-  fi
-  unset color_prompt force_color_prompt
-
   # enable programmable completion features (you don't need to enable
   # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
   # sources /etc/bash.bashrc).
@@ -286,11 +265,11 @@ tisnot() { not "$1" && echo 'true' || echo 'false';  }
 main
 
 # automatically inserted
-PATH="/home/ahmad/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/ahmad/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/ahmad/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/ahmad/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/ahmad/perl5"; export PERL_MM_OPT;
+# PATH="/home/ahmad/perl5/bin${PATH:+:${PATH}}"; export PATH;
+# PERL5LIB="/home/ahmad/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+# PERL_LOCAL_LIB_ROOT="/home/ahmad/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+# PERL_MB_OPT="--install_base \"/home/ahmad/perl5\""; export PERL_MB_OPT;
+# PERL_MM_OPT="INSTALL_BASE=/home/ahmad/perl5"; export PERL_MM_OPT;
 
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
