@@ -68,7 +68,7 @@ discord=discordo
 # /discord
 
 ## docker
-start-docker='sudo systemctl start docker'
+compose='sudo docker compose'
 ## docker
 
 ## eza
