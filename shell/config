@@ -15,13 +15,10 @@ ENV="$HOME/.env"
 
 # The entire bashrc script is summarized here in main()
 main() {
-    # run_default # temporarily disabled, seems useless
-    # --- background jobs ---
-    today_is &
-    # --- foreground jobs ---
     # check_logs_dir_exists
     read_env              2>>"$LOGFILE"
-    read_aliases          2>>"$LOGFILE"
+    # read_aliases          2>>"$LOGFILE"
+    . ~/.aliases
     load_functions        2>>"$LOGFILE"
     read_PATH             2>>"$LOGFILE"
     run_startup_script    2>>"$LOGFILE"
@@ -34,14 +31,14 @@ main() {
 }
 
 update_xdg_dirs() {
-  xdg-user-dirs-update --set DESKTOP     "/tmp"
-  xdg-user-dirs-update --set DOWNLOAD    "$HOME/dwl"
+  xdg-user-dirs-update --set DESKTOP     "$HOME/.desktop"
+  xdg-user-dirs-update --set DOWNLOAD    "$HOME/tmp"
   xdg-user-dirs-update --set TEMPLATES   "/tmp"
   xdg-user-dirs-update --set PUBLICSHARE "/tmp"
-  xdg-user-dirs-update --set DOCUMENTS   "$HOME/dat/docs"
-  xdg-user-dirs-update --set MUSIC       "$HOME/mnt/local-storage/audio"
-  xdg-user-dirs-update --set PICTURES    "$HOME/mnt/local-storage/media"
-  xdg-user-dirs-update --set VIDEOS      "$HOME/mnt/local-storage/media" 
+  xdg-user-dirs-update --set DOCUMENTS   "/tmp"
+  xdg-user-dirs-update --set MUSIC       "/mnt/media"
+  xdg-user-dirs-update --set PICTURES    "/mnt/media"
+  xdg-user-dirs-update --set VIDEOS      "/mnt/media"
 }
 
 add_ssh_key() {
