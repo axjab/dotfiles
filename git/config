@@ -1,9 +1,8 @@
 [user]
 	name = ahmad
-	email = b-9k@outlook.com
+	email = m@alj.app
 [core]
 	editor = micro         # Linux
-	#editor = notepad.exe   # Windows
 [alias]
 	a = add
 	aa = add .
@@ -31,8 +30,6 @@
 	lo = "! f() { git log --no-color --no-decorate | bat -n -l 'Git log' ; }; f"
 	up = "! git remote update -p; git merge --ff-only @{u}"
 	send = "! f() { git commit -v && git push; }; f"
-[pull]
-	rebase = true
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential

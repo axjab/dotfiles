@@ -1,62 +1,25 @@
-last updated: 2025 march 24
-comment: INSTALLATION NOT INTUITIVE. DOCUMENT enveavouros INSTALLATION (refer to screenshot on phone)
-  THEN LIST DETAILED STEPS ON SETUP TO AVOID ERRORS AND TIME WllASTE. AUTOMATION HIGHLY RECOMMENDED
 
-# A blueprint for my ```/home```
+# CONFIG V2
 
-This repo includes all my personal configurations, shortcuts, functions, aliases, and environment
-variables I wish to keep and reuse forever.
+Date: 2026-03-01
 
-## [NEW] Instructions
+My bash shell has become too slow from all the bloat and misconfiguration.
+I have decided to nuke nearly everything and start fresh.
+From now on, configs must be seriously documented. Nothing left to mememory.
 
-Prepare mappings in dotfiles/link.map and then run dotfiles/link
+## RULES
 
-## File structure
+Structure must be simple.
 
-Without preparation nor documentation, replicating my /home/ will consume too much time, and will
-be prone to errors, because dependencies will be incorrectly established.\
-This is why everything will be documented here.
+### Aliases
 
-**Mappings will be stored in link.map**
+Aliases are stored in `~/cfg/bash/alias`, linked to from ~/.alias by apply.sh, and sourced from ~/.bashrc
 
-### Explanation
+## TODO
 
-|directory|type|description
-|-|-|-|
-|[dotfiles](https://github.com/bytesmith-ahmad/dotfiles)|repo|Contains all my configurations for bashrc and various apps.
-|[archives](https://github.com/bytesmith-ahmad/archives)|repo|Contains research, instructions, records, and more unused documents. Works with my ```arch``` script.|
-|bin|regular|Contains all executables such as the ones acquired with ```wget``` and ending with ```*.amd64```. Formerly used to hold my personal scripts, but those go in their own directory now.|
-|logs|regular|Contains stderr output for debugging
-|[scripts](https://github.com/bytesmith-ahmad/scripts)|repo|Contains all my executable scripts
+- [ ] Write an `apply.sh` script, which will automatically apply the configs stored here.
+Use like this:
+1. Download cfg
+2. ~/cfg/apply
 
-## instructions 📜
-
-**TODO**: AUTOMATION REQUIRED
-
-These instructions are aimed at myself, ignore.
-
-Remaining instructions:
-- [x] Symlink <u>.bashrc</u> to */config/bashrc
-- [x] gpg --import [PRIVATE KEYS]
-- [x] install *gh*
-- [x] run ```gh auth login```, follow prompts
-- [x] clone *nexus --recursive*
-- [x] clone *pass*
-- [x] clone *dotfiles*
-- [x] clone *scripts* as ~/bin
-- [x] clone *archives*
-- [ ] create untracked directories such as src [AUTOMATION REQUIRED]
-- [ ] install packages [AUTOMATION REQUIRED]
-
-My personal bashrc will, in this order:
-
-1. Load all my variables
-2. Load all my aliases
-3. Load all my functions
-4. Load the prompt
-5. Run the startup script
-
-in /home:
-
-Replace .bashrc -> dotfiles/bashrc\
-Replace .gitconfig -> dotfiles/.gitconfig\
+Expected outcome, all settings appliedvia symlinks

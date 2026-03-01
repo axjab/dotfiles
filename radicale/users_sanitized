@@ -1,9 +1,0 @@
-the users file was intentionally hidden from this config.
-
-To add users, install apache:
-
-pacman -S apache
-
-then do:
-
-htpasswd -5 /path/to/users_file username
