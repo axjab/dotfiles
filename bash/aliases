@@ -7,6 +7,18 @@
 # ██╗██║  ██║███████╗██║██║  ██║██████╔╝███████╗██████╔╝
 # ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═════╝
 
+# Systemctl
+alias sys='sudo systemctl'
+alias syslog='sudo journalctl -u'
+alias sys-reload='sudo systemctl daemon-reload'
+
+# Docker
+alias d='sudo docker'
+alias dps='sudo docker ps'
+alias dcup='sudo docker compose up'
+alias dcdn='sudo docker compose down'
+alias dlog='sudo docker logs'
+
 ## file manipulations
 alias compress='tar -czvf'
 alias extract='tar -xzvf'
