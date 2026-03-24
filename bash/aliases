@@ -7,6 +7,17 @@
 # ██╗██║  ██║███████╗██║██║  ██║██████╔╝███████╗██████╔╝
 # ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═════╝
 
+# PINNED: Edit this file
+alias edit-alias='$(gum choose --header="Choose editor:" micro nano) $HOME/.aliases'
+alias alias-edit='edit-alias'
+#
+
+# sudo
+alias pls="sudo !!"
+
+# Tailscale
+alias vpn='sudo tailscale'
+
 # Systemctl
 alias sys='sudo systemctl'
 alias syslog='sudo journalctl -u'
@@ -15,8 +26,8 @@ alias sys-reload='sudo systemctl daemon-reload'
 # Docker
 alias d='sudo docker'
 alias dps='sudo docker ps'
-alias dcup='sudo docker compose up'
-alias dcdn='sudo docker compose down'
+alias dcup='sudo docker compose up --remove-orphans'
+alias dcdn='sudo docker compose down --remove-orphans'
 alias dlog='sudo docker logs'
 
 ## file manipulations
