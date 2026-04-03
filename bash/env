@@ -4,12 +4,19 @@
 # * MY SHELL ENVIRONMENT VARIABLES *
 # **********************************
 
-# Data in /var/data
-# Backups in /var/data/backups
-# Services in /srv
-# Config in ~/cfg
-# Scripts in ~/bin
-# etc.
+CONFIG="$HOME/cfg"
+
+# ============================== zoxide
+export _ZO_DATA_DIR=/var/data/zoxide          #Path for zoxide data files
+# _ZO_ECHO              Print the matched directory before navigating to it when set to 1
+# _ZO_EXCLUDE_DIRS      List of directory globs to be excluded
+# _ZO_FZF_OPTS          Custom flags to pass to fzf
+# _ZO_MAXAGE            Maximum total age after which entries start getting deleted
+# _ZO_RESOLVE_SYMLINKS  Resolve symlinks when storing paths"
+
+# =============================== batcat
+# no numbers, no rule
+export BAT_STYLE="changes,header,header-filename,header-filesize,snip"
 
 EDITOR='micro'                            # default TUI editor
 VISUAL='micro'
@@ -18,19 +25,16 @@ VISUAL='micro'
 #bc
 BC_ENV_ARGS='-lq'
 
-# caddy
-CADDYFILE="/srv/caddy/Caddyfile"
-
 #============================================================ cd
-CDPATH=".:~:~/srv"
+export CDPATH=".:~:~/srv"
 #============================================================ cd
 
 #========= date
-TZ="America/Toronto"
+export TZ="America/Toronto"
 #========= date
 
 #============================================================ git
-GITHUB='https://github.com/algorist-ahmad'
+GITHUB='https://github.com/ax-mad'
 GIT_CONFIG_GLOBAL="$CONFIG/git/config"
 GH_CONFIG="$CONFIG/gh/config.yml"
 #============================================================ git
@@ -65,8 +69,8 @@ GUM_FILTER_SELECTED_PREFIX_FOREGROUND="40"
 LESS='--RAW-CONTROL-CHARS --shift=4 --quit-if-one-screen  --tilde --LONG-PROMPT --wordwrap' # -RS#FX~M
 
 #============================================================ locale
-LANG='C.UTF-8'
-LC_ALL='C.UTF-8'
+LANG='en_CA.UTF-8'
+LC_ALL='en_CA.UTF-8'
 #LC_ALL=en_CA
 #============================================================ locale
 

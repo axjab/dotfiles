@@ -7,10 +7,11 @@
 [[ $- != *i* ]] && return
 
 # -----------------------------------------------
-# ALIASES & FUNCTIONS
+# ENVIRONMENT & ALIASES & FUNCTIONS
 # -----------------------------------------------
-[[ -f ~/.aliases ]]   && source ~/.aliases
-[[ -f ~/.func ]] && source ~/.func
+[[ -f ~/.env     ]] && source ~/.env
+[[ -f ~/.aliases ]] && source ~/.aliases
+[[ -f ~/.func    ]] && source ~/.func
 
 # -----------------------------------------------
 # HISTORY
@@ -53,24 +54,24 @@ fi
 
 # -----------------------------------------------
 # PATH EXTENSIONS
-# Add custom paths here, one per line
 # -----------------------------------------------
-# export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # -----------------------------------------------
 # XDG USER DIRS
 # Desktop-only — skip on headless servers
+# UPDATE 2026-04-01: set in ~/.config/user-dirs.dirs
 # -----------------------------------------------
-if [[ -n "$DISPLAY" ]] && command -v xdg-user-dirs-update &>/dev/null; then
-    xdg-user-dirs-update --set DESKTOP     "$HOME/cfg/desktop"
-    xdg-user-dirs-update --set DOWNLOAD    "$HOME/tmp"
-    xdg-user-dirs-update --set TEMPLATES   "/tmp"
-    xdg-user-dirs-update --set PUBLICSHARE "/tmp"
-    xdg-user-dirs-update --set DOCUMENTS   "/data/docs"
-    xdg-user-dirs-update --set MUSIC       "/data/audio"
-    xdg-user-dirs-update --set PICTURES    "/data/media"
-    xdg-user-dirs-update --set VIDEOS      "/data/media"
-fi
+# if [[ -n "$DISPLAY" ]] && command -v xdg-user-dirs-update &>/dev/null; then
+#     xdg-user-dirs-update --set DESKTOP     "$HOME/cfg/desktop"
+#     xdg-user-dirs-update --set DOWNLOAD    "$HOME/tmp"
+#     xdg-user-dirs-update --set TEMPLATES   "/tmp"
+#     xdg-user-dirs-update --set PUBLICSHARE "/tmp"
+#     xdg-user-dirs-update --set DOCUMENTS   "/data/docs"
+#     xdg-user-dirs-update --set MUSIC       "/data/audio"
+#     xdg-user-dirs-update --set PICTURES    "/data/media"
+#     xdg-user-dirs-update --set VIDEOS      "/data/media"
+# fi
 
 # -----------------------------------------------
 # LINE WRAP
@@ -110,3 +111,9 @@ else
             ;;
     esac
 fi
+
+
+# ---
+# Setup zoxide on shell
+# ----
+eval "$(zoxide init bash)"
