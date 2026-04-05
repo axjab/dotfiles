@@ -29,7 +29,8 @@
 	sw = switch
 	lo = "! f() { git log --no-color --no-decorate | bat -n -l 'Git log' ; }; f"
 	up = "! git remote update -p; git merge --ff-only @{u}"
-	send = "! f() { git commit -v && git push; }; f"
+	# send = "! f() { git commit -v && git push; }; f"
+	sync = "! f() { git add . && git commit -v && git pull && git push; }; f"
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential
