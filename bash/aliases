@@ -12,7 +12,15 @@ alias edit-alias='$(gum choose --header="Choose editor:" micro nano) $HOME/.alia
 alias alias-edit='edit-alias'
 #
 
-# sudo
+## cd
+# alias cd='cd -P'
+cd='z'
+alias ..='cd ..'
+alias .-='cd -'
+alias cdi='cd "$(gum file -a --height=20 --directory)"'
+## cd
+
+# sudo FAILED
 alias pls="sudo !!"
 
 # Tailscale
@@ -35,13 +43,6 @@ alias compress='tar -czvf'
 alias extract='tar -xzvf'
 alias tarlist='tar -tzvf'
 alias zip='zip -v'
-
-## cd
-alias cd='cd -P'
-alias ..='cd ..'
-alias .-='cd -'
-alias cdi='cd "$(gum file -a --height=20 --directory)"'
-## cd
 
 ## clear
 alias cls='clear -x'
