@@ -24,11 +24,11 @@ export LC_MONETARY="en_CA.UTF-8"
 # LC_IDENTIFICATION="en_US.UTF-8"
 # LC_ALL=
 
+# ENVIRONMENT & ALIASES & FUNCTIONS
 # -----------------------------------------------
-# ALIASES & FUNCTIONS
-# -----------------------------------------------
-[[ -f ~/.aliases ]]   && source ~/.aliases
-[[ -f ~/.func ]] && source ~/.func # deprecated, use scripts instead
+[[ -f ~/.env     ]] && source ~/.env
+[[ -f ~/.aliases ]] && source ~/.aliases
+[[ -f ~/.func    ]] && source ~/.func
 
 # -----------------------------------------------
 # HISTORY
@@ -71,14 +71,15 @@ fi
 
 # -----------------------------------------------
 # PATH EXTENSIONS
-# Add custom paths here, one per line
 # -----------------------------------------------
-# export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # -----------------------------------------------
 # XDG USER DIRS
 # Desktop-only — skip on headless servers
+# UPDATE 2026-04-01: set in ~/.config/user-dirs.dirs
 # -----------------------------------------------
+
 if [[ -n "$DISPLAY" ]] && command -v xdg-user-dirs-update &>/dev/null; then
     xdg-user-dirs-update --set DESKTOP     "$HOME"
     xdg-user-dirs-update --set DOWNLOAD    "$HOME/tmp"
@@ -128,3 +129,9 @@ else
             ;;
     esac
 fi
+
+
+# ---
+# Setup zoxide on shell
+# ----
+eval "$(zoxide init bash)"

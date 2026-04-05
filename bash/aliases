@@ -7,11 +7,46 @@
 # ██╗██║  ██║███████╗██║██║  ██║██████╔╝███████╗██████╔╝
 # ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═════╝
 
-## Utilities
-alias edit='micro'
-alias env="env -0 | sort -z | tr '\0' '\n'"
-alias uuid='uuidgen'
-alias timestamp='d=$(date +"%Y-%m-%d %H:%M:%S") ; echo $d | clipboard ; echo -e "Current timestamp:\n$d (copied)"'
+# PINNED: Edit this file
+alias edit-alias='$(gum choose --header="Choose editor:" micro nano) $HOME/.aliases'
+alias alias-edit='edit-alias'
+#
+
+## filesystem nav: cd, ls =================================
+# cd
+cd='z'
+alias ..='cd ..'
+alias .-='cd -'
+alias cdi='cd "$(gum file -a --height=20 --directory)"'
+# eza
+eza_core="--header --long --icons --group-directories-first --time-style=relative --sort Name --ignore-glob='lost+found'"
+eza_git="$eza_core --git --git-repos"
+alias l="eza $eza_core"
+alias ls='l --smart-group --no-filesize'         # simple view
+alias ll="eza $eza_git --group --no-filesize"    # full view
+alias lls='ll --total-size'                      # + sizes (slower)
+alias ld="eza $eza_git --only-dirs  --all --smart-group --no-filesize"  # dirs only
+alias lf="eza $eza_git --only-files --all --smart-group --total-size"   # files only
+# ========================================================
+
+## filesystem ops =======================
+alias compress='tar -czvf'
+alias extract='tar -xzvf'
+alias tarlist='tar -tzvf'
+alias zip='zip -v'
+alias cp='cp -vi'
+alias mv='mv -vi'
+alias rm='rm -vi'
+alias mkdir='mkdir -v'
+alias rmdir='rmdir -v'
+alias chmod='chmod -v'
+alias grep='grep --color=auto'
+# ======================================
+
+alias pls="sudo !!"
+
+# Tailscale
+alias vpn='sudo tailscale'
 
 # Systemctl
 alias sys='sudo systemctl'
@@ -21,25 +56,9 @@ alias sys-reload='sudo systemctl daemon-reload'
 # Docker
 alias d='sudo docker'
 alias dps='sudo docker ps'
-alias dcup='sudo docker compose up'
-alias dcdn='sudo docker compose down'
+alias dcup='sudo docker compose up --remove-orphans'
+alias dcdn='sudo docker compose down --remove-orphans'
 alias dlog='sudo docker logs'
-
-## git
-alias commit='git commit -v'
-
-## file manipulations
-alias compress='tar -czvf'
-alias extract='tar -xzvf'
-alias tarlist='tar -tzvf'
-alias zip='zip -v'
-
-## cd
-alias cd='cd -P'
-alias ..='cd ..'
-alias .-='cd -'
-alias cdi='cd "$(gum file -a --height=20 --directory)"'
-## cd
 
 ## clear
 alias cls='clear -x'
@@ -49,31 +68,10 @@ alias cls='clear -x'
 alias tab2col="column -t -s$'\t'"
 ## column
 
-## eza
-# alias l='eza --icons'
-alias ls='eza --header --long --icons --smart-group --time-style=relative --sort Name --group-directories-first --no-filesize' # simplified version of ll
-alias ll='eza --header --long --icons --git --git-repos --group --time-style=relative --sort Name --group-directories-first --total-size' # --all
-alias lld='eza --only-dirs --header --all --long --icons --git --git-repos --smart-group  --no-filesize --time-style=relative --sort Name' # dirs only
-alias llf='eza --only-files --header --all --long --icons --git --smart-group --total-size --time-style=relative --sort Name' # files only 
-## eza
-
 # gum
 alias gf='gum file -a --height=20'
 alias gd='gum file -a --height=20 --directory'
 # /gum
-
-## GNU utilities
-alias bc='echo "---CALCULATOR---"; bc'
-alias cp='cp -vi'
-alias mv='mv -vi'
-alias rm='rm -vi'
-alias mkdir='mkdir -v'
-alias rmdir='rmdir -v'
-alias chmod='chmod -v'
-alias grep='grep --color=auto'
-alias la='ls -A'
-alias l='ls -CF'
-## GNU utilities
 
 ## micro
 alias mu='micro'
@@ -312,15 +310,6 @@ alias walk='walk --icons --preview'
 # alias yt="ytfzf -t"
 # alias startx='startx -- -keeptty >~/.xorg.log 2>&1'
 # 
-# alias cd..='cd ../'
-# alias cd...='cd ../../'
-# alias cd....='cd ../../../'
-# alias cd.....='cd ../../../../'
-# alias cd......='cd ../../../../../'
-# alias ~='cd ~' 2> /dev/null
-# alias -='cd -' 2> /dev/null
-# alias ..='cd ../'
-alias ...='cd ../../'
 # alias ....='cd ../../../'
 # alias .....='cd ../../../../'
 # alias ......='cd ../../../../../'
