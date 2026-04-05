@@ -12,6 +12,38 @@ alias edit-alias='$(gum choose --header="Choose editor:" micro nano) $HOME/.alia
 alias alias-edit='edit-alias'
 #
 
+## filesystem nav: cd, ls =================================
+# cd
+alias cd='cd -P'
+alias ..='cd ..'
+alias .-='cd -'
+alias cdi='cd "$(gum file -a --height=20 --directory)"'
+# eza
+eza_core="--header --long --icons --group-directories-first --time-style=relative --sort Name --ignore-glob='lost+found'"
+eza_git="$eza_core --git --git-repos"
+
+alias l="eza $eza_core"
+alias ls='l --smart-group --no-filesize'         # simple view
+alias ll="eza $eza_git --group --no-filesize"    # full view
+alias lls='ll --total-size'                      # + sizes (slower)
+alias ld="eza $eza_git --only-dirs  --all --smart-group --no-filesize"  # dirs only
+alias lf="eza $eza_git --only-files --all --smart-group --total-size"   # files only
+# ========================================================
+
+## filesystem ops =======================
+alias compress='tar -czvf'
+alias extract='tar -xzvf'
+alias tarlist='tar -tzvf'
+alias zip='zip -v'
+alias cp='cp -vi'
+alias mv='mv -vi'
+alias rm='rm -vi'
+alias mkdir='mkdir -v'
+alias rmdir='rmdir -v'
+alias chmod='chmod -v'
+alias grep='grep --color=auto'
+# ======================================
+
 # sudo
 alias pls="sudo !!"
 
@@ -30,19 +62,6 @@ alias dcup='sudo docker compose up --remove-orphans'
 alias dcdn='sudo docker compose down --remove-orphans'
 alias dlog='sudo docker logs'
 
-## file manipulations
-alias compress='tar -czvf'
-alias extract='tar -xzvf'
-alias tarlist='tar -tzvf'
-alias zip='zip -v'
-
-## cd
-alias cd='cd -P'
-alias ..='cd ..'
-alias .-='cd -'
-alias cdi='cd "$(gum file -a --height=20 --directory)"'
-## cd
-
 ## clear
 alias cls='clear -x'
 ## clear
@@ -50,14 +69,6 @@ alias cls='clear -x'
 ## column
 alias tab2col="column -t -s$'\t'"
 ## column
-
-## eza
-# alias l='eza --icons'
-alias ls='eza --header --long --icons --smart-group --time-style=relative --sort Name --group-directories-first --no-filesize' # simplified version of ll
-alias ll='eza --header --long --icons --git --git-repos --group --time-style=relative --sort Name --group-directories-first --total-size' # --all
-alias lld='eza --only-dirs --header --all --long --icons --git --git-repos --smart-group  --no-filesize --time-style=relative --sort Name' # dirs only
-alias llf='eza --only-files --header --all --long --icons --git --smart-group --total-size --time-style=relative --sort Name' # files only 
-## eza
 
 ## git
 alias add='git add -v'
@@ -69,19 +80,6 @@ alias co='git checkout'
 alias gf='gum file -a --height=20'
 alias gd='gum file -a --height=20 --directory'
 # /gum
-
-## GNU utilities
-alias bc='echo "---CALCULATOR---"; bc'
-alias cp='cp -vi'
-alias mv='mv -vi'
-alias rm='rm -vi'
-alias mkdir='mkdir -v'
-alias rmdir='rmdir -v'
-alias chmod='chmod -v'
-alias grep='grep --color=auto'
-alias la='ls -A'
-alias l='ls -CF'
-## GNU utilities
 
 ## micro
 alias mu='micro'
