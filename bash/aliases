@@ -14,14 +14,13 @@ alias alias-edit='edit-alias'
 
 ## filesystem nav: cd, ls =================================
 # cd
-alias cd='cd -P'
+cd='z'
 alias ..='cd ..'
 alias .-='cd -'
 alias cdi='cd "$(gum file -a --height=20 --directory)"'
 # eza
 eza_core="--header --long --icons --group-directories-first --time-style=relative --sort Name --ignore-glob='lost+found'"
 eza_git="$eza_core --git --git-repos"
-
 alias l="eza $eza_core"
 alias ls='l --smart-group --no-filesize'         # simple view
 alias ll="eza $eza_git --group --no-filesize"    # full view
@@ -44,7 +43,6 @@ alias chmod='chmod -v'
 alias grep='grep --color=auto'
 # ======================================
 
-# sudo
 alias pls="sudo !!"
 
 # Tailscale
@@ -62,6 +60,15 @@ alias dcup='sudo docker compose up --remove-orphans'
 alias dcdn='sudo docker compose down --remove-orphans'
 alias dlog='sudo docker logs'
 
+<<<<<<< HEAD
+=======
+## file manipulations
+alias compress='tar -czvf'
+alias extract='tar -xzvf'
+alias tarlist='tar -tzvf'
+alias zip='zip -v'
+
+>>>>>>> 6bde939386bc60a6104ba139ddf286c8a7bc91a6
 ## clear
 alias cls='clear -x'
 ## clear
