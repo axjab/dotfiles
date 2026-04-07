@@ -14,7 +14,10 @@ alias alias-edit='edit-alias'
 
 ## filesystem nav: cd, ls =================================
 # cd
-cd='z'
+export _ZO_DATA_DIR=/data/zoxide 	#Path for zoxide data files
+export _ZO_ECHO=1    				#Print the matched directory before navigating to it when set to 1
+# make this one conditional, if zoxide installed
+alias cd='z'
 alias ..='cd ..'
 alias .-='cd -'
 alias cdi='cd "$(gum file -a --height=20 --directory)"'
@@ -30,6 +33,7 @@ alias lf="eza $eza_git --only-files --all --smart-group --total-size"   # files 
 # ========================================================
 
 ## filesystem ops =======================
+alias bat='batcat'
 alias compress='tar -czvf'
 alias extract='tar -xzvf'
 alias tarlist='tar -tzvf'
