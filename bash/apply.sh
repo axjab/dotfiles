@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CFG=$HOME/cfg/bash
+CFG=$HOME/etc/bash
 
 ln -siv $CFG/aliases   $HOME/.aliases
 ln -siv $CFG/bashrc    $HOME/.bashrc

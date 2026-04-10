@@ -1,8 +1,8 @@
 [user]
 	name = ahmad
-	email = m@alj.app
+	email = x@alj.cx
 [core]
-	editor = micro         # Linux
+	editor = micro
 [alias]
 	a = add
 	aa = add .

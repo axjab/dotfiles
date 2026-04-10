@@ -60,15 +60,6 @@ alias dcup='sudo docker compose up --remove-orphans'
 alias dcdn='sudo docker compose down --remove-orphans'
 alias dlog='sudo docker logs'
 
-<<<<<<< HEAD
-=======
-## file manipulations
-alias compress='tar -czvf'
-alias extract='tar -xzvf'
-alias tarlist='tar -tzvf'
-alias zip='zip -v'
-
->>>>>>> 6bde939386bc60a6104ba139ddf286c8a7bc91a6
 ## clear
 alias cls='clear -x'
 ## clear
@@ -244,7 +235,6 @@ alias walk='walk --icons --preview'
 # alias cat='bat'
 # alias nano='nano -00x'
 # alias du='ncdu -x --color off'
-# alias lynx='lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss -vikeys'
 # alias ncmpcpp='ncmpcpp ncmpcpp_directory=$HOME/.config/ncmpcpp/'
 # alias spotify='spt'
 # alias mocp='mocp -M "$XDG_CONFIG_HOME"/moc -O MOCDir="$XDG_CONFIG_HOME"/moc'

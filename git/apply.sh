@@ -1,1 +1,1 @@
-ln -siv $HOME/cfg/git/config $HOME/.gitconfig
+ln -siv $HOME/etc/git/config $HOME/.gitconfig
