@@ -24,11 +24,11 @@ export LC_MONETARY="en_CA.UTF-8"
 # LC_IDENTIFICATION="en_US.UTF-8"
 # LC_ALL=
 
-# ENVIRONMENT & ALIASES & FUNCTIONS
+# ENVIRONMENT & ALIASES
 # -----------------------------------------------
 [[ -f ~/.env     ]] && source ~/.env
 [[ -f ~/.aliases ]] && source ~/.aliases
-[[ -f ~/.func    ]] && source ~/.func
+# [[ -f ~/.func    ]] && source ~/.func
 
 # -----------------------------------------------
 # HISTORY
@@ -68,11 +68,6 @@ if ! shopt -oq posix; then
         source /etc/bash_completion
     fi
 fi
-
-# -----------------------------------------------
-# PATH EXTENSIONS
-# -----------------------------------------------
-export PATH="$HOME/.local/bin:$PATH"
 
 # -----------------------------------------------
 # USER DIRECTORIES
@@ -123,4 +118,6 @@ fi
 # ---
 # Setup zoxide on shell
 # ----
-eval "$(zoxide init bash)"
+if command -v zoxide; then
+	eval "$(zoxide init bash)"
+fi
