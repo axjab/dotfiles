@@ -4,7 +4,7 @@
 # * MY SHELL ENVIRONMENT VARIABLES *
 # **********************************
 
-CONFIG="$HOME/cfg"
+CONFIG="$HOME/etc"
 
 # ============================== zoxide
 # for zoxide variables, see ~/.aliases
@@ -29,9 +29,9 @@ export TZ="America/Toronto"
 #========= date
 
 #============================================================ git
-GITHUB='https://github.com/ax-mad'
-GIT_CONFIG_GLOBAL="$CONFIG/git/config"
-GH_CONFIG="$CONFIG/gh/config.yml"
+export GITHUB='https://github.com/ax-mad'
+export GIT_CONFIG_GLOBAL="$CONFIG/git/config"
+export GH_CONFIG="$CONFIG/gh/config.yml"
 #============================================================ git
 
 #============================go

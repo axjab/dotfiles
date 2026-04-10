@@ -75,21 +75,11 @@ fi
 export PATH="$HOME/.local/bin:$PATH"
 
 # -----------------------------------------------
-# XDG USER DIRS
-# Desktop-only — skip on headless servers
-# UPDATE 2026-04-01: set in ~/.config/user-dirs.dirs
+# USER DIRECTORIES
 # -----------------------------------------------
-
-if [[ -n "$DISPLAY" ]] && command -v xdg-user-dirs-update &>/dev/null; then
-    xdg-user-dirs-update --set DESKTOP     "$HOME"
-    xdg-user-dirs-update --set DOWNLOAD    "$HOME/tmp"
-    xdg-user-dirs-update --set TEMPLATES   "$HOME"
-    xdg-user-dirs-update --set PUBLICSHARE "$HOME"
-    xdg-user-dirs-update --set DOCUMENTS   "$HOME"
-    xdg-user-dirs-update --set MUSIC       "$HOME"
-    xdg-user-dirs-update --set PICTURES    "$HOME"
-    xdg-user-dirs-update --set VIDEOS      "$HOME"
-fi
+# mkdir $HOME/dump
+# [[ -f ~/etc/xdg/ ]] && source ~/.func
+# TODO: Run ~/etc/xdg/apply.sh non-interactively
 
 # -----------------------------------------------
 # LINE WRAP
@@ -129,7 +119,6 @@ else
             ;;
     esac
 fi
-
 
 # ---
 # Setup zoxide on shell

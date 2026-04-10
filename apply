@@ -11,7 +11,7 @@ run() {
 }
 
 show_usage() {
-	echo "~/etc/apply OR ~/etc/apply \"git\""
+	echo "$CONFIG/apply OR $CONFIG/apply \"git\""
 }
 
 apply_one() {
