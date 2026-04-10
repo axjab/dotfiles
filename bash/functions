@@ -1,6 +1,10 @@
 #!/bin/bash
 
-# parent = bashrc
+# FUNCTIONS
+# 
+# gitsync() {
+# 	
+# }
 
 move-to-trash() {
     # Check if the TRASH environment variable is set

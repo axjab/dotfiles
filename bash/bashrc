@@ -7,6 +7,23 @@
 [[ $- != *i* ]] && return
 
 # -----------------------------------------------
+# Set locale
+# -----------------------------------------------
+# LANG=en_US.UTF-8
+# LC_CTYPE="en_US.UTF-8"
+# LC_NUMERIC="en_US.UTF-8"
+# LC_TIME="en_US.UTF-8"
+# LC_COLLATE="en_US.UTF-8"
+export LC_MONETARY="en_CA.UTF-8"
+# LC_MESSAGES="en_US.UTF-8"
+# LC_PAPER="en_US.UTF-8"
+# LC_NAME="en_US.UTF-8"
+# LC_ADDRESS="en_US.UTF-8"
+# LC_TELEPHONE="en_US.UTF-8"
+# LC_MEASUREMENT="en_US.UTF-8"
+# LC_IDENTIFICATION="en_US.UTF-8"
+# LC_ALL=
+
 # ENVIRONMENT & ALIASES & FUNCTIONS
 # -----------------------------------------------
 [[ -f ~/.env     ]] && source ~/.env
@@ -58,20 +75,11 @@ fi
 export PATH="$HOME/.local/bin:$PATH"
 
 # -----------------------------------------------
-# XDG USER DIRS
-# Desktop-only — skip on headless servers
-# UPDATE 2026-04-01: set in ~/.config/user-dirs.dirs
+# USER DIRECTORIES
 # -----------------------------------------------
-# if [[ -n "$DISPLAY" ]] && command -v xdg-user-dirs-update &>/dev/null; then
-#     xdg-user-dirs-update --set DESKTOP     "$HOME/etc/desktop"
-#     xdg-user-dirs-update --set DOWNLOAD    "$HOME/tmp"
-#     xdg-user-dirs-update --set TEMPLATES   "/tmp"
-#     xdg-user-dirs-update --set PUBLICSHARE "/tmp"
-#     xdg-user-dirs-update --set DOCUMENTS   "/data/docs"
-#     xdg-user-dirs-update --set MUSIC       "/data/audio"
-#     xdg-user-dirs-update --set PICTURES    "/data/media"
-#     xdg-user-dirs-update --set VIDEOS      "/data/media"
-# fi
+# mkdir $HOME/dump
+# [[ -f ~/etc/xdg/ ]] && source ~/.func
+# TODO: Run ~/etc/xdg/apply.sh non-interactively
 
 # -----------------------------------------------
 # LINE WRAP
@@ -85,9 +93,9 @@ esac
 # -----------------------------------------------
 # NVM (Node Version Manager)
 # -----------------------------------------------
-export NVM_DIR="$HOME/.config/nvm"
-[[ -s "$NVM_DIR/nvm.sh" ]]          && source "$NVM_DIR/nvm.sh"
-[[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
+# export NVM_DIR="$HOME/.config/nvm"
+# [[ -s "$NVM_DIR/nvm.sh" ]]          && source "$NVM_DIR/nvm.sh"
+# [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
 
 # -----------------------------------------------
 # PROMPT
@@ -111,7 +119,6 @@ else
             ;;
     esac
 fi
-
 
 # ---
 # Setup zoxide on shell

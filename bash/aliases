@@ -14,7 +14,10 @@ alias alias-edit='edit-alias'
 
 ## filesystem nav: cd, ls =================================
 # cd
-cd='z'
+export _ZO_DATA_DIR=/data/zoxide 	#Path for zoxide data files
+export _ZO_ECHO=1    				#Print the matched directory before navigating to it when set to 1
+# make this one conditional, if zoxide installed
+alias cd='z'
 alias ..='cd ..'
 alias .-='cd -'
 alias cdi='cd "$(gum file -a --height=20 --directory)"'
@@ -30,6 +33,7 @@ alias lf="eza $eza_git --only-files --all --smart-group --total-size"   # files 
 # ========================================================
 
 ## filesystem ops =======================
+alias bat='batcat'
 alias compress='tar -czvf'
 alias extract='tar -xzvf'
 alias tarlist='tar -tzvf'
@@ -68,12 +72,6 @@ alias cls='clear -x'
 alias tab2col="column -t -s$'\t'"
 ## column
 
-## git
-alias add='git add -v'
-alias commit='git commit'
-alias send='git send'
-alias co='git checkout'
-
 # gum
 alias gf='gum file -a --height=20'
 alias gd='gum file -a --height=20 --directory'
@@ -90,12 +88,6 @@ alias connect='nmcli --ask device wifi connect'
 ## common typos
 alias gti='git'
 ## common typos
-
-## various
-alias edit='$EDITOR'
-alias env="env -0 | sort -z | tr '\0' '\n'"
-alias uuid='u=$(uuidgen) ; echo $u | clipboard ; echo -e "New UUID:\n$u (copied)"'
-alias timestamp='d=$(date +"%Y-%m-%d %H:%M:%S") ; echo $d | clipboard ; echo -e "Current timestamp:\n$d (copied)"'
 
 ## walk
 alias walk='walk --icons --preview'
@@ -321,15 +313,6 @@ alias walk='walk --icons --preview'
 # alias yt="ytfzf -t"
 # alias startx='startx -- -keeptty >~/.xorg.log 2>&1'
 # 
-# alias cd..='cd ../'
-# alias cd...='cd ../../'
-# alias cd....='cd ../../../'
-# alias cd.....='cd ../../../../'
-# alias cd......='cd ../../../../../'
-# alias ~='cd ~' 2> /dev/null
-# alias -='cd -' 2> /dev/null
-# alias ..='cd ../'
-alias ...='cd ../../'
 # alias ....='cd ../../../'
 # alias .....='cd ../../../../'
 # alias ......='cd ../../../../../'
