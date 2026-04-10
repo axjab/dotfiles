@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG=$HOME/cfg
+CONFIG=$HOME/etc
 
 run() {
 	case "$1" in
@@ -11,7 +11,7 @@ run() {
 }
 
 show_usage() {
-	echo "~/cfg/apply OR ~/cfg/apply \"git\""
+	echo "~/etc/apply OR ~/etc/apply \"git\""
 }
 
 apply_one() {
