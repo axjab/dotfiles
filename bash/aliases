@@ -17,7 +17,9 @@ alias alias-edit='edit-alias'
 export _ZO_DATA_DIR=/data/zoxide 	#Path for zoxide data files
 export _ZO_ECHO=1    				#Print the matched directory before navigating to it when set to 1
 # make this one conditional, if zoxide installed
-alias cd='z'
+if command -v zoxide; then
+	alias cd='z'
+fi
 alias ..='cd ..'
 alias .-='cd -'
 alias cdi='cd "$(gum file -a --height=20 --directory)"'

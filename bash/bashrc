@@ -6,10 +6,11 @@
 # -----------------------------------------------
 [[ $- != *i* ]] && return
 
-# ENVIRONMENT & ALIASES & FUNCTIONS
+# ENVIRONMENT & ALIASES
 # -----------------------------------------------
 [[ -f ~/.env     ]] && source ~/.env
 [[ -f ~/.aliases ]] && source ~/.aliases
+
 
 # -----------------------------------------------
 # HISTORY
@@ -76,4 +77,6 @@ fi
 # ---
 # Setup zoxide on shell
 # ----
-eval "$(zoxide init bash)"
+if command -v zoxide; then
+	eval "$(zoxide init bash)"
+fi

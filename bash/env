@@ -5,6 +5,7 @@
 # **********************************
 
 CONFIG="$HOME/etc"
+export TZ="America/Toronto"
 
 # PATH EXTENSIONS
 # -----------------------------------------------
@@ -13,7 +14,6 @@ export PATH="$PATH\
 :$HOME/go/bin"
 #:$HOME/.local/bin\
 #========= date
-export TZ="America/Toronto"
 
 # ============================== zoxide
 # for zoxide variables, see ~/.aliases
@@ -28,10 +28,6 @@ VISUAL='micro'
 
 #bc
 BC_ENV_ARGS='-lq'
-
-#============================================================ cd
-export CDPATH=".:~:~/srv"
-#============================================================ cd
 
 #============================================================ git
 export GITHUB='https://github.com/ax-mad'
