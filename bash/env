@@ -6,6 +6,15 @@
 
 CONFIG="$HOME/etc"
 
+# PATH EXTENSIONS
+# -----------------------------------------------
+export PATH="$PATH\
+:$HOME/bin\
+:$HOME/go/bin"
+#:$HOME/.local/bin\
+#========= date
+export TZ="America/Toronto"
+
 # ============================== zoxide
 # for zoxide variables, see ~/.aliases
 
@@ -24,15 +33,10 @@ BC_ENV_ARGS='-lq'
 export CDPATH=".:~:~/srv"
 #============================================================ cd
 
-#========= date
-export TZ="America/Toronto"
-#========= date
-
 #============================================================ git
 export GITHUB='https://github.com/ax-mad'
 export GIT_CONFIG_GLOBAL="$CONFIG/git/config"
 export GH_CONFIG="$CONFIG/gh/config.yml"
-#============================================================ git
 
 #============================go
 GOOS='linux' # OR 'windows'
@@ -73,11 +77,6 @@ LC_ALL='en_CA.UTF-8'
 MICRO_CONFIG_HOME="$CONFIG/micro"
 # micro
 
-#============================================================ sqlite
-SQLITERC="$CONFIG/sqlite/config"
-SQLITE_ROW_COUNT_LIMIT=30
-#============================================================ sqlite
-
 #==================== starship
-STARSHIP_CONFIG="$CONFIG/starship/config"
+export STARSHIP_CONFIG="$CONFIG/starship/config"
 #===================== starship

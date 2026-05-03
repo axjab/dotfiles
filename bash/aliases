@@ -30,6 +30,7 @@ alias ll="eza $eza_git --group --no-filesize"    # full view
 alias lls='ll --total-size'                      # + sizes (slower)
 alias ld="eza $eza_git --only-dirs  --all --smart-group --no-filesize"  # dirs only
 alias lf="eza $eza_git --only-files --all --smart-group --total-size"   # files only
+alias fm="EDITOR=micro yazi"
 # ========================================================
 
 ## filesystem ops =======================
@@ -64,6 +65,9 @@ alias dcup='sudo docker compose up --remove-orphans'
 alias dcdn='sudo docker compose down --remove-orphans'
 alias dlog='sudo docker logs'
 
+# Python
+alias py='uv run'
+
 ## clear
 alias cls='clear -x'
 ## clear
@@ -87,6 +91,7 @@ alias connect='nmcli --ask device wifi connect'
 
 ## common typos
 alias gti='git'
+alias sl='ls'
 ## common typos
 
 ## walk

@@ -6,29 +6,10 @@
 # -----------------------------------------------
 [[ $- != *i* ]] && return
 
-# -----------------------------------------------
-# Set locale
-# -----------------------------------------------
-# LANG=en_US.UTF-8
-# LC_CTYPE="en_US.UTF-8"
-# LC_NUMERIC="en_US.UTF-8"
-# LC_TIME="en_US.UTF-8"
-# LC_COLLATE="en_US.UTF-8"
-export LC_MONETARY="en_CA.UTF-8"
-# LC_MESSAGES="en_US.UTF-8"
-# LC_PAPER="en_US.UTF-8"
-# LC_NAME="en_US.UTF-8"
-# LC_ADDRESS="en_US.UTF-8"
-# LC_TELEPHONE="en_US.UTF-8"
-# LC_MEASUREMENT="en_US.UTF-8"
-# LC_IDENTIFICATION="en_US.UTF-8"
-# LC_ALL=
-
 # ENVIRONMENT & ALIASES & FUNCTIONS
 # -----------------------------------------------
 [[ -f ~/.env     ]] && source ~/.env
 [[ -f ~/.aliases ]] && source ~/.aliases
-[[ -f ~/.func    ]] && source ~/.func
 
 # -----------------------------------------------
 # HISTORY
@@ -36,13 +17,13 @@ export LC_MONETARY="en_CA.UTF-8"
 HISTCONTROL=ignoreboth       # ignore duplicates and lines starting with space
 HISTSIZE=5000
 HISTFILESIZE=10000
-shopt -s histappend          # append to history, don't overwrite
 
 # -----------------------------------------------
 # SHELL OPTIONS
 # -----------------------------------------------
 shopt -s checkwinsize        # update LINES and COLUMNS after each command
 shopt -s expand_aliases      # allow aliases to propagate to subshells
+shopt -s histappend          # append to history, don't overwrite
 
 # -----------------------------------------------
 # LESSPIPE
@@ -68,34 +49,6 @@ if ! shopt -oq posix; then
         source /etc/bash_completion
     fi
 fi
-
-# -----------------------------------------------
-# PATH EXTENSIONS
-# -----------------------------------------------
-export PATH="$HOME/.local/bin:$PATH"
-
-# -----------------------------------------------
-# USER DIRECTORIES
-# -----------------------------------------------
-# mkdir $HOME/dump
-# [[ -f ~/etc/xdg/ ]] && source ~/.func
-# TODO: Run ~/etc/xdg/apply.sh non-interactively
-
-# -----------------------------------------------
-# LINE WRAP
-# Set LINEWRAP=off in ~/.aliases or environment to disable
-# -----------------------------------------------
-case "${LINEWRAP,,}" in
-    off|0) tput rmam ;;
-    *)     tput smam ;;
-esac
-
-# -----------------------------------------------
-# NVM (Node Version Manager)
-# -----------------------------------------------
-# export NVM_DIR="$HOME/.config/nvm"
-# [[ -s "$NVM_DIR/nvm.sh" ]]          && source "$NVM_DIR/nvm.sh"
-# [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
 
 # -----------------------------------------------
 # PROMPT
