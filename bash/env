@@ -6,17 +6,21 @@
 
 CONFIG="$HOME/etc"
 export TZ="America/Toronto"
+LANG='en_CA.UTF-8'
+LC_ALL='en_CA.UTF-8'
 
 # PATH EXTENSIONS
-# -----------------------------------------------
+# -----------------
 export PATH="$PATH\
 :$HOME/bin\
-:$HOME/go/bin"
-#:$HOME/.local/bin\
-#========= date
+:$HOME/go/bin\
+:/usr/local/go/bin"
 
-# ============================== zoxide
-# for zoxide variables, see ~/.aliases
+# GO
+#--------------
+export GOOS='linux'   # OR 'windows'
+export GOARCH='amd64' # because my architecture is x86_64
+export GOPATH="$HOME/bin"
 
 # =============================== batcat
 # no numbers, no rule
@@ -33,11 +37,6 @@ BC_ENV_ARGS='-lq'
 export GITHUB='https://github.com/ax-mad'
 export GIT_CONFIG_GLOBAL="$CONFIG/git/config"
 export GH_CONFIG="$CONFIG/gh/config.yml"
-
-#============================go
-GOOS='linux' # OR 'windows'
-GOARCH='amd64' # because my architecture is x86_64
-#============================go
 
 #============================================================ gum
 # GUM_INPUT_HEADER_FOREGROUND=""
@@ -62,12 +61,6 @@ GUM_FILTER_SELECTED_PREFIX_FOREGROUND="40"
 
 # less
 LESS='--RAW-CONTROL-CHARS --shift=4 --quit-if-one-screen  --tilde --LONG-PROMPT --wordwrap' # -RS#FX~M
-
-#============================================================ locale
-LANG='en_CA.UTF-8'
-LC_ALL='en_CA.UTF-8'
-#LC_ALL=en_CA
-#============================================================ locale
 
 # micro
 MICRO_CONFIG_HOME="$CONFIG/micro"
