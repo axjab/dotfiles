@@ -50,8 +50,6 @@ alias chmod='chmod -v'
 alias grep='grep --color=auto'
 # ======================================
 
-alias pls="sudo !!"
-
 # Tailscale
 alias vpn='sudo tailscale'
 

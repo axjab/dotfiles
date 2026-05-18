@@ -4,7 +4,7 @@
 # * MY SHELL ENVIRONMENT VARIABLES *
 # **********************************
 
-CONFIG="$HOME/etc"
+export CONFIG="$HOME/etc"
 export TZ="America/Toronto"
 
 # PATH EXTENSIONS
@@ -14,9 +14,6 @@ export PATH="$PATH\
 :$HOME/go/bin"
 #:$HOME/.local/bin\
 #========= date
-
-# ============================== zoxide
-# for zoxide variables, see ~/.aliases
 
 # =============================== batcat
 # no numbers, no rule
