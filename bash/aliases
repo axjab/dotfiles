@@ -32,7 +32,7 @@ alias ll="eza $eza_git --group --no-filesize"    # full view
 alias lls='ll --total-size'                      # + sizes (slower)
 alias ld="eza $eza_git --only-dirs  --all --smart-group --no-filesize"  # dirs only
 alias lf="eza $eza_git --only-files --all --smart-group --total-size"   # files only
-alias fm="EDITOR=micro yazi"
+alias fm="source $HOME/bin/fm"
 # ========================================================
 
 ## filesystem ops =======================
