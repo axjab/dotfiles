@@ -1,0 +1,17 @@
+
+# SSH CONFIGURATION
+# Path: {{ .Path }}
+
+Host *
+  IdentityFile ~/.ssh/id.key
+
+Host majula
+  Hostname {{ get "ssh/host/majula/ip" }}
+  Hostname {{ get "ssh/host/majula/lan_ip" }}
+  Port 2983
+  User solaire
+
+Host firelink
+  Hostname {{ get "ssh/host/firelink/ip" }}
+  Port 2983
+  User ash

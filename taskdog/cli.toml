@@ -1,0 +1,19 @@
+[api]
+host = "firelink"
+port = 8000
+api_key = "{{ getpw "taskdog/api_key" }}"
+
+[region]
+country = "CA"
+
+[ui]
+theme = "tokyo-night"
+
+# textual-dark - Default dark theme
+# textual-light - Light theme
+# tokyo-night - Tokyo Night color scheme
+# dracula - Dracula color scheme
+# catppuccin-mocha - Catppuccin Mocha color scheme
+# nord - Nord color scheme
+# gruvbox - Gruvbox color scheme
+# solarized-light - Solarized Light color scheme

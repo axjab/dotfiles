@@ -1,0 +1,126 @@
+#!/bin/bash
+
+# etc — personal configuration utility (PROOF OF CONCEPT — DRY RUN ONLY)
+# Usage: etc <command> [target]
+
+ETC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+dry() {
+  echo "[dry-run] $*"
+}
+
+cmd_apply() {
+  local target="$1"
+
+  case "$target" in
+    taskdog)
+      dry "gopass process $ETC_DIR/taskdog/cli.toml.tmpl > ~/.config/taskdog/cli.toml"
+      ;;
+    ssh)
+      dry "gopass process $ETC_DIR/ssh/config.tmpl > ~/.ssh/config"
+      dry "chmod 600 ~/.ssh/config"
+      ;;
+    git)
+      dry "ln -sf $ETC_DIR/git/.gitconfig ~/.gitconfig"
+      ;;
+    bash)
+      dry "ln -sf $ETC_DIR/bash/.bashrc ~/.bashrc"
+      dry "ln -sf $ETC_DIR/bash/.aliases ~/.aliases"
+      dry "source ~/.bashrc"
+      ;;
+    vim)
+      dry "ln -sf $ETC_DIR/vim/.vimrc ~/.vimrc"
+      ;;
+    "")
+      cmd_apply taskdog
+      cmd_apply ssh
+      cmd_apply git
+      cmd_apply bash
+      cmd_apply vim
+      ;;
+    *)
+      echo "etc apply: unknown target: $target" >&2
+      return 1
+      ;;
+  esac
+}
+
+cmd_update() {
+  local target="$1"
+
+  case "$target" in
+    taskdog)
+      dry "gopass process $ETC_DIR/taskdog/cli.toml.tmpl > ~/.config/taskdog/cli.toml"
+      ;;
+    ssh)
+      dry "gopass process $ETC_DIR/ssh/config.tmpl > ~/.ssh/config"
+      ;;
+    "")
+      cmd_update taskdog
+      cmd_update ssh
+      ;;
+    *)
+      echo "etc update: unknown target: $target" >&2
+      return 1
+      ;;
+  esac
+}
+
+cmd_sync() {
+  dry "git -C $ETC_DIR pull --rebase"
+  dry "gopass sync"
+  dry "etc apply"
+}
+
+cmd_status() {
+  dry "git -C $ETC_DIR status"
+  dry "gopass ls"
+  dry "diff $ETC_DIR/taskdog/cli.toml.tmpl ~/.config/taskdog/cli.toml"
+  dry "diff $ETC_DIR/ssh/config.tmpl ~/.ssh/config"
+}
+
+cmd_bootstrap() {
+  dry "git clone <etc-repo> ~/etc"
+  dry "gopass clone <gopass-remote>"
+  dry "gpg --import <gpg-key>"
+  dry "etc apply"
+}
+
+cmd_help() {
+  cat <<EOF
+Usage: etc <command> [target]
+
+Commands:
+  apply [target]       Render and deploy configuration files
+                       Targets: taskdog, ssh, git, bash, vim
+                       Omit target to apply all
+
+  update [target]      Re-render secret-bearing configs from gopass
+                       Targets: taskdog, ssh
+                       Omit target to update all
+
+  sync                 Pull latest etc repo, sync gopass, re-apply all
+
+  status               Show git status, gopass state, and config diffs
+
+  bootstrap            Full setup sequence for a new machine
+
+  help                 Show this message
+EOF
+}
+
+# entrypoint
+case "$1" in
+  apply)              cmd_apply "$2" ;;
+  update)             cmd_update "$2" ;;
+  sync)               cmd_sync ;;
+  status)             cmd_status ;;
+  bootstrap)          cmd_bootstrap ;;
+  help|-h|--help)     cmd_help ;;
+  "")                 cmd_help ;;
+  *)
+    echo "etc: unknown command: $1" >&2
+    echo "Run 'etc help' for usage." >&2
+    exit 1
+    ;;
+esac

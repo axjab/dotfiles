@@ -4,8 +4,12 @@
 # * MY SHELL ENVIRONMENT VARIABLES *
 # **********************************
 
+# GENERAL
+# ------------------
 export CONFIG="$HOME/etc"
 export TZ="America/Toronto"
+export EDITOR='micro -eofnewline false'     # TUI, no new lines for gopass
+export VISUAL='code --new-window --wait'    # GUI, wait files to load
 LANG='en_CA.UTF-8'
 LC_ALL='en_CA.UTF-8'
 
@@ -25,10 +29,6 @@ export GOPATH="$HOME/bin"
 # =============================== batcat
 # no numbers, no rule
 export BAT_STYLE="changes,header,header-filename,header-filesize,snip"
-
-EDITOR='micro'                            # default TUI editor
-VISUAL='micro'
-# VISUAL='code --new-window --wait'       # default GUI editor for Linux
 
 #bc
 BC_ENV_ARGS='-lq'

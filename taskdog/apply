@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# render and deploy taskdog configuration
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TEMPLATE="$SCRIPT_DIR/cli.toml"
+DEST="$HOME/.config/taskdog/cli.toml"
+
+echo "taskdog: applying configuration"
+echo "  template : $TEMPLATE"
+echo "  dest     : $DEST"
+
+if [[ ! -f "$TEMPLATE" ]]; then
+  echo "error: template not found: $TEMPLATE" >&2
+  exit 1
+fi
+
+if ! command -v gopass &>/dev/null; then
+  echo "error: gopass not found in PATH" >&2
+  exit 1
+fi
+
+mkdir -p "$(dirname "$DEST")"
+
+if ! gopass process "$TEMPLATE" > "$DEST"; then
+  echo "error: gopass process failed" >&2
+  exit 1
+fi
+
+chmod 600 "$DEST"
+echo "done"

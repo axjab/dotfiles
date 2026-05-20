@@ -13,9 +13,10 @@ alias alias-edit='edit-alias'
 #
 
 ## filesystem nav: cd, ls =================================
+
 # cd
 export _ZO_DATA_DIR=/data/zoxide 	#Path for zoxide data files
-export _ZO_ECHO=1    				#Print the matched directory before navigating to it when set to 1
+# export _ZO_ECHO=1    				#Print the matched directory before navigating to it when set to 1
 # make this one conditional, if zoxide installed
 if command -v zoxide; then
 	alias cd='z'
@@ -33,9 +34,11 @@ alias lls='ll --total-size'                      # + sizes (slower)
 alias ld="eza $eza_git --only-dirs  --all --smart-group --no-filesize"  # dirs only
 alias lf="eza $eza_git --only-files --all --smart-group --total-size"   # files only
 alias fm="source $HOME/bin/fm"
+
 # ========================================================
 
 ## filesystem ops =======================
+
 alias bat='batcat'
 alias compress='tar -czvf'
 alias extract='tar -xzvf'
@@ -48,7 +51,12 @@ alias mkdir='mkdir -v'
 alias rmdir='rmdir -v'
 alias chmod='chmod -v'
 alias grep='grep --color=auto'
+
 # ======================================
+
+## task management =============================================
+
+#===============================================================
 
 # Tailscale
 alias vpn='sudo tailscale'
@@ -68,20 +76,12 @@ alias dlog='sudo docker logs'
 # Python
 alias py='uv run'
 
-## clear
-alias cls='clear -x'
-## clear
-
-## column
-alias tab2col="column -t -s$'\t'"
-## column
-
 # gum
 alias gf='gum file -a --height=20'
 alias gd='gum file -a --height=20 --directory'
-# /gum
 
-## micro
+## editor
+alias edit='micro'
 alias mu='micro'
 
 ## network manager (nmcli)
@@ -94,9 +94,6 @@ alias gti='git'
 alias sl='ls'
 ## common typos
 
-## walk
-alias walk='walk --icons --preview'
-## walk
 
 
 ###################################################################################################################################
