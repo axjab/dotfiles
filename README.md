@@ -1,6 +1,12 @@
 
 # CONFIG V2
 
+## NEWS
+
+- [ ] GOPASS TEMPLATING (see taskdog for example). This allows storing sensitive configs in this public repo
+
+---
+
 Date: 2026-03-01
 
 My bash shell has become too slow from all the bloat and misconfiguration.
