@@ -5,8 +5,8 @@ Summary:
 
 Need gopass from https://github.com/ax-mad/scripts
 
-1. Import key
-2. gopass config mounts.path /data/secrets
+1. Import gpg key
+2. Run ~/etc/gopass/apply
 
 ## On Source Machine
 
