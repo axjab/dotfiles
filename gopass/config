@@ -1,0 +1,7 @@
+
+# Fetch secrets from https://github.com/ax-mad/secrets
+
+[mounts]
+	path = /data/secrets
+[recipients]
+	hash = 56f994c425b8097642fa1721c3245807258bfd5bbe94347a3fc27c596afaa134
