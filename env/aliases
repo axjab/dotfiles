@@ -12,6 +12,10 @@ alias edit-alias='$(gum choose --header="Choose editor:" micro nano) $HOME/.alia
 alias alias-edit='edit-alias'
 #
 
+# NEW
+alias as='as-user'
+alias lazylog='sudo lazyjournal -u 2 -t 1000'   # update every 2 seconds, reduce max to 100 lines to make fster
+
 ## filesystem nav: cd, ls =================================
 
 # cd
