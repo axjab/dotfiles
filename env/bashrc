@@ -8,9 +8,8 @@
 
 # ENVIRONMENT & ALIASES
 # -----------------------------------------------
-[[ -f ~/.env     ]] && source ~/.env
+[[ -f ~/.env     ]] && source ~/.env  || echo -e "\033[1;33mWARNING: ~/.env not found — environment variables not loaded\033[0m" >&2
 [[ -f ~/.aliases ]] && source ~/.aliases
-
 
 # -----------------------------------------------
 # HISTORY
