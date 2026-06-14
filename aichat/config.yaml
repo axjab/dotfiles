@@ -1,9 +1,19 @@
 # see https://github.com/sigoden/aichat/blob/main/config.example.yaml
 
+# TODO:
+# 1. System prompts
+# 2. LEarn how to use roles
+
+# UNDOCUMENTED, TEMPORARY
+# max_tokens: 1000        # <-- NEW: caps the response length
+
 # ---- llm ----
 
-temperature: null                # Set default temperature parameter (0, 1)
-top_p: null                      # Set default top-p parameter, with a range of (0, 1) or (0, 2) depending on the model
+# Set default temperature parameter (0, 1)
+# <= 0.2 is suitable for uncreative, highly technical concepts
+temperature: 0.2
+ # Set default top-p parameter, with a range of (0, 1) or (0, 2) depending on the model
+top_p: null
 
 # ---- behavior ----
 
@@ -13,6 +23,29 @@ keybindings: emacs               # Choose keybinding style (emacs, vi)
 editor: micro                    # Specifies the command used to edit input buffer or session. (e.g. vim, emacs, nano).
 wrap: auto                       # Controls text wrapping (no, auto, <max-width>)
 wrap_code: false                 # Enables or disables wrapping of code blocks
+
+# ---- RAG ----
+# See [RAG-Guide](https://github.com/sigoden/aichat/wiki/RAG-Guide) for more details.
+# Defines the query structure using variables like __CONTEXT__ and __INPUT__ to tailor searches to specific needs
+# rag_template: |
+#   Answer the query based on the context while respecting the rules. (user query, some textual context and rules, all inside xml tags)
+# 
+#   <context>
+#   __CONTEXT__
+#   </context>
+# 
+#   <rules>
+#   - If you don't know, just say so.
+#   - If you are not sure, ask for clarification.
+#   - Answer in the same language as the user query.
+#   - If the context appears unreadable or of poor quality, tell the user then answer as best as you can.
+#   - If the answer is not in the context but you think you know the answer, explain that to the user then answer with your own knowledge.
+#   - Answer directly and without using xml tags.
+#   </rules>
+# 
+#   <user_query>
+#   __INPUT__
+#   </user_query>
 
 # ---- function-calling ----
 
@@ -24,10 +57,21 @@ use_tools: null                  # Which tools to use by default. (e.g. 'fs,web_
 
 # ---- clients ----
 
-model: groq:openai/gpt-oss-120b      # Best for speed and brevty
+# model: groq:openai/gpt-oss-120b    # FUCKING BROKEN Best for speed and brevity
+model: cerebras:gpt-oss-120b         # Alternative to broken Groq
 # model: openrouter:openrouter/free  # fallback
 
 clients:
+
+  - type: openai-compatible
+    name: cerebras
+    api_base: https://api.cerebras.ai/v1
+    api_key: {{ getpw "llm/cerebras" }}
+    models:
+      - name: gpt-oss-120b
+        max_input_tokens: 8192
+      - name: gpt-oss-20b
+        max_input_tokens: 8192
 
   - type: openai-compatible
     name: groq
