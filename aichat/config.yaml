@@ -1,7 +1,82 @@
 # see https://github.com/sigoden/aichat/blob/main/config.example.yaml
 
-model:
-    gemini:gemini-2.5-flash
-    clients:
-        - type: gemini
-          api_key: {{ getpw "llm/gemini" }}
+# ---- llm ----
+
+temperature: null                # Set default temperature parameter (0, 1)
+top_p: null                      # Set default top-p parameter, with a range of (0, 1) or (0, 2) depending on the model
+
+# ---- behavior ----
+
+stream: true                     # Controls whether to use the stream-style API.
+save: true                       # Indicates whether to persist the message
+keybindings: emacs               # Choose keybinding style (emacs, vi)
+editor: micro                    # Specifies the command used to edit input buffer or session. (e.g. vim, emacs, nano).
+wrap: auto                       # Controls text wrapping (no, auto, <max-width>)
+wrap_code: false                 # Enables or disables wrapping of code blocks
+
+# ---- function-calling ----
+
+# Visit https://github.com/sigoden/llm-functions for setup instructions
+function_calling: true           # Enables or disables function calling (Globally).
+mapping_tools:                   # Alias for a tool or toolset
+  fs: 'fs_cat,fs_ls,fs_mkdir,fs_rm,fs_write'
+use_tools: null                  # Which tools to use by default. (e.g. 'fs,web_search')
+
+# ---- clients ----
+
+model: groq:openai/gpt-oss-120b      # Best for speed and brevty
+# model: openrouter:openrouter/free  # fallback
+
+clients:
+
+  - type: openai-compatible
+    name: groq
+    api_base: https://api.groq.com/openai/v1
+    api_key: {{ getpw "llm/groq" }}
+    models:
+      - name: openai/gpt-oss-120b
+        max_input_tokens: 131072
+      - name: openai/gpt-oss-20b
+        max_input_tokens: 131072
+      - name: meta-llama/llama-4-scout-17b-16e-instruct
+        max_input_tokens: 131072
+        supports_vision: true
+
+  - type: openai-compatible
+    name: openrouter
+    api_base: https://openrouter.ai/api/v1
+    api_key: {{ getpw "llm/openrouter" }}
+
+  # - type: openai
+  #     api_base: https://api.openai.com/v1               # Optional
+  #     api_key: xxx
+  #     organization_id: org-xxx
+
+  - type: gemini
+    api_key: {{ getpw "llm/gemini" }}
+
+  # BROKEN
+  - type: openai-compatible
+    name: moonshot
+    api_base: https://api.moonshot.ai
+    api_key: {{ getpw "llm/kimi" }}
+    models:
+      - name: kimi-k2-6
+        max_input_tokens: 256000
+        supports_vision: true
+        supports_function_calling: true
+
+  # UNTESTED
+  - type: openai-compatible
+    name: deepseek
+    api_base: https://api.deepseek.com
+    api_key: {{ getpw "llm/deepseek" }}
+    models:
+      - name: deepseek-chat
+        max_input_tokens: 64000
+      - name: deepseek-reasoner
+        max_input_tokens: 64000
+
+  # UNTESTED
+  - type: claude
+    api_key: {{ getpw "llm/claude" }}
