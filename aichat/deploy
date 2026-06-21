@@ -1,0 +1,1 @@
+gopass process $HOME/etc/aichat/config.yaml > $HOME/.config/aichat/config.yaml

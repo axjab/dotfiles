@@ -1,0 +1,3 @@
+GOPASS_CFG=$HOME/.config/gopass
+mkdir $GOPASS_CFG
+ln -siv $HOME/etc/gopass/config $GOPASS_CFG/config

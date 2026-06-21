@@ -1,0 +1,19 @@
+
+# SOURCE MACHINE COMMANDS
+
+git -C ~/etc push
+gopass sync
+gpg --export-secret-keys --armor > ~/gopass-key
+rsync ~/gopass-key HOST:~/gopass-key
+rm ~/gopass-key
+
+# TARGET MACHINE COMMANDS
+
+git clone https://github.com/ax-mad/etc 	~/etc
+git clone https://github.com/ax-mad/secrets /data/secrets
+mkdir ~/.config/gopass
+ln -siv ~/etc/gopass/config ~/.config/gopass/config
+gpg --import ~/gopass-key
+rm ~/gopass-key
+
+## gopass should be fully configured by now
