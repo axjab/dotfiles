@@ -2,7 +2,12 @@
 
 # TODO:
 # 1. System prompts
-# 2. LEarn how to use roles
+# 2. LEarn how to use roles (in progress, created role banana. Need an extra simple public fileserver for LLM stuff /llm)
+
+# Public collections
+# /llm  (/llm/roles, /llm/skills, etc.)
+# /howto
+# /checklists
 
 # UNDOCUMENTED, TEMPORARY
 # max_tokens: 1000        # <-- NEW: caps the response length
