@@ -82,18 +82,22 @@ alias sys-reload='sudo systemctl daemon-reload'
 # Python
 alias py='uv run'
 
+
 # gum
 alias gf='gum file -a --height=20'
 alias gd='gum file -a --height=20 --directory'
+
 
 ## editor
 alias edit='micro'
 alias mu='micro'
 
+
 ## network manager (nmcli)
 alias wifi='nmcli dev wifi'
 alias connect='nmcli --ask device wifi connect'
 ## network manager (nmcli)
+
 
 ## common typos
 alias gti='git'
@@ -104,21 +108,6 @@ alias sl='ls'
 
 ###################################################################################################################################
 
-## Example aliases
-# alias "alias_name"=<alias_command>
-
-# Use neovim for vim if present.
-# [ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
-# 
-# if [ $(command -v exa) ]; then
-#     alias ls='clr && exa -al --color=always --icons --git --group-directories-first'
-#     # alias ls='echo " \033[3;4:2;33mDirectory --> $(pwd)\033[23;4:0m\n" && exa -al --color=always --icons --git --group-directories-first'
-#     alias la='exa -a --color=always --icons --group-directories-first'
-#     alias ll='exa -l --color=always --icons --group-directories-first'
-#     alias lt='exa -aT --level=2 --color=always --group-directories-first'
-#     alias l.='exa -a | egrep "^\."'
-#     alias l='exa -l --color=always --icons --git --group-directories-first'
-# fi
 # 
 # if [ $(command -v mycli) ]; then
 #     alias mysql='mycli -u adi'
@@ -219,16 +208,13 @@ alias sl='ls'
 # alias music="youtube-viewer"
 # alias anime="ani-cli"
 # alias flix="notflix"
-# alias scim='sc-im'
 # alias dmenu='dmenu -i -l 10 -fn "Iosevka Nerd Font" -p "Select File: " -nb "#282a36" -nf "#f8f8f2" -sf "#44475a" -sb "#bd93f9" '
-# alias pvpn='protonvpn-cli'
 # alias s='startx'
 # alias mail="neomutt"
 # alias t='bpytop'
 # alias tty='tty-clock -C6 -c -t'
 # alias weather='clrscr && curl -s wttr.in/gwalior | head -n $(($(curl -s wttr.in/gwalior | wc -l)  - 2)) | tail -n $(($(curl -s wttr.in/gwalior | wc -l)  - 4))'
 # alias killl='killall -q'
-# alias suck='rm -f config.h ; sudo make install'
 # alias wal='feh --bg-fill -z'
 # alias lock='xscreensaver-command -lock'
 # alias tmux="TERM=screen-256color-bce tmux"
