@@ -12,9 +12,19 @@ alias edit-alias='$(gum choose --header="Choose editor:" micro nano) $HOME/.alia
 alias alias-edit='edit-alias'
 #
 
+
 # NEW
 alias as='as-user'
 alias lazylog='sudo lazyjournal -u 2 -t 1000'   # update every 2 seconds, reduce max to 100 lines to make fster
+
+
+# DOCKER
+alias d='sudo docker'
+alias d-ps='sudo docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"' #\t{{.Image}}"'
+alias d-up='sudo docker compose up --remove-orphans'
+alias d-down='sudo docker compose down --remove-orphans'
+alias d-watch='sudo docker logs -f'
+
 
 ## navigation: cd, ls =================================
 export _ZO_DATA_DIR=/data/zoxide 	#Path for zoxide data files
@@ -38,6 +48,7 @@ alias lf="eza $eza_git --only-files --all --smart-group --total-size"   # files 
 alias fm="source $HOME/bin/fm"
 # navigation ========================================================
 
+
 ## filesystem ops =======================
 if command -v bat &> /dev/null; then
     alias cat='bat'
@@ -55,7 +66,6 @@ alias chmod='chmod -v'
 alias grep='grep --color=auto'
 # ======================================
 
-## task management =============================================
 
 #===============================================================
 
@@ -67,12 +77,7 @@ alias sys='sudo systemctl'
 alias syslog='sudo journalctl -u'
 alias sys-reload='sudo systemctl daemon-reload'
 
-# Docker
-alias d='sudo docker'
-alias dps='sudo docker ps'
-alias dcup='sudo docker compose up --remove-orphans'
-alias dcdn='sudo docker compose down --remove-orphans'
-alias dlog='sudo docker logs'
+
 
 # Python
 alias py='uv run'
