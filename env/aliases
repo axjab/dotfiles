@@ -84,6 +84,7 @@ alias py='uv run'
 
 
 # gum
+export GUM_SPIN_SPINNER="points"
 alias gf='gum file -a --height=20'
 alias gd='gum file -a --height=20 --directory'
 
