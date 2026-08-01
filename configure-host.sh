@@ -39,9 +39,9 @@ namespace cron   # Recurring jobs
 
 ## SHELL
 # create_env shell/env
-from	 shell/env 	   process  $HOME/.env
-symlink	 shell/aliases to 		$HOME/.aliases
-symlink	 shell/bashrc  to 		$HOME/.bashrc
+symlink	 shell/aliases to $HOME/.aliases
+symlink	 shell/bashrc  to $HOME/.bashrc
+process	 shell/env 	   to $HOME/.env
 
 ## FILESYSTEM
 mount_nfs majula:/mnt/ssd 		onto /mnt/majula.ssd

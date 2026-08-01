@@ -17,13 +17,11 @@ symlink() {
     echo "SYMLINK	$source ---> $target"
 
     if [[ -L "$target" ]] && [[ "$(readlink -f "$target")" == "$(readlink -f "$source")" ]]; then
-        echo "Symlink already exists."
+        # echo "Symlink already exists."
         return 0
     fi
 
-    ln -snfv "$source" "$target"
-
-    echo "Symlink ready."
+    ln -snf "$source" "$target"
 }
 
 validate_symlink_syntax() {

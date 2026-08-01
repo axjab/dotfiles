@@ -1,14 +1,13 @@
-
 process() {
-    local source="$1"
-    local target="$2"
-
-    if [[ -z "${source:-}" || -z "${target:-}" ]]; then
-        error "process syntax: from SOURCE process TARGET"
+    local source=$1
+    local target=$3
+    local template="$ETC_DIR/$source"
+    
+    if [[ $# -ne 3 || $2 != to ]]; then
+        error "process syntax: process SOURCE to TARGET"
         return 1
     fi
 
-    local template="$ETC_DIR/$source"
 
     if [[ ! -f "$template" ]]; then
         error "Template not found: $template"
@@ -19,11 +18,10 @@ process() {
         cp "$target" "$target.$(date +%Y%m%d-%H%M%S)"
     fi
 
-    gum spin \
-    	-- echo "PROCESSING TEMPLATE $template ---> $target" \
-    	&& gopass process "$template" > "$target"
+    gum spin --title="PROCESSING $source ----> $target" -- \
+        gopass process "$template" > "$target"
 
     chmod 600 "$target"
 
-    echo "Processed file ready."
+    echo "PROCESS $source ----> $target"
 }

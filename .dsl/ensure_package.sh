@@ -9,7 +9,7 @@ ensure_package() {
     fi
 
     if dpkg -s "$package" &>/dev/null; then
-        echo "Package already installed: $package"
+        # echo "Package already installed: $package"
         return 0
     fi
 

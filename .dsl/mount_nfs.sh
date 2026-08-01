@@ -7,14 +7,8 @@ mount_nfs() {
 
     mount_nfs_syntax_check "$source" "$onto" "$target" || return 1
 
-    echo "Configuring NFS mount"
-    echo "  source: $source"
-    echo "  target: $target"
-
     ensure_package nfs-common
-
     create_dir "$target"
-
     check_fstab_entry \
         "$source" \
         "$target" \
@@ -23,7 +17,7 @@ mount_nfs() {
 
     ensure_mounted "$target"
 
-    echo "NFS mount ready: $source onto $target"
+    echo "MOUNT $source ---> $target"
 }
 
 mount_nfs_syntax_check() {
