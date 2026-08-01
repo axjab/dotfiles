@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ensure_directory() {
+create_dir() {
     local directory="$1"
 
     if [[ -z "${directory:-}" ]]; then
@@ -9,7 +9,7 @@ ensure_directory() {
     fi
 
     if [[ -d "$directory" ]]; then
-        echo "Directory exists: $directory"
+        # echo "Directory exists: $directory"
         return 0
     fi
 

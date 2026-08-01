@@ -13,7 +13,7 @@ mount_nfs() {
 
     ensure_package nfs-common
 
-    ensure_directory "$target"
+    create_dir "$target"
 
     check_fstab_entry \
         "$source" \

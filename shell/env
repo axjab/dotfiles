@@ -12,28 +12,19 @@
 
 # GENERAL
 # ------------------
-export CONFIG="$HOME/etc"
-export TZ="America/Toronto"
-export EDITOR='micro -eofnewline false'     # TUI, no new lines for gopass
-# export VISUAL='code --new-window --wait'    # GUI, wait files to load
 LANG='en_CA.UTF-8'
 LC_ALL='en_CA.UTF-8'
+export PATH=$PATH:/exe
+export CONFIG="$HOME/etc"
+export TZ="America/Toronto"
+EDITOR=hx
+# export EDITOR='micro -eofnewline false'     # TUI, no new lines for gopass
+# export VISUAL='code --new-window --wait'    # GUI, wait files to load
 #-----------
-
-# PATH EXTENSIONS
-# -----------------
-export PATH="$PATH\
-:$HOME/bin\
-:$HOME/go/bin\
-:/usr/local/go/bin"
-
-# GO --------------------
-export GOROOT=/usr/local/go
-export GOBIN="$HOME/bin"
 
 export BAT_STYLE="changes,header,header-filename,header-filesize,snip"
 
-export GITHUB='https://github.com/ax-mad'
+export GITHUB_USER=axjab
 export GIT_CONFIG_GLOBAL="$CONFIG/git/config"
 export GH_CONFIG="$CONFIG/gh/config.yml"
 
