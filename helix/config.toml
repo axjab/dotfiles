@@ -1,0 +1,8 @@
+theme = "tokyonight"
+
+# theme = "catppuccin_mocha"
+# theme = "tokyonight"
+# theme = "kanagawa"
+
+[editor]
+true-color = true
