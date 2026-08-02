@@ -13,8 +13,6 @@ mount() {
     esac
 }
 
-#!/usr/bin/env bash
-
 mount_dev() {
     local source="$1"
     local onto="$2"
@@ -106,11 +104,29 @@ mount_nfs() {
     local onto="$2"
     local target="$3"
 
-    validate_mount_nfs_syntax \
-        "$source" "$onto" "$target" || return 1
+    validate_mount_nfs_syntax "$source" "$onto" "$target" || return 1
+
+    # If the NFS source is this host itself, there's nothing to mount over
+    # the network. Symlink target --> the real local path instead, so the
+    # path stays valid and consistent across every host in the fleet.
+    local source_host="${source%%:*}"
+    local source_path="${source#*:}"
+    local this_host
+    this_host="$(hostname)"
+
+    if [[ "$source_host" == "$this_host" ]]; then
+        if [[ -L "$target" && "$(readlink -f "$target")" == "$(readlink -f "$source_path")" ]]; then
+            msg "SYMLINK" "$source_path --> $target (unchanged)"
+            return 0
+        fi
+
+        create_dir "$(dirname "$target")"
+        ln -sfn "$source_path" "$target"
+        msg "SYMLINK" "$source_path --> $target (local host, aliasing)"
+        return 0
+    fi
 
     ensure_package nfs-common
-
     create_dir "$target"
 
     check_fstab_entry \
@@ -121,7 +137,7 @@ mount_nfs() {
 
     ensure_mounted "$target"
 
-    msg "MOUNT"     "$source --> $target"
+    msg "MOUNT" "$source --> $target"
 }
 
 validate_mount_nfs_syntax() {

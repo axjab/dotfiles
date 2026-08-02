@@ -20,9 +20,8 @@ pull() {
         pull_existing_directory "$source" "$target" || return 1
     else
         pull_clone "$source" "$target" || return 1
+        msg "PULL" "$source --> $target"
     fi
-
-    msg "PULL"      "$source --> $target"
 }
 
 validate_pull_syntax() {
@@ -36,6 +35,7 @@ pull_existing_directory() {
     local source="$1"
     local target="$2"
     local remote
+    local local_rev remote_rev
 
     if [[ ! -d "$target/.git" ]]; then
         error "Directory exists and is not a git repository: $target"
@@ -56,13 +56,22 @@ pull_existing_directory() {
         -- \
         git -C "$target" fetch
 
-    msg "FETCHED"   "$source"
+    msg "FETCH" "$source"
+
+    local_rev=$(git -C "$target" rev-parse '@')
+    remote_rev=$(git -C "$target" rev-parse '@{u}')
+
+    if [[ "$local_rev" == "$remote_rev" ]]; then
+        msg "PULL" "$source --> $target (unchanged)"
+        return 0
+    fi
 
     if gum confirm "Merge latest changes into $target?"; then
         gum spin \
             --title="MERGING $source" \
             -- \
             git -C "$target" merge
+        msg "PULL" "$source --> $target"
     fi
 }
 

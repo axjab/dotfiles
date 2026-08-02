@@ -12,6 +12,8 @@ alias edit-alias='$(gum choose --header="Choose editor:" micro nano) $HOME/.alia
 alias alias-edit='edit-alias'
 #
 
+# EDITING
+alias e=hx
 
 # NEW
 alias as='as-user'

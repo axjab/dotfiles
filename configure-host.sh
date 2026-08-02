@@ -24,8 +24,8 @@ done
 
 namespace etc    			# Configuration
 namespace data   			# Mutable state
-namespace exe 	owned by me # Non-system executables
 namespace repo 			    # Shared file repository
+namespace exe 	owned by me # Non-system executables
 namespace log   owned by me # Non-system log aggregation
 namespace net   owned by me # Network topology
 namespace svc   owned by me # Services provided by this host
@@ -51,12 +51,12 @@ symlink	 shell/aliases to ~/.aliases
 symlink	 shell/bashrc  to ~/.bashrc
 
 ## FILESYSTEM
-# BUG: THE FOLLOWING IS NOT APPLICABLE TO MAJULA ITSELF!
-# add skip directive??
 mount nfs majula:/mnt/ssd 		onto /mnt/majula.ssd
 mount dir /mnt/majula.ssd/files onto /repo
 
 ## APPLICATIONS
+symlink helix/config.yaml	to ~/.config/helix/config.yaml
+symlink helix/lang.toml		to ~/.config/helix/languages.toml
 process aichat/config.yaml 	to ~/.config/aichat/config.yaml
 symlink gh/config.yml		to ~/.config/gh/config.yml
 symlink git/config			to /etc/gitconfig

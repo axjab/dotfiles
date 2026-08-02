@@ -7,11 +7,12 @@ symlink() {
 
     validate_symlink_syntax "$source" "$to" "$target" || return 1
 
-    source="$ETC_DIR/$source"
+    # source="$ETC_DIR/$source"
 
     if [[ ! -e "$source" ]]; then
         error "Missing source: $source"
-        return 1
+        msg "SKIPPED" "helix/"
+        # return 1
     fi
 
     msg "SYMLINK"	"$source --> $target"
