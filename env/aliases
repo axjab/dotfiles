@@ -18,6 +18,11 @@ alias as='as-user'
 alias lazylog='sudo lazyjournal -u 2 -t 1000'   # update every 2 seconds, reduce max to 100 lines to make fster
 
 
+## EDITOR
+alias e='hx'
+alias mu='micro'
+
+
 # DOCKER
 alias d='sudo docker'
 alias d-ps='sudo docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"' #\t{{.Image}}"'
@@ -87,11 +92,6 @@ alias py='uv run'
 export GUM_SPIN_SPINNER="points"
 alias gf='gum file -a --height=20'
 alias gd='gum file -a --height=20 --directory'
-
-
-## editor
-alias edit='micro'
-alias mu='micro'
 
 
 ## network manager (nmcli)
