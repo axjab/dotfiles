@@ -1,0 +1,11 @@
+
+theme = "kanagawa"
+# theme = "tokyonight"
+# theme = "catppuccin_mocha"
+# theme = "tokyonight"
+
+[editor]
+true-color = true
+
+[editor.gutters]
+layout = ["diagnostics", "spacer", "line-numbers", "spacer", "diff"]

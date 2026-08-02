@@ -1,0 +1,69 @@
+
+#!/bin/bash
+
+#    ██████████ ██████   █████ █████   █████
+#   ░░███░░░░░█░░██████ ░░███ ░░███   ░░███ 
+#    ░███  █ ░  ░███░███ ░███  ░███    ░███ 
+#    ░██████    ░███░░███░███  ░███    ░███ 
+#    ░███░░█    ░███ ░░██████  ░░███   ███  
+#    ░███ ░   █ ░███  ░░█████   ░░░█████░   
+# ██ ██████████ █████  ░░█████    ░░███     
+#░░ ░░░░░░░░░░ ░░░░░    ░░░░░      ░░░      
+
+# GENERAL
+# ------------------
+LANG='en_CA.UTF-8'
+LC_ALL='en_CA.UTF-8'
+export PATH=$PATH:/exe
+export CONFIG="$HOME/etc"
+export TZ="America/Toronto"
+EDITOR=hx
+# export EDITOR='micro -eofnewline false'     # TUI, no new lines for gopass
+# export VISUAL='code --new-window --wait'    # GUI, wait files to load
+#-----------
+
+# EDITING
+# ------------------
+if [[ -z "$SSH_CONNECTION" ]] && \
+   command -v code >/dev/null 2>&1 && \
+   { [[ -n "$DISPLAY" ]] || [[ -n "$WAYLAND_DISPLAY" ]]; }; then
+    export EDITOR=hx
+    export VISUAL='code --new-window --wait'
+else
+    # export EDITOR='micro -eofnewline false'
+	export EDITOR=hx
+    export VISUAL="$EDITOR"
+fi
+
+export BAT_STYLE="changes,header,header-filename,header-filesize,snip"
+
+export GITHUB_USER=axjab
+export GIT_CONFIG_GLOBAL="$CONFIG/git/config"
+export GH_CONFIG="$CONFIG/gh/config.yml"
+
+export STARSHIP_CONFIG="$CONFIG/starship/config"
+
+export PASSWORD_STORE_DIR="/data/secrets"
+
+############################
+# SERVICES
+############################
+
+export BELFRY_TOKEN={{ getpw "belfry/token" }}
+
+export CALDAV_URL="https://caldav.alj.cx"
+export CALDAV_USER={{ getpw "caldav/user" }}
+export CALDAV_PASS="{{ getpw "caldav/pass" }}"
+export CALDAV_API_KEY={{ getpw "caldav/api-key" }}
+
+export NTFY_URL={{ getpw "ntfy/url" }}
+export NTFY_TOKEN={{ getpw "ntfy/token" }}
+export NTFY_TOKEN_64=$( echo -n "Bearer $NTFY_TOKEN" | base64 )
+
+export SILVERBULLET_DOCS="$HOME/docs"
+
+export TASKDOG_REGION_COUNTRY="CA"
+export TASKDOG_API_HOST="firelink"
+export TASKDOG_API_PORT=8000
+export TASKDOG_API_KEY={{ getpw "taskdog/api_key" }}
+# export TASKDOG_GANTT_MIN_DISPLAY_DAYS=56

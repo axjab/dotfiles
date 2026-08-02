@@ -1,9 +1,10 @@
 
 # CONFIG V2
 
-## NEWS
+**2026 JULY 31** 
 
-- [ ] GOPASS TEMPLATING (see taskdog for example). This allows storing sensitive configs in this public repo
+INVENTED A NEW DSL FOR CONFIGURATION INSPIRED BY THE DOCKERFILE. IT SHALL BE THE SOURCE OF TRUTH FOR
+THE HOST'S ENVIRONEMENT CONFIGURATION.
 
 ---
 
