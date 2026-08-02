@@ -25,5 +25,5 @@ create_dir() {
         return 1
     fi
 
-    echo "Created directory: $directory"
+    msg "MKDIR" "$directory"
 }

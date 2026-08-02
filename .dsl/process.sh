@@ -18,10 +18,10 @@ process() {
         cp "$target" "$target.$(date +%Y%m%d-%H%M%S)"
     fi
 
-    gum spin --title="PROCESSING $source ----> $target" -- \
+    gum spin --title="PROCESSING $source --> $target" -- \
         gopass process "$template" > "$target"
 
     chmod 600 "$target"
 
-    echo "PROCESS $source ----> $target"
+    msg "PROCESS" "$source --> $target"
 }

@@ -9,16 +9,18 @@ ensure_mounted() {
     fi
 
     if findmnt "$target" >/dev/null 2>&1; then
-        echo "Already mounted: $target"
+        # echo "Already mounted: $target"
         return 0
     fi
 
     echo "Mounting: $target"
+
+    sudo systemctl daemon-reload
 
     if ! sudo mount -v "$target"; then
         error "Failed to mount: $target"
         return 1
     fi
 
-    echo "Mounted: $target"
+    msg "MOUNT" "$target"
 }

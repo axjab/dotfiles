@@ -14,14 +14,14 @@ symlink() {
         return 1
     fi
 
-    echo "SYMLINK	$source ---> $target"
+    msg "SYMLINK"	"$source --> $target"
 
     if [[ -L "$target" ]] && [[ "$(readlink -f "$target")" == "$(readlink -f "$source")" ]]; then
         # echo "Symlink already exists."
         return 0
     fi
 
-    ln -snf "$source" "$target"
+    sudo ln -snf "$source" "$target"
 }
 
 validate_symlink_syntax() {

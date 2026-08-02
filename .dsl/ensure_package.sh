@@ -25,5 +25,5 @@ ensure_package() {
         return 1
     fi
 
-    echo "Installed package: $package"
+    msg "INSTALL" "$package"
 }

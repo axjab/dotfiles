@@ -17,7 +17,7 @@ check_fstab_entry() {
 	    }
 	    END { exit !found }
 	' /etc/fstab; then
-	    echo "fstab entry exists."
+	    # echo "fstab entry exists."
 	    return 0
 	fi
 
@@ -26,6 +26,8 @@ check_fstab_entry() {
     echo "Append the following record to /etc/fstab:"
     echo
     echo "$record"
+    echo "$record" | $BIN/clip
+    echo "[copied to clipboard]" 
 
     return 1
 }
