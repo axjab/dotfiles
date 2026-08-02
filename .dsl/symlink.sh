@@ -1,24 +1,21 @@
 #!/usr/bin/env bash
 
 symlink() {
-    local source="$1"
+    local source="$ETC_DIR/$1"
     local to="$2"
     local target="$3"
 
     validate_symlink_syntax "$source" "$to" "$target" || return 1
 
-    # source="$ETC_DIR/$source"
-
     if [[ ! -e "$source" ]]; then
         error "Missing source: $source"
-        msg "SKIPPED" "helix/"
+        msg "SKIPPED" "$source"
         # return 1
     fi
 
-    msg "SYMLINK"	"$source --> $target"
+    msg "SYMLINK"	"$1 --> $target"
 
     if [[ -L "$target" ]] && [[ "$(readlink -f "$target")" == "$(readlink -f "$source")" ]]; then
-        # echo "Symlink already exists."
         return 0
     fi
 
