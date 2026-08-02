@@ -2,7 +2,7 @@
 	name = ahmad
 	email = axjab@x.alj.cx
 [core]
-	editor = micro
+	editor = hx
 [alias]
 	a = add
 	aa = add .
@@ -32,10 +32,6 @@
 	# send = "! f() { git commit -v && git push; }; f"
 	sync = "! f() { git add . && git commit -v && git pull && git push; }; f"
 [credential "https://github.com"]
-	helper = 
 	helper = !gh auth git-credential
-# [credential "https://gist.github.com"]
-# 	helper = 
-# 	helper = !gh auth git-credential
 [pull]
 	rebase = false
