@@ -55,7 +55,7 @@ mount nfs majula:/mnt/ssd 		onto /mnt/majula.ssd
 mount dir /mnt/majula.ssd/files onto /repo
 
 ## APPLICATIONS
-symlink helix/config.yaml	to ~/.config/helix/config.yaml
+symlink helix/config.toml	to ~/.config/helix/config.toml
 symlink helix/lang.toml		to ~/.config/helix/languages.toml
 process aichat/config.yaml 	to ~/.config/aichat/config.yaml
 symlink gh/config.yml		to ~/.config/gh/config.yml
