@@ -51,6 +51,8 @@ symlink	 shell/aliases to ~/.aliases
 symlink	 shell/bashrc  to ~/.bashrc
 
 ## FILESYSTEM
+# BUG: THE FOLLOWING IS NOT APPLICABLE TO MAJULA ITSELF!
+# add skip directive??
 mount nfs majula:/mnt/ssd 		onto /mnt/majula.ssd
 mount dir /mnt/majula.ssd/files onto /repo
 
