@@ -1,6 +1,7 @@
 
 # GOOD:
 theme = "starlight"         # better diff contrast than carbon 
+# theme = try "onedark"
 # theme = "carbon"
 # theme = "catppuccin_mocha"
 # theme = "monokai_soda"
@@ -13,6 +14,16 @@ theme = "starlight"         # better diff contrast than carbon
 
 [editor]
 true-color = true
+line-number = "relative"
+# mouse = false
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
 
 [editor.gutters]
 layout = ["diagnostics", "spacer", "line-numbers", "spacer", "diff"]
+
+[editor.file-picker]
+hidden = false
