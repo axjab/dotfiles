@@ -1,8 +1,15 @@
 
-theme = "kanagawa"
-# theme = "tokyonight"
+# GOOD:
+theme = "starlight"         # better diff contrast than carbon 
+# theme = "carbon"
 # theme = "catppuccin_mocha"
+# theme = "monokai_soda"
 # theme = "tokyonight"
+# theme = "kanagawa"
+# AVOID:
+# theme = "dracula_at_night" # bad yaml
+# theme = "github_dark"      # bad yaml
+# theme = "everblush"		     # bad diff
 
 [editor]
 true-color = true
