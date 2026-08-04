@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 #    ██████████ ██████   █████ █████   █████
@@ -50,6 +49,8 @@ export CALDAV_URL="https://caldav.alj.cx"
 export CALDAV_USER={{ getpw "caldav/user" }}
 export CALDAV_PASS="{{ getpw "caldav/pass" }}"
 export CALDAV_API_KEY={{ getpw "caldav/api-key" }}
+
+export NATS_URL='nats://majula:4222'
 
 export NTFY_URL={{ getpw "ntfy/url" }}
 export NTFY_TOKEN={{ getpw "ntfy/token" }}

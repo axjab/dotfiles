@@ -55,6 +55,7 @@ namespace job   links to ~/host/job # Recurring jobs
 install exe-path in sudoers <<-EOF
 	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
 EOF
+# PROMPT FOR COMMIT MESSAGE IF DIRTY
 pull 'github.com/axjab/dotfiles'		to ~/env    # bad, instead, detect changes to self and report to user
 pull 'github.com/axjab/executables' to /exe
 pull 'github.com/axjab/secrets'			to /data/secrets
