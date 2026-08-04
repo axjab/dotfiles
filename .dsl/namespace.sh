@@ -7,7 +7,7 @@ namespace() {
     validate_namespace_syntax "$name" "$owned" "$by" "$owner" || return 1
 
     case "$name" in
-        data|etc|exe|repo|log|net|svc|cron)
+        data|etc|exe|repo|log)
             local target="/$name"
 
             create_dir "$target"
@@ -15,11 +15,8 @@ namespace() {
             if [[ -n "$owner" ]]; then
                 sudo chown "$(resolve_owner "$owner")" "$target"
             fi
-            ;;
-        *)
-            error "Unknown namespace: $name"
-            return 1
-            ;;
+            ;&  # fallthrough
+        *)  msg "NAMESPACE $name" "$name has been declared as a top-level namespace (document role here)" ;;
     esac
 }
 

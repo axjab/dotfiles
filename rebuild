@@ -27,9 +27,9 @@ namespace data   			# Mutable state
 namespace repo 			    # Shared file repository
 namespace exe 	owned by me # Non-system executables
 namespace log   owned by me # Non-system log aggregation
-namespace net   owned by me # Network topology
-namespace svc   owned by me # Services provided by this host
-namespace cron  owned by me # Recurring jobs
+namespace net   #owned by me # Network topology
+namespace svc   #owned by me # Services provided by this host
+namespace job   #owned by me # Recurring jobs
 
 # WIP: what are the GREAT namespaces of a universal file server?
 # As for /fs or /repo:
