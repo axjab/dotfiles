@@ -13,7 +13,6 @@ alias alias-edit='edit-alias'
 #
 
 # EDITING
-alias e=hx
 alias mu=e
 
 # NEW

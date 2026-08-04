@@ -85,11 +85,12 @@ pull_clone() {
        git clone "$source" "$target"
 }
 
+# BAD WILL BREAK if starting with "github.com" no http
 normalize_git_url() {
     local url="$1"
 
     if [[ "$url" != http://* && "$url" != https://* && "$url" != git@* ]]; then
-        echo "https://$url"
+        echo "https://github.com/$url"
     else
         echo "$url"
     fi

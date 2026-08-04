@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# NOTE: man, this shit is slowly turning into a bashrc. Perhaps it's tiem for some changes
+# 			in bashrc, check ~/env exists, if it exists, check if out of sync
+# 			if out of sync, prompt for sync followed by ~/env/rebuild
+# 			
 # TODO: MOVE THIS PREAMBLE ELSEWHERE, THEN INTRODUCE RELOAD CONFIG
 
 ETC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -51,14 +55,20 @@ namespace job   links to ~/host/job # Recurring jobs
 
 # TODO: PROCESS MUST ALWAYS CLEAN UP IF NO CHANGES SINCE LAST BACKUP
 
+# IMPORTS
+# PROMPT FOR COMMIT MESSAGE IF DIRTY
+pull 'axjab/dotfiles'			to ~/env    # bad, instead, detect changes to self and report to user
+pull 'axjab/executables' 	to /exe
+pull 'axjab/secrets'			to /data/secrets
+sync /exe
+sync /data/secrets
+sync ~/env
+sync ~/host 
+
 # ENVIRONMENT
 install exe-path in sudoers <<-EOF
 	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
 EOF
-# PROMPT FOR COMMIT MESSAGE IF DIRTY
-pull 'github.com/axjab/dotfiles'		to ~/env    # bad, instead, detect changes to self and report to user
-pull 'github.com/axjab/executables' to /exe
-pull 'github.com/axjab/secrets'			to /data/secrets
 
 ## SHELL
 process	 shell/env 		 to ~/.env
