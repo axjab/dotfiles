@@ -5,3 +5,7 @@ file-types = [ "caddy", "Caddyfile" ]
 [[language]]
 name = "env"
 file-types = [ { glob = ".env" }, { glob = "env" } ]
+
+[[language]]
+name = "sshclientconfig"
+file-types = [ { glob = "sshd*" } ]

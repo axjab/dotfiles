@@ -9,7 +9,6 @@ create_dir() {
     fi
 
     if [[ -d "$directory" ]]; then
-        # echo "Directory exists: $directory"
         return 0
     fi
 

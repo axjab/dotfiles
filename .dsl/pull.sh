@@ -62,7 +62,7 @@ pull_existing_directory() {
     remote_rev=$(git -C "$target" rev-parse '@{u}')
 
     if [[ "$local_rev" == "$remote_rev" ]]; then
-        msg "PULL" "$source --> $target (unchanged)"
+        # msg "PULL" "$source --> $target (unchanged)"
         return 0
     fi
 

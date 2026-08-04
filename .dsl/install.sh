@@ -42,7 +42,7 @@ install_sudoers() {
     sudo install -m 0440 "$tmp" "$target"
     rm -f "$tmp"
 
-    if ! sudo visudo -c; then
+    if ! sudo visudo -c > /dev/null; then
         error "Invalid sudoers configuration"
         return 1
     fi

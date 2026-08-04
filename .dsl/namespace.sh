@@ -1,23 +1,23 @@
 namespace() {
     local name="$1"
-    local owned="${2:-}"
-    local by="${3:-}"
-    local owner="${4:-}"
+    local links="${2:-}"
+    local dest="${4:-}"
 
-    validate_namespace_syntax "$name" "$owned" "$by" "$owner" || return 1
+    # validate_namespace_syntax "$name" "$owned" "$by" "$owner" || return 1
 
     case "$name" in
-        data|etc|exe|repo|log)
+        data|exe|log)
             local target="/$name"
-
             create_dir "$target"
-
-            if [[ -n "$owner" ]]; then
-                sudo chown "$(resolve_owner "$owner")" "$target"
-            fi
+            sudo chown "$USER" "$target"
             ;&  # fallthrough
-        *)  msg "NAMESPACE $name" "$name has been declared as a top-level namespace (document role here)" ;;
+        *)  msg "NAMESPACE" "[$name] has been declared as a top-level namespace" ;;
     esac
+
+    # BRITTLE
+    if [[ "$links" == "links" ]]; then
+        sudo ln -snf "$dest" "/$name"
+    fi
 }
 
 validate_namespace_syntax() {
@@ -47,13 +47,4 @@ validate_namespace_syntax() {
             return 1
         fi
     fi
-}
-
-resolve_owner() {
-    local owner="$1"
-
-    case "$owner" in
-        me) echo "$USER"  ;;
-        *)  echo "$owner" ;;
-    esac
 }
