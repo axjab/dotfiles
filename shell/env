@@ -15,7 +15,6 @@
 LANG='en_CA.UTF-8'
 LC_ALL='en_CA.UTF-8'
 export PATH=$PATH:/exe
-export CONFIG="$HOME/etc"
 export TZ="America/Toronto"
 EDITOR=hx
 # export EDITOR='micro -eofnewline false'     # TUI, no new lines for gopass
@@ -38,10 +37,6 @@ fi
 export BAT_STYLE="changes,header,header-filename,header-filesize,snip"
 
 export GITHUB_USER=axjab
-export GIT_CONFIG_GLOBAL="$CONFIG/git/config"
-export GH_CONFIG="$CONFIG/gh/config.yml"
-
-export STARSHIP_CONFIG="$CONFIG/starship/config"
 
 export PASSWORD_STORE_DIR="/data/secrets"
 
