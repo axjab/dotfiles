@@ -79,11 +79,8 @@ symlink() {
     fi
 
     # Execute Symlink Creation (with non-root permission fallback)
-    local err
-    err=$(ln -snf "$source" "$target" 2>&1)
-    if [[ $? -ne 0 ]]; then
-        err=$(sudo ln -snf "$source" "$target" 2>&1)
-        if [[ $? -ne 0 ]]; then
+    if ! err=$(ln -snf "$source" "$target" 2>&1); then
+        if ! err=$(sudo ln -snf "$source" "$target" 2>&1); then
             error "Failed to symlink $source to $target"
             [[ -n "$err" ]] && error "$err"
             return 0
