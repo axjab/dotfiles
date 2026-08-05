@@ -17,12 +17,14 @@ create_dir() {
         return 1
     fi
 
-    echo "Creating directory: $directory"
+    # echo "Creating directory: $directory"
 
     if ! sudo mkdir -p "$directory"; then
         error "Failed to create directory: $directory"
         return 1
     fi
+
+    sudo chown $USER "$directory"
 
     msg "MKDIR" "$directory"
 }

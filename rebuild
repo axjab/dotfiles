@@ -45,24 +45,13 @@ namespace net   links to ~/host/net # Network topology
 namespace svc   links to ~/host/svc # Services provided by this host
 namespace job   links to ~/host/job # Recurring jobs
 
-# WIP: what are the GREAT namespaces of a universal file server?
-# As for /fs or /repo:
-# /act: active work (workspace)
-# /archive: cold storage
-# /dump: inbox or unsorted:
-# /srv: anything served (assets, html, data, etc.)
-# /wiki: knowledge base
-
 # TODO: PROCESS MUST ALWAYS CLEAN UP IF NO CHANGES SINCE LAST BACKUP
 
 # IMPORTS
 # PROMPT FOR COMMIT MESSAGE IF DIRTY
-pull 'axjab/dotfiles'			to ~/env    # bad, instead, detect changes to self and report to user
-pull 'axjab/executables' 	to /exe
-pull 'axjab/secrets'			to /data/secrets
-sync /exe
-sync /data/secrets
-sync ~/env
+sync ~/env					from 'axjab/dotfiles'
+sync  /exe					from 'axjab/executables'
+sync  /data/secrets	from 'axjab/secrets'
 sync ~/host 
 
 # ENVIRONMENT
@@ -70,12 +59,12 @@ install exe-path in sudoers <<-EOF
 	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
 EOF
 
-## SHELL
+## SHELL CONFIG
 process	 shell/env 		 to ~/.env
 symlink	 shell/aliases to ~/.aliases
 symlink	 shell/bashrc  to ~/.bashrc
 
-## FILESYSTEM
+## FILESYSTEM MOUNTPOINTS
 mount nfs majula:/mnt/ssd 			onto /mnt/majula.ssd
 mount dir /mnt/majula.ssd/files onto /repo
 
