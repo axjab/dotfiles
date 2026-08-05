@@ -71,9 +71,8 @@ mount dir /mnt/majula.ssd/files onto /repo
 ## APPLICATIONS
 # process ssh/config				to ~/.ssh/config
 symlink helix/config.toml		to ~/.config/helix/config.toml
-symlink helix/config.toml		to /root/.config/helix/config.toml
-symlink helix/lang.toml			to ~/.config/helix/languages.toml	# bad! missing runtime, need refactor symlink to hanlde absolute and relative paths
-symlink helix/lang.toml			to /root/.config/helix/languages.toml  # bad!
+symlink helix/lang.toml			to ~/.config/helix/languages.toml
+symlink /root/.config/helix to ~/.config/helix
 process aichat/config.yaml 	to ~/.config/aichat/config.yaml
 symlink gh/config.yml				to ~/.config/gh/config.yml
 symlink git/config					to /etc/gitconfig
