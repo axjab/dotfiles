@@ -22,6 +22,7 @@ EDITOR=hx
 
 # EDITING
 # ------------------
+export BAT_STYLE="changes,header,header-filename,header-filesize,snip"
 if [[ -z "$SSH_CONNECTION" ]] && \
    command -v code >/dev/null 2>&1 && \
    { [[ -n "$DISPLAY" ]] || [[ -n "$WAYLAND_DISPLAY" ]]; }; then
@@ -33,11 +34,11 @@ else
     export VISUAL="$EDITOR"
 fi
 
-export BAT_STYLE="changes,header,header-filename,header-filesize,snip"
-
-export GITHUB_USER=axjab
-
+# DATA MANAGEMENT
+# ---------------------------
+export HELIX_RUNTIME=/data/helix
 export PASSWORD_STORE_DIR="/data/secrets"
+export UNISON=/data/unison
 
 ############################
 # SERVICES

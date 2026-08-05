@@ -1,7 +1,8 @@
 
 # GOOD:
-theme = "starlight"         # better diff contrast than carbon 
-# theme = try "onedark"
+theme = "onedark"             # EVALUATING...
+# theme = "kaolin-valley-dark"  # EVALUATING
+# theme = "starlight"         # better diff contrast than carbon 
 # theme = "carbon"
 # theme = "catppuccin_mocha"
 # theme = "monokai_soda"
