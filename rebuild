@@ -52,7 +52,7 @@ namespace job   links to ~/host/job # Recurring jobs
 sync ~/env					from 'axjab/dotfiles'
 sync  /exe					from 'axjab/executables'
 sync  /data/secrets	from 'axjab/secrets'
-sync ~/host 
+#sync ~/host 
 
 # ENVIRONMENT
 install exe-path in sudoers <<-EOF
