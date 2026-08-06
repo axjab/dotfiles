@@ -75,7 +75,8 @@ mount dir /mnt/majula.ssd/files onto /repo
 # process ssh/config				to ~/.ssh/config
 symlink helix/config.toml		to ~/.config/helix/config.toml
 symlink helix/lang.toml			to ~/.config/helix/languages.toml
-symlink /root/.config/helix to ~/.config/helix
+#symlink /root/.config/helix to ~/.config/helix  # doesn't work
+sudo ln -sv ~/.config/helix /root/.config/helix
 process aichat/config.yaml 	to ~/.config/aichat/config.yaml
 symlink gh/config.yml				to ~/.config/gh/config.yml
 symlink git/config					to /etc/gitconfig
