@@ -53,7 +53,9 @@ sync ~/env					from 'axjab/dotfiles'
 sync /exe					  from 'axjab/executables'
 sync /data/secrets	from 'axjab/secrets'
 sync /data/helix		with 'ssh://majula//data/helix'
+set +e
 sync ~/host 
+set -e
 
 # ENVIRONMENT
 install exe-path in sudoers <<-EOF

@@ -8,4 +8,4 @@ file-types = [ { glob = ".env" }, { glob = "env" } ]
 
 [[language]]
 name = "sshclientconfig"
-file-types = [ { glob = "sshd*" } ]
+file-types = [ { glob = "sshd*" }, {glob = "config"} ]
