@@ -39,6 +39,7 @@ fi
 export HELIX_RUNTIME=/data/helix
 export PASSWORD_STORE_DIR="/data/secrets"
 export UNISON=/data/unison
+export GOPATH=/exe
 
 ############################
 # SERVICES

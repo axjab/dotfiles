@@ -27,14 +27,14 @@ process() {
         error "Failed to create temp file for $target"
         return 1
     }
-
+set -x
     if ! gum spin --title="PROCESSING $source --> $target" -- \
         gopass process "$template" > "$tmp_output"; then
         error "gopass process failed for $template"
         rm -f "$tmp_output"
         return 1
     fi
-
+set +x
     if [[ ! -s "$tmp_output" ]]; then
         error "gopass process produced empty output for $template"
         rm -f "$tmp_output"

@@ -16,7 +16,10 @@ sync_unison() {
 
     local err status=0
 
-    err=$(unison "$target" "$peer" 2>&1) || status=$?
+    if ! unison "$target" "$peer" -batch -perms 0; then
+        error "Failed to synchronize $target with $peer"
+        return 0
+    fi
 
     if [[ $status -ne 0 ]]; then
         error "Failed to synchronize $target with $peer"
