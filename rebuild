@@ -1,23 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# NOTE: man, this shit is slowly turning into a bashrc. Perhaps it's tiem for some changes
-# 			in bashrc, check ~/env exists, if it exists, check if out of sync
-# 			if out of sync, prompt for sync followed by ~/env/rebuild
-# 			
-# TODO: MOVE THIS PREAMBLE ELSEWHERE, THEN INTRODUCE RELOAD CONFIG
-
-ETC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BIN="$ROOT/.bin"		# contains dependencies
-DSL="$ROOT/.dsl"		# contains language definitions
-
+# ETC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export BIN="$ROOT/.bin"		# contains dependencies
+export DSL="$ROOT/.dsl"		# contains language definitions
 export GUM_SPIN_SPINNER=meter
 export GUM_SPIN_ALIGN=left
 export GUM_SPIN_TIMEOUT=300s
-# export GUM_SPIN_PADDING="1 0"
-# GUM_SPIN_SHOW_OUTPUT=true
 export GUM_SPIN_SHOW_ERROR=true
+# GUM_SPIN_SHOW_OUTPUT=true
 
 for dsl in "$DSL"/*.sh; do
     source "$dsl"
@@ -25,30 +17,32 @@ done
 
 ##############################################################
 
-# HOST IDENTITY FILESYSTEM
-#  https://chatgpt.com/s/t_6a6dcd921f788191b90ef1b6395ab86e
-
-# A NAMESPACE IS LIKE A DECLARATION OF DEPENDENCY
-# THE GIVEN DIRECTORIES WILL TAKE ON A SPECIFIC
-# ROLE AND THEIR EXISTENCE MUST BE GUARANTEED
-# IN ORDER FOR DEPENDENT SERVICES TO USE THEM.
-# WITHOUT THESE DIRECTORIES, FAILURES WILL HAPPEN.
-
-# TODO: OWNED BY ME BY DEFAULT
-# TODO: THE FOLLOWING NAMESPACES MUST HAVE A CLEAR ROLE INCLUDED WITH THEM
-# IF DIRECTORY DOES NOT EXIST, FLAG AS ERROR BUT CARRY ON
+# NAMESPACE ***************************************
+# 	- be located at the root of the filesystem
+# 	- be owned by $USER by default
+# 	- be honored in its purpose, services and utitlies shall expect it
+# 	- follow my HOST IDENTITY FILESYSTEM standard
 namespace data  # Mutable state
 namespace repo  # Shared file repository
 namespace exe 	# Non-system executables
 namespace log   # Non-system log aggregation
 namespace net   links to ~/host/net # Network topology
-namespace svc   links to ~/host/svc # Services provided by this host
+namespace svc   links to ~/host/svc # Services
 namespace job   links to ~/host/job # Recurring jobs
 
-# TODO: PROCESS MUST ALWAYS CLEAN UP IF NO CHANGES SINCE LAST BACKUP
+# NETWORK ****************************************
+host firelink at 100.121.116.55
+host majula		at 100.109.130.76
+host aran			at 100.114.30.17
+host luminous at 100.74.47.77
+# Services
+host wiki	# WITHOUT ARGS MEANS LOCALHOST, EVERY DEVICE HAS SILVERBULLET INSTANCE
+host file-server	at majula
+host pocketbase		at majula
+host uptime-kuma	at majula
+# *************************************************
 
-# IMPORTS
-# PROMPT FOR COMMIT MESSAGE IF DIRTY
+# IMPORTS *********************************
 sync ~/env					from 'axjab/dotfiles'
 sync /exe					  from 'axjab/executables'
 sync /data/secrets	from 'axjab/secrets'
@@ -56,13 +50,12 @@ sync /data/helix		with 'ssh://majula//data/helix'
 set +e
 sync ~/host  # move to .host?
 set -e
+# *********************
 
 # ENVIRONMENT
 install exe-path in sudoers <<-EOF
 	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
 EOF
-
-## SHELL CONFIG
 process	 shell/env 		 to ~/.env
 symlink	 shell/aliases to ~/.aliases
 symlink	 shell/bashrc  to ~/.bashrc

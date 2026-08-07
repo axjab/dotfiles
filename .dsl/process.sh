@@ -1,7 +1,7 @@
 process() {
     local source=$1
     local target=$3
-    local template="$ETC_DIR/$source"
+    local template="$ROOT/$source"
 
     if [[ $# -ne 3 || $2 != to ]]; then
         error "process syntax: process SOURCE to TARGET"
@@ -28,8 +28,7 @@ process() {
         return 1
     }
 set +e
-    if ! gum spin --title="PROCESSING $source --> $target" -- \
-        gopass process "$template" > "$tmp_output"; then
+    if ! gopass process "$template" > "$tmp_output"; then
         error "gopass process failed for $template"
         rm -f "$tmp_output"
         return 1
