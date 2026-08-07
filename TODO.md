@@ -1,3 +1,6 @@
+
+# MAKE ALL PROCESS directive output READ-ONLY
+
 # TODO: consolidate all branches
 
 # NOTE: man, this shit is slowly turning into a bashrc. Perhaps it's tiem for some changes

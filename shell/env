@@ -9,6 +9,10 @@
 # ██ ██████████ █████  ░░█████    ░░███     
 #░░ ░░░░░░░░░░ ░░░░░    ░░░░░      ░░░      
 
+# READ-ONLY:
+# Edit ~/env/shell/env.templ then
+# exec ~/env/rebuild to apply
+
 # GENERAL
 # ------------------
 LANG='en_CA.UTF-8'
@@ -52,7 +56,7 @@ export CALDAV_USER={{ getpw "caldav/user" }}
 export CALDAV_PASS="{{ getpw "caldav/pass" }}"
 export CALDAV_API_KEY={{ getpw "caldav/api-key" }}
 
-export NATS_URL='nats://majula:4222'
+export NATS_URL='nats://nats:4222'
 
 export NTFY_URL={{ getpw "ntfy/url" }}
 export NTFY_TOKEN={{ getpw "ntfy/token" }}
