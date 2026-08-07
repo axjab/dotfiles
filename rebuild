@@ -54,7 +54,7 @@ sync /exe					  from 'axjab/executables'
 sync /data/secrets	from 'axjab/secrets'
 sync /data/helix		with 'ssh://majula//data/helix'
 set +e
-sync ~/host 
+sync ~/host  # move to .host?
 set -e
 
 # ENVIRONMENT
