@@ -73,7 +73,7 @@ symlink() {
         current_link=$(readlink "$target" 2>/dev/null)
         
         if [[ "$current_link" == "$source" ]] || [[ "$(readlink -f "$target" 2>/dev/null)" == "$(readlink -f "$source" 2>/dev/null)" ]]; then
-            msg "SYMLINK" "$target ---> $source (up to date)"
+            msg "SYMLINK" "$target --> $source (up to date)"
             return 0
         fi
     fi
@@ -87,6 +87,6 @@ symlink() {
         fi
     fi
 
-    msg "SYMLINK" "$target ---> $source"
+    msg "SYMLINK" "$target --> $source"
     return 0
 }

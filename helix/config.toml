@@ -1,7 +1,8 @@
 
 # GOOD:
-theme = "onedark"             # EVALUATING...
-# theme = "kaolin-valley-dark"  # EVALUATING
+# theme = "onedark"             # Awesome
+# theme = "monokai-extended"    # SAME AS BATCAT, THE BEST THEME FOR /etc/fstab
+theme = "kaolin-valley-dark"  # EVALUATING
 # theme = "starlight"         # better diff contrast than carbon 
 # theme = "carbon"
 # theme = "catppuccin_mocha"
