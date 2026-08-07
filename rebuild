@@ -37,6 +37,7 @@ host aran			at 100.114.30.17
 host luminous at 100.74.47.77
 # Services
 host wiki	# WITHOUT ARGS MEANS LOCALHOST, EVERY DEVICE HAS SILVERBULLET INSTANCE
+host nats					at majula
 host file-server	at majula
 host pocketbase		at majula
 host uptime-kuma	at majula

@@ -16,7 +16,7 @@ sync_unison() {
 
     local err status=0
 
-    if ! unison "$target" "$peer" -batch -perms 0; then
+    if ! unison "$target" "$peer" -batch -perms 0 -ignorearchives; then
         error "Failed to synchronize $target with $peer"
         return 0
     fi
