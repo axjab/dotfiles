@@ -1,4 +1,6 @@
 
+# Add no-sync option
+
 # MAKE ALL PROCESS directive output READ-ONLY
 
 # TODO: consolidate all branches
