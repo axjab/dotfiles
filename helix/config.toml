@@ -1,14 +1,12 @@
 
-# GOOD:
-# theme = "onedark"             # Awesome
-theme = "monokai_soda"          # Similar to batcat, THE BEST THEME FOR /etc/fstab
-# theme = "kaolin-valley-dark"  # EVALUATING
+theme = "kaolin-valley-dark"  # EVALUATING
+# theme = "onedark"           # Awesome
 # theme = "starlight"         # better diff contrast than carbon 
-# theme = "carbon"
-# theme = "catppuccin_mocha"
-# theme = "monokai_soda"
-# theme = "tokyonight"
+# theme = "catppuccin_mocha"  # nice
+# theme = "tokyoni
 # theme = "kanagawa"
+# theme = "monokai_soda"      # boring YAML and TOML
+# theme = "carbon"            # ok
 # AVOID:
 # theme = "dracula_at_night" # bad yaml
 # theme = "github_dark"      # bad yaml
