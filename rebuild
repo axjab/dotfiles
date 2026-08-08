@@ -62,8 +62,12 @@ symlink	 shell/aliases to ~/.aliases
 symlink	 shell/bashrc  to ~/.bashrc
 
 ## FILESYSTEM MOUNTPOINTS
-mount nfs majula:/mnt/ssd 			onto /mnt/majula.ssd
-mount dir /mnt/majula.ssd/files onto /repo
+# NEED TAGGING DSL
+set +e
+mount nfs majula:/mnt/ssd 			onto /mnt/majula.ssd		# for all but Majula
+mount dir /mnt/majula.ssd/files onto /repo							# for all but Majula
+mount dir /mnt/ssd/data/garage	onto /data/garage/data	# for host majula only
+set -e
 
 ## APPLICATIONS
 # process ssh/config				to ~/.ssh/config
