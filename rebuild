@@ -75,14 +75,14 @@ symlink helix/config.toml		to ~/.config/helix/config.toml
 symlink helix/lang.toml			to ~/.config/helix/languages.toml
 symlink ~/.config/helix 		to /root/.config/helix
 # sudo ln -sv ~/.config/helix /root/.config/helix
-process aichat/config.yaml 	to ~/.config/aichat/config.yaml
+process aichat/config.yaml 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
 symlink bat/config					to /etc/bat/config
 symlink gh/config.yml				to ~/.config/gh/config.yml
 symlink git/config					to /etc/gitconfig
 symlink gopass/config				to ~/.config/gopass/config
 symlink sqlite/config				to ~/.sqliterc
 symlink starship/config			to ~/.config/starship.toml
-process taskdog/cli.toml    to ~/.config/taskdog/cli.toml
+symlink taskdog/cli.toml    to ~/.config/taskdog/cli.toml
 symlink xdg/dirs 						to ~/.config/user-dirs.dirs
 # symlink xdg/locale			to ~/.config/locale.conf  # verify; may be /etc/locale.conf
 

@@ -44,6 +44,7 @@ export HELIX_RUNTIME=/data/helix
 export PASSWORD_STORE_DIR="/data/secrets"
 export UNISON=/data/unison
 export GOPATH=/exe
+export NVM_DIR="$HOME/.nvm"
 
 ############################
 # SERVICES
@@ -64,8 +65,9 @@ export NTFY_TOKEN_64=$( echo -n "Bearer $NTFY_TOKEN" | base64 )
 
 export SILVERBULLET_DOCS="$HOME/docs"
 
-export TASKDOG_REGION_COUNTRY="CA"
-export TASKDOG_API_HOST="firelink"
-export TASKDOG_API_PORT=8000
+# All should be defined in cli.toml
+# export TASKDOG_REGION_COUNTRY="CA"
+# export TASKDOG_API_HOST="firelink"
+# export TASKDOG_API_PORT=8000
 export TASKDOG_API_KEY={{ getpw "taskdog/api_key" }}
 # export TASKDOG_GANTT_MIN_DISPLAY_DAYS=56

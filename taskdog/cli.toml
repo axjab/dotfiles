@@ -1,13 +1,16 @@
 [api]
+enabled = true
 host = "firelink"
 port = 8000
-api_key = "{{ getpw "taskdog/api_key" }}"
+# api_key = "{{ getpw "taskdog/api_key" }}"   # GET FROM ENV INSTEAD
 
 [region]
 country = "CA"
 
 [ui]
-theme = "tokyo-night"
+# theme = "tokyo-night"   # good
+theme = "kaolin-valley-dark"
+# theme = "onedark"       # excellent
 
 # textual-dark - Default dark theme
 # textual-light - Light theme
