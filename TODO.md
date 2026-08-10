@@ -1,5 +1,8 @@
 
-# Add no-sync option
+# Add verbose option, show ALL directive outputs
+## Default: show ONLY changes
+
+# Add no-sync or fast option ()
 
 # MAKE ALL PROCESS directive output READ-ONLY
 
