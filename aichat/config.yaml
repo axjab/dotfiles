@@ -5,7 +5,7 @@
 # 2. LEarn how to use roles
 
 # UNDOCUMENTED, TEMPORARY
-# max_tokens: 1000        # <-- NEW: caps the response length
+max_tokens: 1000        # <-- NEW: caps the response length
 
 # ---- llm ----
 
