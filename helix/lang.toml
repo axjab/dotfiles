@@ -1,0 +1,19 @@
+[[language]]
+name = "caddyfile"
+file-types = [ "caddy", "Caddyfile" ]
+
+[[language]]
+name = "env"
+file-types = [ "env", { glob = "env" } ]
+
+[[language]]
+name = "sshclientconfig"
+file-types = [ { glob = "sshd*" }, {glob = "config"} ]
+
+[[language]]
+name = "markdown"
+file-types = [ "md", "txt", "prompt" ]
+
+[[language]]
+name = "ini"
+file-types = ["ini", { glob = "fstab" }, { glob = "*/etc/fstab" }]

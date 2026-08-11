@@ -1,6 +1,4 @@
 
-# Fetch secrets from https://github.com/ax-mad/secrets
-
 [mounts]
 	path = /data/secrets
 [recipients]

@@ -1,0 +1,29 @@
+
+theme = "kaolin-valley-dark"  # EVALUATING
+# theme = "onedark"           # Awesome
+# theme = "starlight"         # better diff contrast than carbon 
+# theme = "catppuccin_mocha"  # nice
+# theme = "tokyoni
+# theme = "kanagawa"
+# theme = "monokai_soda"      # boring YAML and TOML
+# theme = "carbon"            # ok
+# AVOID:
+# theme = "dracula_at_night" # bad yaml
+# theme = "github_dark"      # bad yaml
+# theme = "everblush"		     # bad diff
+
+[editor]
+true-color = true
+line-number = "relative"
+# mouse = false
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.gutters]
+layout = ["diagnostics", "spacer", "line-numbers", "spacer", "diff"]
+
+[editor.file-picker]
+hidden = false

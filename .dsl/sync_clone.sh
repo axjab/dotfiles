@@ -1,0 +1,194 @@
+#!/usr/bin/env bash
+
+# DSL Primitive: sync
+#
+# Syntax:
+#   sync TARGET from SOURCE
+#   sync TARGET
+#
+# Non-blocking: Errors are output using `error` along with raw stderr/stdout,
+# but return status 0 to allow execution loops under `set -e` to continue.
+
+GITHUB_TOKEN="${GITHUB_TOKEN:-}"
+
+get_github_token() {
+    if [[ -z "$GITHUB_TOKEN" ]]; then
+        GITHUB_TOKEN=$(gum input \
+            --password \
+            --placeholder "ghp_..." \
+            --header "Authentication required for private GitHub repository" \
+            --prompt "GitHub Token: ")
+    fi
+    if [[ -z "$GITHUB_TOKEN" ]]; then
+        return 1
+    fi
+    echo -n "$GITHUB_TOKEN"
+}
+
+encode_git_auth_header() {
+    local token="$1"
+    local encoded
+    encoded=$(echo -n "x-access-token:${token}" | base64 | tr -d '\n')
+    echo "AUTHORIZATION: basic ${encoded}"
+}
+
+normalize_git_url() {
+    local url="$1"
+
+    if [[ "$url" == git@* || "$url" == http://* || "$url" == https://* ]]; then
+        echo "$url"
+    elif [[ "$url" == github.com/* ]]; then
+        echo "https://$url"
+    else
+        echo "https://github.com/$url"
+    fi
+}
+
+extract_raw_host_and_path() {
+    local url="$1"
+    url="${url#https://}"
+    url="${url#http://}"
+    url="${url#git@}"
+    url="${url/://}" # converts github.com:user/repo to github.com/user/repo
+    echo "$url"
+}
+
+sync_clone() {
+    local target="$1"
+    local source="$2"
+    local git_err token raw_url auth_url auth_header clone_status=0
+
+    # Attempt 1: Unauthenticated clone
+    git_err=$(GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=echo gum spin \
+        --title="CLONING $target <--- $source" \
+        -- \
+        git clone --single-branch "$source" "$target" 2>&1) || clone_status=$?
+    
+    if [[ $clone_status -eq 0 ]] && git -C "$target" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        msg "SYNC" "$target <--- $source (cloned)"
+        return 0
+    fi
+
+    # Attempt 2: Auth clone with token in URL
+    if [[ "$git_err" == *"Authentication failed"* || "$git_err" == *"Could not read from remote"* || "$git_err" == *"Terminal prompts disabled"* ]]; then
+        token=$(get_github_token) || true
+        if [[ -n "$token" ]]; then
+            raw_url=$(extract_raw_host_and_path "$source")
+            auth_url="https://x-access-token:${token}@${raw_url}"
+
+            clone_status=0
+            git_err=$(GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=echo gum spin \
+                --title="CLONING (AUTH) $target <--- $source" \
+                -- \
+                git clone --single-branch "$auth_url" "$target" 2>&1) || clone_status=$?
+
+            if [[ $clone_status -eq 0 ]] && git -C "$target" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+                # Clean remote URL so plain-text token is not stored in config
+                git -C "$target" remote set-url origin "https://${raw_url}"
+                
+                # Persist Base64 Basic Auth header locally in repo config
+                auth_header=$(encode_git_auth_header "$token")
+                git -C "$target" config http.extraHeader "$auth_header"
+
+                msg "SYNC" "$target <--- $source (cloned & authenticated)"
+                return 0
+            fi
+        else
+            error "AUTH ERROR: Token required to clone $source"
+            return 0
+        fi
+    fi
+
+    error "Failed to clone $source into $target"
+    if [[ -n "$git_err" ]]; then
+        error "$git_err"
+    fi
+    return 0
+}
+
+sync_existing() {
+    local target="$1"
+    local source="$2"
+    local current_remote token fetch_err fetch_status=0 auth_header
+
+    if [[ ! -d "$target/.git" ]]; then
+        error "Target exists and is not a git repository: $target"
+        return 0
+    fi
+
+    current_remote=$(git -C "$target" config --get remote.origin.url 2>/dev/null)
+    current_remote=$(normalize_git_url "$current_remote")
+
+    if [[ "$current_remote" != "$source" ]]; then
+        error "Git remote mismatch for $target (expected $source, found $current_remote)"
+        return 0
+    fi
+
+    # Attempt 1: Fetch using existing local repository configuration
+    fetch_err=$(GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=echo gum spin \
+        --title="FETCHING $target <--- $source" \
+        -- \
+        git -C "$target" fetch 2>&1) || fetch_status=$?
+
+    # Attempt 2: If unauthenticated, prompt once and persist valid header
+    if [[ $fetch_status -ne 0 && ("$fetch_err" == *"Authentication failed"* || "$fetch_err" == *"Could not read from remote"* || "$fetch_err" == *"Terminal prompts disabled"*) ]]; then
+        token=$(get_github_token) || true
+        if [[ -n "$token" ]]; then
+            auth_header=$(encode_git_auth_header "$token")
+            git -C "$target" config http.extraHeader "$auth_header"
+
+            fetch_status=0
+            fetch_err=$(GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=echo gum spin \
+                --title="FETCHING (AUTH) $target <--- $source" \
+                -- \
+                git -C "$target" fetch 2>&1) || fetch_status=$?
+        else
+            error "AUTH ERROR: Token required for $source"
+            return 0
+        fi
+    fi
+
+    if [[ $fetch_status -ne 0 ]]; then
+        error "Failed to fetch updates for $target"
+        [[ -n "$fetch_err" ]] && error "$fetch_err"
+        return 0
+    fi
+
+    local local_rev remote_rev
+    local_rev=$(git -C "$target" rev-parse '@' 2>/dev/null)
+    remote_rev=$(git -C "$target" rev-parse '@{u}' 2>/dev/null)
+
+    if [[ -z "$remote_rev" ]]; then
+        msg "SYNC" "$target (no upstream tracking branch)"
+        return 0
+    fi
+
+    if [[ "$local_rev" == "$remote_rev" ]]; then
+        msg "SYNC" "$target (up to date)"
+        return 0
+    fi
+
+    # Safety check: prevent merge collisions if working directory is dirty
+    if ! git -C "$target" diff-index --quiet HEAD -- 2>/dev/null; then
+        error "Local changes detected in $target. Stash or commit before syncing."
+        return 0
+    fi
+
+    # Prompt operator to merge updates
+    if gum confirm "Merge latest changes into $target?"; then
+        local merge_err merge_status=0
+        merge_err=$(gum spin \
+            --title="MERGING $target" \
+            -- \
+            git -C "$target" merge 2>&1) || merge_status=$?
+        if [[ $merge_status -eq 0 ]]; then
+            msg "SYNC" "$target <--- $source (updated)"
+        else
+            error "Merge failed for $target: $merge_err"
+        fi
+    else
+        msg "SYNC" "$target (skipped merge by user)"
+    fi
+
+    return 0
+}

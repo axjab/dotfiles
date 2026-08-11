@@ -1,0 +1,5 @@
+inherits = "starlight"
+
+"ui.cursor.primary" = { fg = "black", bg = "white" }
+"ui.cursor.insert" = { fg = "black", bg = "green" }
+"ui.cursor.select" = { fg = "black", bg = "yellow" }

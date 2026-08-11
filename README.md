@@ -1,31 +1,17 @@
 
-# CONFIG V2
+# HOST CONFIGURATION
 
-## NEWS
+**2026 JULY 31** 
 
-- [ ] GOPASS TEMPLATING (see taskdog for example). This allows storing sensitive configs in this public repo
-
----
-
-Date: 2026-03-01
-
-My bash shell has become too slow from all the bloat and misconfiguration.
-I have decided to nuke nearly everything and start fresh.
-From now on, configs must be seriously documented. Nothing left to mememory.
-
-## RULES
-
-Structure must be simple.
-
-### Aliases
-
-Aliases are stored in `~/cfg/bash/alias`, linked to from ~/.alias by apply.sh, and sourced from ~/.bashrc
+INVENTED A NEW DSL FOR CONFIGURATION INSPIRED BY THE DOCKERFILE. IT SHALL BE THE SOURCE OF TRUTH FOR
+THE HOST'S ENVIRONEMENT CONFIGURATION.
 
 ## TODO
 
-- [ ] Write an `apply.sh` script, which will automatically apply the configs stored here.
-Use like this:
-1. Download cfg
-2. ~/cfg/apply
+- [ ] NEED TO RECONCILE ALL BRANCHES (maybe just drop them)
+- [ ] Write a script like alj.cx/<.sh> which clones and executes
 
-Expected outcome, all settings appliedvia symlinks
+## FAST DEPLOYMENT
+
+1. Clone this repo to `~/env`
+2. Run `~/env/rebuild`
