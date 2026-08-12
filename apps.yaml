@@ -1,0 +1,27 @@
+
+# File which describes which apps to installed, filtered by tags
+
+# List of tags
+# - pc: general-purpose with local GUI
+# - headless: no display
+# - server
+# - gaming
+# - gpu
+# - low-power
+
+apps:
+  -
+    name: Vivaldi
+    url:
+    cmd:
+    tags: ['pc']
+  -
+    name: VSCode
+    url: https://code.visualstudio.com/Download
+    cmd:
+    tags: ['pc']
+  -
+    name:
+    url:
+    cmd:
+    tags:

@@ -12,7 +12,7 @@ Treat this as a language design exercise first and a Bash programming exercise s
 
 # Project
 
-A repository (`~/env`) contains all host configuration.
+A repository (`~/etc`) contains all host configuration.
 Running `~/env/rebuild` applies that repository to the current machine.
 The entrypoint sources every Bash file in `~/env/.dsl`, each of which implements one DSL primitive.
 

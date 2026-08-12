@@ -20,36 +20,33 @@ done
 
 # HOSTS IDENTIFICATION ************************************
 
-let host firelink be
-	a	  headless server
-	at 	100.121.116.55
-	os 	Debian x86_64
+host firelink at 100.121.116.55
+	is  headless server 	
+	os 	Debian
+:
 
-let host majula be
-	a		headless server
-	at	100.109.130.76
-	os	Debian x86_64
+host majula at 100.109.130.76 
+	is	headless server	
+	os	Debian
+:
 
-let host xenon be
-	a 	gaming pc
-	at 	?
+host xenon
+	is	gaming pc
 	os 	PopOS		# change to PikaOS
 	de	COSMIC  # to be changed to Niri
+:
 
-let host luminous be
-	a  gaming pc
-	at 100.74.47.77
+host luminous at 100.74.47.77
+	is gaming pc
 	os PikaOS
 	de Niri
+:
 
-let host aran be
-	a 	pc
-	at	?
+host aran
+	is 	low-powered pc
 	os	Debian
 	# de	KDE? not sure. Try LxQT or IceWM or just fucking sell it
-
-echo "PREMATURE EXIT"
-exit 1 #*****************************************************
+:
 
 # NAMESPACE ***************************************
 # 	- be located at the root of the filesystem
@@ -64,12 +61,11 @@ namespace net   links to ~/host/net # Network topology
 namespace svc   links to ~/host/svc # Services
 namespace job   links to ~/host/job # Recurring jobs
 
+
+echo "PREMATURE EXIT"
+exit 1 #*****************************************************
+
 # SERVICES ****************************************
-host firelink at 100.121.116.55
-host majula		at 100.109.130.76
-host aran			at 100.114.30.17
-host luminous at 100.74.47.77
-# Services
 host wiki	# WITHOUT ARGS MEANS LOCALHOST, EVERY DEVICE HAS SILVERBULLET INSTANCE
 host nats					at majula
 host file-server	at majula

@@ -3,5 +3,5 @@ msg() {
     local body="$2"
 
     name="${name^^}"
-    printf "\033[1;36m%-10s\033[0m %s\n" "$name" "$body"
+    printf "\033[1;36m%-8s\033[0m %s\n" "$name" "$body"
 }

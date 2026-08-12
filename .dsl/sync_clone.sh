@@ -59,7 +59,7 @@ sync_clone() {
     local git_err token raw_url auth_url auth_header clone_status=0
 
     # Attempt 1: Unauthenticated clone
-    git_err=$(GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=echo gum spin \
+    git_err=$(GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=echo $gum spin \
         --title="CLONING $target <--- $source" \
         -- \
         git clone --single-branch "$source" "$target" 2>&1) || clone_status=$?
@@ -77,7 +77,7 @@ sync_clone() {
             auth_url="https://x-access-token:${token}@${raw_url}"
 
             clone_status=0
-            git_err=$(GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=echo gum spin \
+            git_err=$(GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=echo $gum spin \
                 --title="CLONING (AUTH) $target <--- $source" \
                 -- \
                 git clone --single-branch "$auth_url" "$target" 2>&1) || clone_status=$?
@@ -125,7 +125,7 @@ sync_existing() {
     fi
 
     # Attempt 1: Fetch using existing local repository configuration
-    fetch_err=$(GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=echo gum spin \
+    fetch_err=$(GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=echo $gum spin \
         --title="FETCHING $target <--- $source" \
         -- \
         git -C "$target" fetch 2>&1) || fetch_status=$?
@@ -138,7 +138,7 @@ sync_existing() {
             git -C "$target" config http.extraHeader "$auth_header"
 
             fetch_status=0
-            fetch_err=$(GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=echo gum spin \
+            fetch_err=$(GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=echo $gum spin \
                 --title="FETCHING (AUTH) $target <--- $source" \
                 -- \
                 git -C "$target" fetch 2>&1) || fetch_status=$?
@@ -175,9 +175,9 @@ sync_existing() {
     fi
 
     # Prompt operator to merge updates
-    if gum confirm "Merge latest changes into $target?"; then
+    if $gum confirm "Merge latest changes into $target?"; then
         local merge_err merge_status=0
-        merge_err=$(gum spin \
+        merge_err=$($gum spin \
             --title="MERGING $target" \
             -- \
             git -C "$target" merge 2>&1) || merge_status=$?

@@ -1,0 +1,157 @@
+#!/usr/bin/env bash
+
+# Current host declaration
+LET_HOST=""
+LET_A=()
+LET_AT=""
+LET_OS=()
+LET_DE=""
+
+# Print the current declaration compactly.
+# Proof-of-concept output for now.
+let_print() {
+    printf 'let host "%s"' "$LET_HOST"
+
+    if ((${#LET_A[@]})); then
+        printf ' be %s' "${LET_A[*]}"
+    else
+        printf ' be'
+    fi
+
+    [[ -n "$LET_AT" ]] && printf ' at %s' "$LET_AT"
+
+    if ((${#LET_OS[@]})); then
+        printf ' on %s' "${LET_OS[*]}"
+    fi
+
+    [[ -n "$LET_DE" ]] && printf ' desktop %s' "$LET_DE"
+
+    printf '\n'
+}
+
+
+# let host "name" be
+#
+# Also accepts the complete declaration on one line:
+#
+# let host "name" be a headless server at 1.2.3.4 on Debian x86_64
+#
+let() {
+    if [[ ${1:-} != "host" ]]; then
+        printf 'let: expected "host"\n' >&2
+        return 2
+    fi
+
+    if [[ -z ${2:-} ]]; then
+        printf 'let: missing host name\n' >&2
+        return 2
+    fi
+
+    LET_HOST=$2
+    LET_A=()
+    LET_AT=""
+    LET_OS=()
+    LET_DE=""
+
+    shift 2
+
+    if [[ ${1:-} != "be" ]]; then
+        printf 'let: expected "be"\n' >&2
+        return 2
+    fi
+
+    shift
+
+    # Nothing after "be": multiline declaration.
+    if (($# == 0)); then
+        let_print
+        return 0
+    fi
+
+    # Single-line declaration.
+    #
+    # Parse:
+    #   a   ...
+    #   at  ...
+    #   os  ...
+    #   de  ...
+    #
+    local field=""
+    local arg
+
+    for arg in "$@"; do
+        case "$arg" in
+            a|at|os|de)
+                field=$arg
+                ;;
+            *)
+                case "$field" in
+                    a)  LET_A+=("$arg") ;;
+                    at) LET_AT=$arg ;;
+                    os) LET_OS+=("$arg") ;;
+                    de) LET_DE=$arg ;;
+                    *)
+                        printf 'let: unexpected argument: %s\n' "$arg" >&2
+                        return 2
+                        ;;
+                esac
+                ;;
+        esac
+    done
+
+    let_print
+}
+
+
+a() {
+    if [[ -z "$LET_HOST" ]]; then
+        printf 'a: no active host declaration\n' >&2
+        return 2
+    fi
+
+    LET_A=("$@")
+    let_print
+}
+
+
+at() {
+    if [[ -z "$LET_HOST" ]]; then
+        printf 'at: no active host declaration\n' >&2
+        return 2
+    fi
+
+    if (($# != 1)); then
+        printf 'at: expected exactly one address\n' >&2
+        return 2
+    fi
+
+    LET_AT=$1
+    let_print
+}
+
+
+os() {
+    if [[ -z "$LET_HOST" ]]; then
+        printf 'os: no active host declaration\n' >&2
+        return 2
+    fi
+
+    LET_OS=("$@")
+    let_print
+}
+
+
+de() {
+    if [[ -z "$LET_HOST" ]]; then
+        printf 'de: no active host declaration\n' >&2
+        return 2
+    fi
+
+    if (($# != 1)); then
+        printf 'de: expected exactly one desktop environment\n' >&2
+        return 2
+    fi
+
+    LET_DE=$1
+    let_print
+}

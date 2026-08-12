@@ -201,11 +201,7 @@ host() {
     _host_reset_scope
     _HOST_SCOPE_OPEN=1
     _HOST_PENDING_NAME="$(_host_normalize_name "$name")"
-    if [[ -n "$ip" ]]; then
-        _HOST_PENDING_AT="$ip"
-    fi
-
-    return 0
+    [[ -n "$ip" ]] && _HOST_PENDING_AT="$ip"
 }
 
 # -----------------------------------------------------------------------------
@@ -273,25 +269,21 @@ de() {
     local state_file
     state_file="$(_host_state_file)"
 
-    # Resolve IP: explicit binding this scope, else whatever is already
-    # stored. No fabricated default — a host with no known IP simply has
-    # no known IP, and gets no /etc/hosts entry.
+    # Resolve IP: explicit > stored > default.
     if [[ -z "$ip" ]]; then
         ip="$(jq -r --arg n "$name" '.[$n].ip // empty' "$state_file")"
     fi
-
-    if [[ -n "$ip" ]]; then
-        _host_validate_ip "$ip" || {
-            error "host: resolved IP '$ip' for '$name' is invalid"
-            _host_reset_scope
-            return 1
-        }
+    if [[ -z "$ip" ]]; then
+        ip="127.0.0.1"
     fi
+    _host_validate_ip "$ip" || {
+        error "host: resolved IP '$ip' for '$name' is invalid"
+        _host_reset_scope
+        return 1
+    }
 
-    local status=""
-    if [[ -n "$ip" ]]; then
-        status="$(_host_apply_etc_hosts "$name" "$ip")" || { _host_reset_scope; return 1; }
-    fi
+    local status
+    status="$(_host_apply_etc_hosts "$name" "$ip")" || { _host_reset_scope; return 1; }
 
     # Merge tags: explicit `is` values this scope, deduped, order-preserving.
     local -a tags=()
@@ -347,18 +339,10 @@ de() {
     summary_tags="$(jq -r --arg n "$name" '.[$n] |
         ([.is[]?, .os, .de] | map(select(. != "" and . != null)) | join(", "))' "$state_file")"
 
-    local location="" parenthetical=""
-    if [[ -n "$ip" ]]; then
-        location=" at $ip"
-        parenthetical=" ($status)"
-    else
-        parenthetical=" (no ip)"
-    fi
-
     if [[ -n "$summary_tags" ]]; then
-        msg HOST "${name}${location} [$summary_tags]${parenthetical}"
+        msg HOST "$name at $ip [$summary_tags] ($status)"
     else
-        msg HOST "${name}${location}${parenthetical}"
+        msg HOST "$name at $ip ($status)"
     fi
 
     _host_reset_scope
