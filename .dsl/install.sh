@@ -8,7 +8,9 @@ install() {
     validate_install_syntax "$name" "$in" "$namespace" || return 1
 
     case "$namespace" in
-        sudoers) install_sudoers "$name" ;;
+        sudoers)
+            install_sudoers "$name"
+            ;;
         *)
             error "Unknown install namespace: $namespace"
             return 1
@@ -37,15 +39,35 @@ install_sudoers() {
     local target="/etc/sudoers.d/$name"
     local tmp
 
-    tmp=$(mktemp) || return 1
-    cat > "$tmp"
-    sudo install -m 0440 "$tmp" "$target"
-    rm -f "$tmp"
+    tmp="$(mktemp)" || {
+        error "install: failed to create temporary file"
+        return 1
+    }
 
-    if ! sudo visudo -c > /dev/null; then
-        error "Invalid sudoers configuration"
+    if ! cat > "$tmp"; then
+        rm -f "$tmp"
         return 1
     fi
 
-    msg "INSTALL"  "$name --> $target"
+    if ! sudo visudo -cf "$tmp" >/dev/null; then
+        rm -f "$tmp"
+        error "Invalid sudoers configuration for '$name'"
+        return 1
+    fi
+
+    if [[ -f "$target" ]] && sudo cmp -s "$tmp" "$target"; then
+        rm -f "$tmp"
+        return 0
+    fi
+
+    if ! sudo install -m 0440 "$tmp" "$target"; then
+        rm -f "$tmp"
+        error "install: failed to install '$target'"
+        return 1
+    fi
+
+    rm -f "$tmp"
+
+    msg "INSTALL" "$name --> $target"
+    return 0
 }

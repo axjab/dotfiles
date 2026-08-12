@@ -1,21 +1,15 @@
 #!/usr/bin/env bash
 # =============================================================================
-# require — assert host prerequisites
+# require — host prerequisites
 #
 #   require internet
+#   require tailnet
 #
-# Prerequisites are explicit keywords rather than generic arguments. Each
-# keyword is dispatched to its corresponding handler below.
-#
-# Persistent general DSL state lives at:
-#
-#   $ROOT/.cache/state.json
-#
-# `offline_mode` records whether the current invocation was explicitly allowed
-# to continue without Internet connectivity.
+# Prerequisites are deliberately explicit keywords rather than a generic
+# dependency framework. Each keyword dispatches to its own handler.
 # =============================================================================
 
-_require_cache_file() {
+_require_state_file() {
     if [[ -z "${ROOT:-}" ]]; then
         error "require: \$ROOT is not set (expected to be exported by the entrypoint)"
         return 1
@@ -26,135 +20,303 @@ _require_cache_file() {
         return 1
     fi
 
-    local cache_dir="$ROOT/.cache"
-    local state_file="$cache_dir/state.json"
+    local cache="$ROOT/.cache"
+    local state="$cache/state.json"
 
-    mkdir -p "$cache_dir" || {
-        error "require: failed to create cache directory '$cache_dir'"
+    mkdir -p "$cache" || {
+        error "require: failed to create '$cache'"
         return 1
     }
 
-    if [[ ! -f "$state_file" ]]; then
-        printf '{}\n' > "$state_file" || {
-            error "require: failed to initialize '$state_file'"
+    if [[ ! -f "$state" ]]; then
+        printf '{}\n' > "$state" || {
+            error "require: failed to initialize '$state'"
             return 1
         }
     fi
 
-    printf '%s' "$state_file"
+    printf '%s' "$state"
 }
 
-_require_set_offline_mode() {
-    local value="$1"
-    local state_file tmp
+_require_set_state() {
+    local key="$1"
+    local value="$2"
+    local state
 
-    state_file="$(_require_cache_file)" || return 1
+    state="$(_require_state_file)" || return 1
 
-    tmp="$(mktemp)" || {
-        error "require: failed to create temporary state file"
-        return 1
-    }
+    if command -v jq >/dev/null 2>&1; then
+        local tmp
+        tmp="$(mktemp)" || {
+            error "require: failed to create temporary state file"
+            return 1
+        }
 
-    if ! jq --argjson value "$value" \
-        '.offline_mode = $value' \
-        "$state_file" > "$tmp"
-    then
-        error "require: failed to update '$state_file'"
-        rm -f "$tmp"
+        if ! jq --arg key "$key" --argjson value "$value" \
+            '.[$key] = $value' "$state" > "$tmp"
+        then
+            rm -f "$tmp"
+            error "require: failed to update '$state'"
+            return 1
+        fi
+
+        mv "$tmp" "$state" || {
+            rm -f "$tmp"
+            error "require: failed to install '$state'"
+            return 1
+        }
+    else
+        error "require: jq is required to update runtime state"
         return 1
     fi
-
-    if ! mv "$tmp" "$state_file"; then
-        error "require: failed to install updated state file '$state_file'"
-        rm -f "$tmp"
-        return 1
-    fi
-
-    return 0
 }
+
+# -----------------------------------------------------------------------------
+# require internet
+# -----------------------------------------------------------------------------
 
 _require_internet() {
-    local curl_bin=""
+    local probe
 
-    # Prefer the repository's dependency directory when available.
-    if [[ -n "${BIN:-}" && -x "$BIN/curl" ]]; then
-        curl_bin="$BIN/curl"
-    elif command -v curl >/dev/null 2>&1; then
-        curl_bin="$(command -v curl)"
+    # DNS + HTTPS is a more meaningful test than pinging an arbitrary host.
+    # curl must fail quickly rather than blocking the rebuild indefinitely.
+    if command -v curl >/dev/null 2>&1; then
+        probe=(curl -fsS --connect-timeout 5 --max-time 10
+               https://connectivitycheck.gstatic.com/generate_204)
+    elif command -v wget >/dev/null 2>&1; then
+        probe=(wget -q --timeout=10 --tries=1 -O /dev/null
+               https://connectivitycheck.gstatic.com/generate_204)
     else
-        error "require internet: curl is required but was not found"
+        error "require internet: neither curl nor wget is available"
         return 1
     fi
 
-    # Deliberately capture the status instead of putting the test directly
-    # into an `if ! ...` expression whose details can become obscured by
-    # strict-shell behavior.
-    if "$curl_bin" \
-        --fail \
-        --silent \
-        --show-error \
-        --location \
-        --max-time 5 \
-        --output /dev/null \
-        https://www.google.com/generate_204
-    then
-        _require_set_offline_mode false || return 1
+    if "${probe[@]}" >/dev/null 2>&1; then
+        _require_set_state offline_mode false || return 1
         printf '\033[92m✓ Internet connected\033[0m\n'
         return 0
     fi
 
-    # The connectivity test failed. Record the fact only after the user has
-    # explicitly chosen whether this invocation may continue offline.
-    #
-    # gum confirm returns:
-    #   0 = yes
-    #   1 = no
-    #
-    # Capture its status explicitly so `set -e` cannot terminate the rebuild
-    # before we handle the user's answer.
-    local proceed=1
+    _require_set_state offline_mode true || return 1
 
+    printf '\033[93m! Internet unavailable\033[0m\n' >&2
+
+    local answer
     if [[ -n "${gum:-}" && -x "$gum" ]]; then
-        if "$gum" confirm "Internet connection unavailable. Continue in offline mode?"; then
-            proceed=0
+        if ! answer="$("$gum" choose \
+            "Continue in offline mode" \
+            "Exit" \
+            --header "Internet is unavailable")"
+        then
+            return 0
         fi
-    elif [[ -n "${BIN:-}" && -x "$BIN/gum" ]]; then
-        if "$BIN/gum" confirm "Internet connection unavailable. Continue in offline mode?"; then
-            proceed=0
+    elif command -v gum >/dev/null 2>&1; then
+        if ! answer="$(gum choose \
+            "Continue in offline mode" \
+            "Exit" \
+            --header "Internet is unavailable")"
+        then
+            return 0
         fi
     else
-        error "require internet: gum is required to choose offline mode"
+        error "require internet: gum is required for the offline-mode prompt"
         return 1
     fi
 
-    if [[ "$proceed" -eq 0 ]]; then
-        _require_set_offline_mode true || return 1
+    case "$answer" in
+        "Continue in offline mode")
+            return 0
+            ;;
+        "Exit")
+            return 0
+            ;;
+        *)
+            error "require internet: unexpected prompt result"
+            return 1
+            ;;
+    esac
+}
+
+# -----------------------------------------------------------------------------
+# require tailnet
+# -----------------------------------------------------------------------------
+
+_require_tailnet_install() {
+    if command -v tailscale >/dev/null 2>&1; then
         return 0
     fi
 
-    # Declining is a deliberate, clean termination rather than an error.
-    _require_set_offline_mode false || return 1
+    printf '\033[93m! Tailscale not installed; installing\033[0m\n'
+
+    # The installer itself must be run as root because it installs system
+    # software. The requested installation mechanism remains Tailscale's
+    # official installer.
+    if ! sudo sh -c 'curl -fsSL https://tailscale.com/install.sh | sh'; then
+        error "require tailnet: failed to install Tailscale"
+        return 1
+    fi
+
+    command -v tailscale >/dev/null 2>&1 || {
+        error "require tailnet: Tailscale installation completed but 'tailscale' is not on PATH"
+        return 1
+    }
 
     return 0
 }
 
+_require_tailnet_status() {
+    local status_json backend_state
+
+    if ! status_json="$(sudo tailscale status --json 2>/dev/null)"; then
+        return 1
+    fi
+
+    if command -v jq >/dev/null 2>&1; then
+        backend_state="$(printf '%s\n' "$status_json" |
+            jq -r '.BackendState // empty' 2>/dev/null)" || return 1
+    else
+        # Tailscale itself documents grep as an alternative to jq for the
+        # BackendState check. Keep this deliberately narrow.
+        backend_state="$(printf '%s\n' "$status_json" |
+            grep -o '"BackendState"[[:space:]]*:[[:space:]]*"[^"]*"' |
+            sed 's/.*:[[:space:]]*"//; s/"$//')" || true
+    fi
+
+    [[ "$backend_state" == "Running" ]]
+}
+
+_require_tailnet_login() {
+    printf '\033[93m! Tailscale is not authenticated\033[0m\n'
+
+    # `tailscale login` owns the authentication interaction. Do not attempt
+    # to reproduce its browser/login flow here.
+    if ! sudo tailscale login; then
+        error "require tailnet: Tailscale authentication failed"
+        return 1
+    fi
+
+    return 0
+}
+
+_require_tailnet_prompt() {
+    local answer
+
+    printf '\033[93m! Tailnet is not connected\033[0m\n' >&2
+
+    if [[ -n "${gum:-}" && -x "$gum" ]]; then
+        if ! answer="$("$gum" choose \
+            "Continue without Tailnet" \
+            "Exit" \
+            --header "Tailscale is not connected")"
+        then
+            return 0
+        fi
+    elif command -v gum >/dev/null 2>&1; then
+        if ! answer="$(gum choose \
+            "Continue without Tailnet" \
+            "Exit" \
+            --header "Tailscale is not connected")"
+        then
+            return 0
+        fi
+    else
+        error "require tailnet: gum is required for the prompt"
+        return 1
+    fi
+
+    case "$answer" in
+        "Continue without Tailnet")
+            return 0
+            ;;
+        "Exit")
+            return 0
+            ;;
+        *)
+            error "require tailnet: unexpected prompt result"
+            return 1
+            ;;
+    esac
+}
+
+_require_tailnet() {
+    _require_tailnet_install || return 1
+
+    local status_json backend_state
+
+    # First determine whether the device is authenticated. A non-running
+    # backend can mean either "not authenticated" or "not connected", so
+    # inspect the status JSON before deciding what action is appropriate.
+    if ! status_json="$(sudo tailscale status --json 2>/dev/null)"; then
+        status_json=""
+    fi
+
+    if [[ -n "$status_json" ]]; then
+        if command -v jq >/dev/null 2>&1; then
+            backend_state="$(printf '%s\n' "$status_json" |
+                jq -r '.BackendState // empty' 2>/dev/null)" || backend_state=""
+        else
+            backend_state="$(printf '%s\n' "$status_json" |
+                grep -o '"BackendState"[[:space:]]*:[[:space:]]*"[^"]*"' |
+                sed 's/.*:[[:space:]]*"//; s/"$//')" || true
+        fi
+    else
+        backend_state=""
+    fi
+
+    # NeedsLogin is the explicit unauthenticated state. Do not invoke login
+    # merely because the daemon happens to be stopped.
+    if [[ "$backend_state" == "NeedsLogin" ]]; then
+        _require_tailnet_login || return 1
+    fi
+
+    # Authentication may have just completed, or the original state may have
+    # been Running already. Re-read state after login rather than assuming it.
+    if ! _require_tailnet_status; then
+        # A device may be authenticated but currently down. `tailscale up`
+        # is the normal command for connecting it, but deliberately don't
+        # invoke it automatically: changing existing Tailscale configuration
+        # is a policy decision, not merely a prerequisite check.
+        if ! _require_tailnet_prompt; then
+            return 1
+        fi
+
+        # Continuing without Tailnet is a successful prerequisite decision.
+        _require_set_state tailnet false || return 1
+        return 0
+    fi
+
+    _require_set_state tailnet true || return 1
+
+    printf '\033[92m✓ Tailnet connected\033[0m\n'
+    return 0
+}
+
+# -----------------------------------------------------------------------------
+# Public dispatcher
+# -----------------------------------------------------------------------------
+
 require() {
+    local requirement="${1:-}"
+
     if [[ $# -ne 1 ]]; then
         error "require: expected exactly one prerequisite"
         return 2
     fi
 
-    local prerequisite="$1"
-
-    case "$prerequisite" in
+    case "$requirement" in
         internet)
             _require_internet
+            return $?
             ;;
+
+        tailnet)
+            _require_tailnet
+            return $?
+            ;;
+
         *)
-            error "require: unknown prerequisite '$prerequisite'"
+            error "require: unknown prerequisite '$requirement'"
             return 2
             ;;
     esac
-
-    return $?
 }

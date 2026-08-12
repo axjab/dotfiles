@@ -40,9 +40,6 @@ install exe-path in sudoers <<-EOF
 	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
 EOF
 
-echo "PREMATURE EXIT"
-exit 1 #*****************************************************
-
 # IDENTITIY ******************************************
 
 host firelink at 100.121.116.55
@@ -80,6 +77,9 @@ host service nats					at majula
 host service repository		at majula
 host service pocketbase		at majula
 host service uptime-kuma	at majula
+
+echo "PREMATURE EXIT"
+exit 1 #*****************************************************
 
 # CONFIGURATION ***********************************
 sync ~/etc					from 'axjab/dotfiles'  # this should really be handled differently
