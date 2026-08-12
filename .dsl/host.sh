@@ -26,21 +26,7 @@
 # =============================================================================
 
 HOSTS_FILE="/etc/hosts"
-HOST_TAG="# env:host"
-
-# Fallback printer if 'msg' is not defined in entrypoint context.
-if ! declare -f msg >/dev/null; then
-    msg() {
-        local directive="$1"; shift
-        printf '%-11s %s\n' "$directive" "$*"
-    }
-fi
-
-if ! declare -f error >/dev/null; then
-    error() {
-        printf 'error: %s\n' "$*" >&2
-    }
-fi
+HOST_TAG="# ~/etc/Hostfile"
 
 # -----------------------------------------------------------------------------
 # $ROOT / state file resolution — no fallback discovery, ever.
@@ -174,6 +160,12 @@ _host_require_open_scope() {
 # -----------------------------------------------------------------------------
 
 host() {
+    if [[ "${1:-}" == "service" ]]; then
+        shift
+        host_service "$@"
+        return $?
+    fi
+
     if [[ "$_HOST_SCOPE_OPEN" -eq 1 ]]; then
         error "host: a host declaration for '$_HOST_PENDING_NAME' is still open (missing ':')"
         return 2

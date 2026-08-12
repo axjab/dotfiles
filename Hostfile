@@ -61,17 +61,16 @@ namespace net   links to ~/host/net # Network topology
 namespace svc   links to ~/host/svc # Services
 namespace job   links to ~/host/job # Recurring jobs
 
+# SERVICES ****************************************
+host service wiki 				at localhost
+host service nats					at majula
+host service file-server	at majula
+host service pocketbase		at majula
+host service uptime-kuma	at majula
+# *************************************************
 
 echo "PREMATURE EXIT"
 exit 1 #*****************************************************
-
-# SERVICES ****************************************
-host wiki	# WITHOUT ARGS MEANS LOCALHOST, EVERY DEVICE HAS SILVERBULLET INSTANCE
-host nats					at majula
-host file-server	at majula
-host pocketbase		at majula
-host uptime-kuma	at majula
-# *************************************************
 
 # IMPORTS *********************************
 sync ~/etc					from 'axjab/dotfiles'
