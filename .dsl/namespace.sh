@@ -11,7 +11,7 @@ namespace() {
             create_dir "$target"
             sudo chown "$USER" "$target"
             ;&  # fallthrough
-        *)  msg "NAMESPACE" "[$name] has been declared as a top-level namespace" ;;
+        *) ;; # msg "NAMESPACE" "[$name] has been declared as a top-level namespace" ;;
     esac
 
     # BRITTLE

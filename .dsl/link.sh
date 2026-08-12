@@ -24,6 +24,10 @@ resolve_path() {
 }
 
 symlink() {
+    link "$@"
+}
+
+link() {
     local raw_source="${1:-}"
     local prep="${2:-}"
     local raw_target="${3:-}"
@@ -73,7 +77,7 @@ symlink() {
         current_link=$(readlink "$target" 2>/dev/null)
         
         if [[ "$current_link" == "$source" ]] || [[ "$(readlink -f "$target" 2>/dev/null)" == "$(readlink -f "$source" 2>/dev/null)" ]]; then
-            msg "SYMLINK" "$target --> $source (up to date)"
+            msg "LINK" "$target --> $source (up to date)"
             return 0
         fi
     fi
@@ -87,6 +91,6 @@ symlink() {
         fi
     fi
 
-    msg "SYMLINK" "$target --> $source"
+    msg "LINK" "$target --> $source"
     return 0
 }

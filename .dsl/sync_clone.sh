@@ -13,7 +13,7 @@ GITHUB_TOKEN="${GITHUB_TOKEN:-}"
 
 get_github_token() {
     if [[ -z "$GITHUB_TOKEN" ]]; then
-        GITHUB_TOKEN=$(gum input \
+        GITHUB_TOKEN=$($gum input \
             --password \
             --placeholder "ghp_..." \
             --header "Authentication required for private GitHub repository" \

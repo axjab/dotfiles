@@ -1,3 +1,6 @@
+
+export gopass=$BIN/gopass
+
 process() {
     local source=$1
     local target=$3
@@ -28,7 +31,7 @@ process() {
         return 1
     }
 set +e
-    if ! gopass process "$template" > "$tmp_output"; then
+    if ! $gopass process "$template" > "$tmp_output"; then
         error "gopass process failed for $template"
         rm -f "$tmp_output"
         return 1

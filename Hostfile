@@ -18,6 +18,20 @@ done
 
 ##############################################################
 
+# DEPENDENCIES ***************************************
+
+namespace data  # Mutable state
+namespace repo  # Shared file repository
+namespace exe 	# Non-system executables
+namespace log   # Non-system log aggregation
+namespace net   links to ~/host/net # Network topology
+namespace svc   links to ~/host/svc # Services
+namespace job   links to ~/host/job # Recurring jobs
+
+sync ~/etc					from 'axjab/dotfiles'
+sync /exe					  from 'axjab/executables'
+sync /data/secrets	from 'axjab/secrets'
+
 # HOSTS IDENTIFICATION ************************************
 
 host firelink at 100.121.116.55
@@ -48,19 +62,6 @@ host aran
 	# de	KDE? not sure. Try LxQT or IceWM or just fucking sell it
 :
 
-# NAMESPACE ***************************************
-# 	- be located at the root of the filesystem
-# 	- be owned by $USER by default
-# 	- be honored in its purpose, services and utitlies shall expect it
-# 	- follow my HOST IDENTITY FILESYSTEM standard
-namespace data  # Mutable state
-namespace repo  # Shared file repository
-namespace exe 	# Non-system executables
-namespace log   # Non-system log aggregation
-namespace net   links to ~/host/net # Network topology
-namespace svc   links to ~/host/svc # Services
-namespace job   links to ~/host/job # Recurring jobs
-
 # SERVICES ****************************************
 host service wiki 				at localhost
 host service nats					at majula
@@ -69,19 +70,25 @@ host service pocketbase		at majula
 host service uptime-kuma	at majula
 # *************************************************
 
+# CONFIGURATION ***********************************
+link shell/aliases	to ~/.aliases
+link shell/bashrc  	to ~/.bashrc
+link gopass/config	to ~/.config/gopass/config
+process	 shell/env 	to ~/.env
+
+install exe-path in sudoers <<-EOF
+	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
+EOF
+
+echo "end of dependencies"
+exit 1
+
+###########################
+sync /data/helix		with 'ssh://majula//data/helix'
+sync ~/host  # move to .host?
+
 echo "PREMATURE EXIT"
 exit 1 #*****************************************************
-
-# IMPORTS *********************************
-sync ~/etc					from 'axjab/dotfiles'
-set -x
-sync /exe					  from 'axjab/executables'
-sync /data/secrets	from 'axjab/secrets'
-set +x
-sync /data/helix		with 'ssh://majula//data/helix'
-set +e
-sync ~/host  # move to .host?
-set -e
 
 # EXPERIMENTAL
 
@@ -92,15 +99,6 @@ set -e
 
 # *********************
 
-# ENVIRONMENT
-install exe-path in sudoers <<-EOF
-	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
-EOF
-echo "checkpoint"
-exit 0
-process	 shell/env 		 to ~/.env
-symlink	 shell/aliases to ~/.aliases
-symlink	 shell/bashrc  to ~/.bashrc
 
 ## FILESYSTEM MOUNTPOINTS
 # NEED TAGGING DSL
@@ -110,7 +108,7 @@ mount dir /mnt/majula.ssd/files onto /repo							# for all but Majula
 mount dir /mnt/ssd/data/garage	onto /data/garage/data	# for host majula only
 set -e
 
-## APPLICATIONS
+## APP CONFIG
 set +e
 link		niri/config.kdl			to ~/.config/niri/config.kdl
 symlink niri/config.kdl			to ~/.config/niri/config.kdl
@@ -124,7 +122,6 @@ process aichat/config.yaml 	to ~/.config/aichat/config.yaml    # if u can get se
 symlink bat/config					to /etc/bat/config
 symlink gh/config.yml				to ~/.config/gh/config.yml
 symlink git/config					to /etc/gitconfig
-symlink gopass/config				to ~/.config/gopass/config
 symlink sqlite/config				to ~/.sqliterc
 symlink starship/config			to ~/.config/starship.toml
 symlink taskdog/cli.toml    to ~/.config/taskdog/cli.toml
@@ -135,3 +132,11 @@ symlink xdg/dirs 						to ~/.config/user-dirs.dirs
 # 1. load language
 # 2. deploy config
 # 3. reload parent shell, is it possible?
+
+# POST-SCRIPTUM NOTES
+#
+# Namespaces should:
+#   - be located at the root of the filesystem
+# 	- be owned by $USER by default
+# 	- be honored in its purpose by utilities and services
+# 	- be mirroring my HOST IDENTITY FILESYSTEM standard
