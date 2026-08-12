@@ -12,27 +12,38 @@ export GUM_SPIN_SHOW_ERROR=true
 # GUM_SPIN_SHOW_OUTPUT=true
 export gum=$BIN/gum
 
+# TODO: INCLUDE SELF-SYNC HERE INSTEAD OF sync ~/etc
+# sync -> reolve conflicts -> rerun
+
 for dsl in "$DSL"/*.sh; do
     source "$dsl"
 done
 
 ##############################################################
 
-# DEPENDENCIES ***************************************
+# PREREQUISITES *****************************************
 
 namespace data  # Mutable state
 namespace repo  # Shared file repository
-namespace exe 	# Non-system executables
+namespace exe 	# sync with axjab/executable(?) # Non-system executables
 namespace log   # Non-system log aggregation
 namespace net   links to ~/host/net # Network topology
 namespace svc   links to ~/host/svc # Services
 namespace job   links to ~/host/job # Recurring jobs
 
-sync ~/etc					from 'axjab/dotfiles'
-sync /exe					  from 'axjab/executables'
-sync /data/secrets	from 'axjab/secrets'
+require internet  # ensures host is connected to the Internet. Prompt to continue in offline mode if not.
+require tailnet   # ensures host is connected to the Tailnet. Prompt to continue.
+	# installation and auth is implicit
+# require repository   # make this implicit when trying to connect?
+sync /exe from 'axjab/executables'
+install exe-path in sudoers <<-EOF
+	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
+EOF
 
-# HOSTS IDENTIFICATION ************************************
+echo "PREMATURE EXIT"
+exit 1 #*****************************************************
+
+# IDENTITIY ******************************************
 
 host firelink at 100.121.116.55
 	is  headless server 	
@@ -63,32 +74,22 @@ host aran
 :
 
 # SERVICES ****************************************
+
 host service wiki 				at localhost
 host service nats					at majula
-host service file-server	at majula
+host service repository		at majula
 host service pocketbase		at majula
 host service uptime-kuma	at majula
-# *************************************************
 
 # CONFIGURATION ***********************************
+sync ~/etc					from 'axjab/dotfiles'  # this should really be handled differently
+sync /data/secrets	from 'axjab/secrets'
 link shell/aliases	to ~/.aliases
 link shell/bashrc  	to ~/.bashrc
 link gopass/config	to ~/.config/gopass/config
 process	 shell/env 	to ~/.env
-
-install exe-path in sudoers <<-EOF
-	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
-EOF
-
-echo "end of dependencies"
-exit 1
-
-###########################
 sync /data/helix		with 'ssh://majula//data/helix'
 sync ~/host  # move to .host?
-
-echo "PREMATURE EXIT"
-exit 1 #*****************************************************
 
 # EXPERIMENTAL
 
