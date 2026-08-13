@@ -25,72 +25,11 @@ done
 
 # PREREQUISITES *****************************************
 
-require internet   # ensure connected to internet!
-require tailnet    # ensure authenticated via tailscale login
-require ssh				 # bootstraps ssh
-require github	   # ensure authenticated via gh auth logini
+require internet
+require tailnet
+require ssh
+require github	   # ensure authenticated via gh auth login
 require repository # NOT IMPLEMENTED; OUT OF SCOPE
-exit 1
-# installed like pikman install gh if PikaOS, apt if Debian?
-# ADD ~/.ssh/$(hostname).key.pub to Github SIMPLY by running gh auth login
-# CHECKLIST:
-# - [x] User responsibility: prepare ssh-admin gh key
-# - [ ] Ensures $(hostname).key exists. Calls bootstrap_ssh() if not.
-# - [ ] Create host entry in ~/.ssh/config
-# Host github
-#   Hostname github.com
-#   User git
-# - [ ] calls gh 
-
-bootstrap_ssh() {
-
-	mkdir -p ~/.ssh
-	touch ~/.ssh/config
-	# Generate key which identifies THIS host.
-	ssh-keygen -t ed25519 -f ~/.ssh/$(hostname).key -C "$hostname"
-
-	Insert in ~/.ssh/config:
-	"
-	Host *
-  	IdentityFile ~/.ssh/$(hostname).key
-  	IdentitiesOnly yes
-	"
-
-	host <hostname>
-	  is   <tags...>
-	  at   <ip or domain.com>
-	  os   ...
-	  user <user>
-
-	should generate
-
-	Host <hostname>
-	  Hostname <ip or domain.com>
-	  User <user>
-
-	eval "$(ssh-agent -s)"
-	ssh-add ~/.ssh/"$(hostname).key"
-
-	chmod 700 ~/.ssh
-  chmod 600 ~/.ssh/config
-	chmod 600 ~/.ssh/*.key
-	chmod 644 ~/.ssh/*.pub
-
-	- [ ] update host:~/.ssh/authorized_keys
-	- [ ] reset remote hosts's sshd_config
-
-	Thanks to Tailscale, it is possible to connect to a Tailnet host
-	provided it enabled ssh like: sudo tailscale up --ssh
-
-	But what if Tailscale goes down? ssh capabilities are no longer existing.
-	Therefore, must add redundancy. Proposal:
-
-	ssh exec: add "~/.ssh/*.pub" to "host:~/.ssh/authorized_keys" idempotently
-
-	If tailscale ever goes down, localhost only needs to update ssh/config to
-	connect via WAN instead of VPN.
-	
-}
 
 namespace data  # Mutable state
 namespace repo  # Shared file repository
@@ -108,6 +47,33 @@ EOF
 sync ~/etc from 'github:axjab/dotfiles'
 
 # IDENTITIY ******************************************
+
+echo "REFACTOR host"
+exit 1
+
+bootstrap_ssh() {
+
+	host <hostname>
+	  is   <tags...>
+	  at   <ip or domain.com>
+	  os   ...
+	  user <user>
+
+	should generate
+
+	Host <hostname>
+	  Hostname <ip or domain.com>
+	  User <user>
+
+
+	- [ ] update host:~/.ssh/authorized_keys
+	- [ ] reset remote hosts's sshd_config
+
+
+	ssh exec: add "~/.ssh/*.pub" to "host:~/.ssh/authorized_keys" idempotently
+
+	
+}
 
 host firelink at 100.121.116.55
 	is  headless server 	

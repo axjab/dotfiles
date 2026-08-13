@@ -2,28 +2,47 @@
 
 ensure_package() {
     local package="$1"
+    local os_id
 
     if [[ -z "${package:-}" ]]; then
         error "ensure_package requires a package name"
         return 1
     fi
 
-    if dpkg -s "$package" &>/dev/null; then
-        # echo "Package already installed: $package"
+    if dpkg -s "$package" >/dev/null 2>&1; then
         return 0
     fi
 
-    echo "Installing package: $package"
-
-    if ! command -v apt &>/dev/null; then
-        error "apt not found; cannot install package: $package"
+    if [[ ! -r /etc/os-release ]]; then
+        error "ensure_package: cannot determine operating system"
         return 1
     fi
 
-    if ! sudo apt install -y "$package"; then
-        error "Failed to install package: $package"
-        return 1
-    fi
+    # shellcheck disable=SC1091
+    . /etc/os-release
+    os_id="${ID:-}"
+
+    case "$os_id" in
+        debian)
+            if ! sudo apt install -y "$package"; then
+                error "Failed to install package: $package"
+                return 1
+            fi
+            ;;
+
+        pika)
+            if ! pikman install "$package"; then
+                error "Failed to install package: $package"
+                return 1
+            fi
+            ;;
+
+        *)
+            error "ensure_package: unsupported operating system '$os_id'"
+            return 1
+            ;;
+    esac
 
     msg "INSTALL" "$package"
+    return 0
 }

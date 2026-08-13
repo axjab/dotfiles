@@ -19,7 +19,7 @@ require() {
         tailnet)    _require_tailnet ;;
         ssh)        _require_ssh ;;
         github)     _require_github ;;
-        repository) _require_repository ;;
+        repository) echo "" ;;
     esac
 
     return $?
