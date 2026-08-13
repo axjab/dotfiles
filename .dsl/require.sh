@@ -17,6 +17,7 @@ require() {
     case "$1" in
         internet)   _require_internet ;;
         tailnet)    _require_tailnet ;;
+        ssh)        _require_ssh ;;
         github)     _require_github ;;
         repository) _require_repository ;;
     esac

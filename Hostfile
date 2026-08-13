@@ -15,7 +15,7 @@ export gum=$BIN/gum
 # TODO: INCLUDE SELF-SYNC HERE INSTEAD OF sync ~/etc
 # TODO: MAJOR WORK: Make this Hostfile orderless, parse everything THEN execute. Perhaps bash is not suited for this?
 # TODO: Do tasks in parallel
-# sync -> reolve conflicts -> rerun
+# sync -> resolve conflicts -> rerun
 
 for dsl in "$DSL"/*.sh; do
     source "$dsl"
@@ -27,6 +27,7 @@ done
 
 require internet   # ensure connected to internet!
 require tailnet    # ensure authenticated via tailscale login
+require ssh				 # bootstraps ssh
 require github	   # ensure authenticated via gh auth logini
 require repository # NOT IMPLEMENTED; OUT OF SCOPE
 exit 1
