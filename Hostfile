@@ -48,22 +48,27 @@ install exe-path in sudoers <<-EOF
 EOF
 
 # IDENTITIY ******************************************
-exit 1
+
 host firelink at 100.121.116.55
-	is  headless server 	
-	os 	Debian
+	is  	headless server
+	# at
+	user 	ash 	
+	os 		Debian
 :
 host majula at 100.109.130.76 
-	is	headless server	
-	os	Debian
+	is		headless server
+	user	solaire
+	os		Debian	
 :
 host xenon
-	is	gaming pc
-	os 	PikaOS
-	de	Niri
+	is	 gaming pc
+	user ash
+	os 	 PikaOS
+	de	 Niri
 :
-host luminous at 100.74.47.77
+host luminous at 100.95.238.38
 	is gaming pc
+	user axjab
 	os PikaOS
 	de Niri
 :
@@ -71,7 +76,7 @@ host aran
 	is 	low-powered pc
 	os	Debian
 :
-
+exit 1
 # SERVICES ****************************************
 
 host service wiki 				at localhost
@@ -131,24 +136,24 @@ symlink xdg/dirs 						to ~/.config/user-dirs.dirs
 
 # bootstrap_ssh() {
 
-# 	host <hostname>
-# 	  is   <tags...>
-# 	  at   <ip or domain.com>
-# 	  os   ...
-# 	  user <user>
+	# host <hostname>
+	#   is   <tags...>
+	#   at   <ip or domain.com>
+	#   os   ...
+	#   user <user>
 
-# 	should generate
+	# should generate
 
-# 	Host <hostname>
-# 	  Hostname <ip or domain.com>
-# 	  User <user>
-
-
-# 	- [ ] update host:~/.ssh/authorized_keys
-# 	- [ ] reset remote hosts's sshd_config
+	# Host <hostname>
+	#   Hostname <ip or domain.com>
+	#   User <user>
 
 
-# 	ssh exec: add "~/.ssh/*.pub" to "host:~/.ssh/authorized_keys" idempotently
+	# - [ ] update host:~/.ssh/authorized_keys
+	# - [ ] reset remote hosts's sshd_config
+
+
+	# ssh exec: add "~/.ssh/*.pub" to "host:~/.ssh/authorized_keys" idempotently
 
 	
 # }
