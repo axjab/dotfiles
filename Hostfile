@@ -28,53 +28,27 @@ done
 require internet
 require tailnet
 require ssh
-require github	   # ensure authenticated via gh auth login
+require github
 require repository # NOT IMPLEMENTED; OUT OF SCOPE
 
 namespace data  # Mutable state
 namespace repo  # Shared file repository
-namespace exe 	# sync with axjab/executable(?) # Non-system executables
+namespace exe   # Non-system executables
 namespace log   # Non-system log aggregation
 namespace net   # Network topology
 namespace svc   # Services
 namespace job   # Recurring jobs
 
+sync ~/etc 					from 'github:axjab/dotfiles'    # self-update
+sync /exe 					from 'github:axjab/executables'
+sync /data/secrets	from 'github:axjab/secrets'
+
 install exe-path in sudoers <<-EOF
 	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
 EOF
 
-# temporary step, perform self-update, then rerun
-sync ~/etc from 'github:axjab/dotfiles'
-
 # IDENTITIY ******************************************
-
-echo "REFACTOR host"
 exit 1
-
-bootstrap_ssh() {
-
-	host <hostname>
-	  is   <tags...>
-	  at   <ip or domain.com>
-	  os   ...
-	  user <user>
-
-	should generate
-
-	Host <hostname>
-	  Hostname <ip or domain.com>
-	  User <user>
-
-
-	- [ ] update host:~/.ssh/authorized_keys
-	- [ ] reset remote hosts's sshd_config
-
-
-	ssh exec: add "~/.ssh/*.pub" to "host:~/.ssh/authorized_keys" idempotently
-
-	
-}
-
 host firelink at 100.121.116.55
 	is  headless server 	
 	os 	Debian
@@ -85,8 +59,8 @@ host majula at 100.109.130.76
 :
 host xenon
 	is	gaming pc
-	os 	PopOS		# change to PikaOS
-	de	COSMIC  # to be changed to Niri
+	os 	PikaOS
+	de	Niri
 :
 host luminous at 100.74.47.77
 	is gaming pc
@@ -107,8 +81,6 @@ host service pocketbase		at majula
 host service uptime-kuma	at majula
 
 # CONFIGURATION ***********************************
-sync /data/secrets	from 'github:axjab/secrets'
-sync /exe 					from 'github:axjab/executables'
 link gopass/config	to ~/.config/gopass/config
 process	 shell/env 	to ~/.env
 link shell/aliases	to ~/.aliases
@@ -156,3 +128,27 @@ symlink xdg/dirs 						to ~/.config/user-dirs.dirs
 # 	- be owned by $USER by default
 # 	- be honored in its purpose by utilities and services
 # 	- be mirroring my HOST IDENTITY FILESYSTEM standard
+
+# bootstrap_ssh() {
+
+# 	host <hostname>
+# 	  is   <tags...>
+# 	  at   <ip or domain.com>
+# 	  os   ...
+# 	  user <user>
+
+# 	should generate
+
+# 	Host <hostname>
+# 	  Hostname <ip or domain.com>
+# 	  User <user>
+
+
+# 	- [ ] update host:~/.ssh/authorized_keys
+# 	- [ ] reset remote hosts's sshd_config
+
+
+# 	ssh exec: add "~/.ssh/*.pub" to "host:~/.ssh/authorized_keys" idempotently
+
+	
+# }

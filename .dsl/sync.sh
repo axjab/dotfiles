@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 sync() {
     local target="${1:-}"
@@ -11,21 +12,14 @@ sync() {
 
     # Explicit source binding
     if [[ -n "$prep" ]]; then
-
         case "$prep" in
-
-            # Git-backed import
             from)
                 if [[ -z "$source" ]]; then
                     error "sync syntax: sync TARGET from SOURCE"
                     return 0
                 fi
-
-                source=$(normalize_git_url "$source")
                 ;;
 
-
-            # Bidirectional replica synchronization
             with)
                 if [[ -z "$source" ]]; then
                     error "sync syntax: sync TARGET with PEER"
@@ -41,31 +35,29 @@ sync() {
                 return 0
                 ;;
 
-
             *)
                 error "sync expected preposition 'from' or 'with', got '$prep'"
                 return 0
                 ;;
-
         esac
 
     else
-        # Intent B: Discover source from existing target metadata
+        # Re-converge using the existing repository metadata.
         if [[ ! -d "$target/.git" ]]; then
             error "Cannot sync '$target' without a source: directory is not a git repository"
             return 0
         fi
 
-        source=$(git -C "$target" config --get remote.origin.url 2>/dev/null)
+        source="$(git -C "$target" config --get remote.origin.url 2>/dev/null)" || {
+            error "Cannot sync '$target': failed to read remote origin URL"
+            return 0
+        }
 
         if [[ -z "$source" ]]; then
             error "Cannot sync '$target': no remote origin URL configured"
             return 0
         fi
-
-        source=$(normalize_git_url "$source")
     fi
-
 
     # Target directory preparation
     if [[ ! -d "$target" ]]; then
@@ -75,11 +67,12 @@ sync() {
         fi
     fi
 
-
-    # Dispatch git clone/update based on contents
+    # Dispatch git clone/update based on contents.
     if [[ -z "$(ls -A "$target" 2>/dev/null)" ]]; then
-        sync_clone "$target" "$source"
+        sync_git "$target" "$source"
     else
         sync_existing "$target" "$source"
     fi
+
+    return 0
 }

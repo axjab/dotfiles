@@ -53,7 +53,7 @@ extract_raw_host_and_path() {
     echo "$url"
 }
 
-sync_clone() {
+sync_git() {
     local target="$1"
     local source="$2"
     local git_err token raw_url auth_url auth_header clone_status=0
