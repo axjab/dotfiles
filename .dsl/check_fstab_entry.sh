@@ -26,7 +26,7 @@ check_fstab_entry() {
     echo "Append the following record to /etc/fstab:"
     echo
     echo "$record"
-    echo "$record" | $BIN/clip
+    echo "$record" | /exe/clp
     echo "[copied to clipboard]" 
 
     return 1

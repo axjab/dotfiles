@@ -1,0 +1,5 @@
+
+# Reload with
+# gpg-connect-agent reloadagent /bye
+
+pinentry-program /usr/bin/pinentry-curses

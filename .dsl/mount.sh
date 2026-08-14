@@ -116,13 +116,13 @@ mount_nfs() {
 
     if [[ "$source_host" == "$this_host" ]]; then
         if [[ -L "$target" && "$(readlink -f "$target")" == "$(readlink -f "$source_path")" ]]; then
-            msg "SYMLINK" "$source_path --> $target (unchanged)"
+            msg "LINK" "$source_path --> $target (unchanged)"
             return 0
         fi
 
         create_dir "$(dirname "$target")"
         ln -sfn "$source_path" "$target"
-        msg "SYMLINK" "$source_path --> $target (local host, aliasing)"
+        msg "LINK" "$source_path --> $target (local host, aliasing)"
         return 0
     fi
 

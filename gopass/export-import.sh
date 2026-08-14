@@ -2,7 +2,8 @@
 
 # SOURCE MACHINE COMMANDS
 
-~/env/export
+
+~/etc/export
 
 # TARGET MACHINE COMMANDS
 

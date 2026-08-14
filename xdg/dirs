@@ -7,9 +7,16 @@
 # 
 XDG_DESKTOP_DIR="$HOME/.desktop"
 XDG_DOWNLOAD_DIR="$HOME/dump"
-XDG_TEMPLATES_DIR="$HOME/"
-XDG_PUBLICSHARE_DIR="$HOME/"
-XDG_DOCUMENTS_DIR="$HOME/"
-XDG_MUSIC_DIR="$HOME/"
-XDG_PICTURES_DIR="$HOME/"
-XDG_VIDEOS_DIR="$HOME/"
+XDG_TEMPLATES_DIR="/data/templates"
+XDG_PUBLICSHARE_DIR="/repo/public"
+XDG_DOCUMENTS_DIR="/repo/docs"
+XDG_MUSIC_DIR="/repo/audio"
+XDG_PICTURES_DIR="/repo/photo"
+XDG_VIDEOS_DIR="/repo/photo"
+
+# XDG_DATA_HOME=/data  # DECISION:
+# 1. Change XDG_DATA_HOME to /data?
+# 2. Link /data to ~/.local/share (no, served data cannot be owned by user)
+# 3. Keep separate (does .local/share contain any data of interest for backup?)
+
+# XDG_CACHE_HOME=$HOME/.cache (default)

@@ -16,45 +16,103 @@ export gum=$BIN/gum
 # TODO: MAJOR WORK: Make this Hostfile orderless, parse everything THEN execute. Perhaps bash is not suited for this?
 # TODO: Do tasks in parallel
 # sync -> resolve conflicts -> rerun
+# TODO: cleanup variable snapshots and all other tmp state
 
 for dsl in "$DSL"/*.sh; do
     source "$dsl"
 done
 
+require internet  # IMPLICIT
+
 ##############################################################
 
-# PREREQUISITES *****************************************
+# TODO ***********************************
+# 1. Make internet requirement implicit and part of launch, not Hostfile
+# 2. Start by establishing identity, this is done by generating keys (internet not needed)
+# 3. Add "auth"/"connect" directive at beginning, setup connection to ALL external services EARLY
+# 4. Remove namespaces? They don't add much, do they?
+# 5.Hostfile / DSL
+#  Replace require with hook
+#  Define exact hook directive syntax
+#  Define hook lookup location, probably ~/etc/hooks/<name>
+#  Define hook execution semantics
+#  exit 0 = success
+#  non-zero = failure
+#  execute in a way that is safe under parent set -e
+#  Define hook stdout protocol
+#  machine-parseable
+#  rich success/error messages
+#  distinguish stdout protocol from stderr diagnostics
+#  Decide whether hook response is line-based or JSON
+#  Define default success message supplied by Hostfile
+#  Define precedence between Hostfile message and hook-provided message
+#  Decide whether hooks may return arbitrary data/facts to the Hostfile
+#  Decide whether hooks support progress output
+#  Implement generic hook runner
+#  Remove _require_* dispatch architecture
+#  Convert existing internet, tailnet, ssh, keys, github implementations into hooks where appropriate
+# Bootstrap / ordering
+#  Establish common host bootstrap phases
+#  Creation/bootstrap must establish local identity before external dependencies
+#  Internet is an implicit universal prerequisite
+#  Gather external dependencies before synchronization/configuration
+#  Tailnet must be authenticated before private network-dependent operations
+#  GitHub must be authenticated before private repository synchronization
+#  Revisit exact ordering of SSH identity, GPG identity, Tailnet, GitHub
+#  Determine which things are genuinely universal versus provider-specific hooks
+# Keys / identity
+#  Clarify distinction between SSH host identity and GPG secret identity
+#  create key ssh / equivalent should create local SSH identity and configure SSH
+#  create key gpg / equivalent should create local GPG identity
+#  Automate GPG enrollment as much as possible
+#  Keep human-assisted enrollment where unavoidable
+#  Decide compact Unix-style GPG UID convention
+#  Document that fingerprints are public identifiers, not secret key material
+# Synchronization
+#  Keep GitHub authentication ahead of sync
+#  Revisit /data/secrets versus Bitwarden / other secret-management model
+#  Decide whether synchronization belongs to its own explicit phase
+#  Ensure bootstrap can synchronize the Hostfile/configuration itself
+# Hostfile structure
+#  Separate bootstrap/gathering from common state declarations
+#  Keep host declarations descriptive rather than procedural
+#  Separate services, installation, mounts, and configuration
+#  Define how common declarations and host-specific exceptions work
+#  Decide whether directories are implicitly created by namespace, sync, mount, etc.
+#  Remove stale/commented-out implementation experiments from the canonical Hostfile
 
-require internet
-require tailnet
 require ssh
+require keys
+# create key gpg
+# create key ssh
+ 
+require tailnet 
 require github
-require repository # NOT IMPLEMENTED; OUT OF SCOPE
+# hook tailnet	yields "Tailnet authenticated"
+# hook github		yields "Github	authenticated"
+# hook garage		yields "S3 API 	authenticated"
+# hook nats			yields "Connected to NATS"
 
-namespace data  # Mutable state
-namespace repo  # Shared file repository
-namespace exe   # Non-system executables
-namespace log   # Non-system log aggregation
-namespace net   # Network topology
-namespace svc   # Services
-namespace job   # Recurring jobs
-
-sync ~/etc 					from 'github:axjab/dotfiles'    # self-update
+sync ~/etc 					from 'github:axjab/dotfiles'    # self-update, make implicit
 sync /exe 					from 'github:axjab/executables'
-sync /data/secrets	from 'github:axjab/secrets'
+sync /data/secrets	from 'github:axjab/secrets'     # change location? reconcile with bitwarden?
 
 install exe-path in sudoers <<-EOF
 	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
 EOF
 
-# IDENTITIY ******************************************
+# HOSTS ******************************************
 
-host firelink at 100.121.116.55
+host firelink at 100.121.116.55  # THIS TAKES A SNAPSHOT OF VARIABLES
+	is='headless server'  # instead of implementing a
+	at=100.121.116.55			# new key each time, pull declared
+	user=ash							# variables from local -p or declare -p
+	os=Debian
 	is  	headless server
 	# at
 	user 	ash 	
 	os 		Debian
-:
+:  # REPLACE WITH DOT (.)
 host majula at 100.109.130.76 
 	is		headless server
 	user	solaire
@@ -76,7 +134,7 @@ host aran
 	is 	low-powered pc
 	os	Debian
 :
-exit 1
+
 # SERVICES ****************************************
 
 host service wiki 				at localhost
@@ -85,46 +143,51 @@ host service repository		at majula
 host service pocketbase		at majula
 host service uptime-kuma	at majula
 
+# INSTALLATION ************************************
+
+# for all
+# 	install tldr
+# 	install nfs-common (?) for mountpoints
+# 	install unison
+# 	install kitty-terminfo
+#
+# for pc
+# 	install vivaldi
+# 	install code
+
+# FILESYSTEM MOUNTPOINTS **************************
+set +e
+
+# for all but majula  ( only execute this step if host is NOT majula)
+		mount nfs majula:/mnt/ssd 			onto /mnt/majula.ssd
+		mount dir /mnt/majula.ssd/files onto /repo
+
+# for majula
+	mount dir /mnt/ssd/data/garage	onto /data/garage/data
+
+set -e
+
 # CONFIGURATION ***********************************
 link gopass/config	to ~/.config/gopass/config
+link /usr/bin/pinentry-curses to /usr/bin/pinentry
 process	 shell/env 	to ~/.env
 link shell/aliases	to ~/.aliases
 link shell/bashrc  	to ~/.bashrc
 sync /data/helix		with 'ssh://majula//data/helix'
 sync ~/host  # move to .host?
-
-echo "PREMATURE EXIT"
-exit 1 #*****************************************************
-
-## FILESYSTEM MOUNTPOINTS
-# NEED TAGGING DSL
-set +e
-mount nfs majula:/mnt/ssd 			onto /mnt/majula.ssd		# for all but Majula
-mount dir /mnt/majula.ssd/files onto /repo							# for all but Majula
-mount dir /mnt/ssd/data/garage	onto /data/garage/data	# for host majula only
-set -e
-
-## APP CONFIG
-link		niri/config.kdl			to ~/.config/niri/config.kdl
-# process ssh/config				to ~/.ssh/config
-symlink helix/config.toml		to ~/.config/helix/config.toml
-symlink helix/lang.toml			to ~/.config/helix/languages.toml
-symlink ~/.config/helix 		to /root/.config/helix
-# sudo ln -sv ~/.config/helix /root/.config/helix
+link niri/config.kdl			to ~/.config/niri/config.kdl
+link helix/config.toml		to ~/.config/helix/config.toml
+link helix/lang.toml			to ~/.config/helix/languages.toml
+link ~/.config/helix 			to /root/.config/helix
 process aichat/config.yaml 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
-symlink bat/config					to /etc/bat/config
-symlink gh/config.yml				to ~/.config/gh/config.yml
-symlink git/config					to /etc/gitconfig
-symlink sqlite/config				to ~/.sqliterc
-symlink starship/config			to ~/.config/starship.toml
-symlink taskdog/cli.toml    to ~/.config/taskdog/cli.toml
-symlink xdg/dirs 						to ~/.config/user-dirs.dirs
-# symlink xdg/locale			to ~/.config/locale.conf  # verify; may be /etc/locale.conf
-
-# reload needed
-# 1. load language
-# 2. deploy config
-# 3. reload parent shell, is it possible?
+link bat/config						to /etc/bat/config
+link gh/config.yml				to ~/.config/gh/config.yml
+link git/config						to /etc/gitconfig
+# link gnupg/config					to ~/.gnupg/gpg-agent.conf
+link sqlite/config				to ~/.sqliterc
+link starship/config			to ~/.config/starship.toml
+link taskdog/cli.toml			to ~/.config/taskdog/cli.toml
+link xdg/dirs 						to ~/.config/user-dirs.dirs   # /etc is preferable
 
 # POST-SCRIPTUM NOTES
 #
@@ -134,26 +197,7 @@ symlink xdg/dirs 						to ~/.config/user-dirs.dirs
 # 	- be honored in its purpose by utilities and services
 # 	- be mirroring my HOST IDENTITY FILESYSTEM standard
 
-# bootstrap_ssh() {
-
-	# host <hostname>
-	#   is   <tags...>
-	#   at   <ip or domain.com>
-	#   os   ...
-	#   user <user>
-
-	# should generate
-
-	# Host <hostname>
-	#   Hostname <ip or domain.com>
-	#   User <user>
-
-
-	# - [ ] update host:~/.ssh/authorized_keys
-	# - [ ] reset remote hosts's sshd_config
-
-
-	# ssh exec: add "~/.ssh/*.pub" to "host:~/.ssh/authorized_keys" idempotently
-
-	
-# }
+# reload needed
+# 1. load language
+# 2. deploy config
+# 3. reload parent shell, is it possible?
