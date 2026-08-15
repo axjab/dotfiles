@@ -65,15 +65,11 @@ host service uptime-kuma	at majula
 
 install	eza
 install tree
-install tldr
 install nfs-common
-install unison
 install kitty-terminfo
 
-install vivaldi IF NOT headless
-install code		IF NOT headless
-
-exit 1
+# install vivaldi IF NOT headless   # TODO
+# install code		IF NOT headless		# TODO
 
 # FILESYSTEM MOUNTPOINTS **************************
 set +e
@@ -94,8 +90,7 @@ link gopass/config	to ~/.config/gopass/config
 process	 shell/env 	to ~/.env
 link shell/aliases	to ~/.aliases
 link shell/bashrc  	to ~/.bashrc
-sync /data/helix		with 'ssh://majula//data/helix'
-sync ~/host  # move to .host?
+sync /data/helix		with 'ssh://majula//data/helix'  # every 6h # TODO: SLOW....
 link niri/config.kdl			to ~/.config/niri/config.kdl
 link niri/animation				to ~/.config/niri/animation
 link helix/config.toml		to ~/.config/helix/config.toml

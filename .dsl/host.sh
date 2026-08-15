@@ -27,7 +27,7 @@
 #
 #   /etc/hosts
 #   ~/.ssh/config
-#   $ROOT/.cache/host/state.json
+#   ${XDG_CACHE_DIR:-~/.cache}/host/state.json
 #
 # SSH connectivity is tested after convergence. Failure is soft: the user is
 # shown the local host public key and given an opportunity to install it on
@@ -53,23 +53,17 @@ os=""
 de=""
 
 # -----------------------------------------------------------------------------
-# $ROOT / state
+# Cache / state
+#
+# Persistent host state belongs to the user's cache, not the Hostfile
+# repository. XDG_CACHE_DIR may be supplied explicitly; ~/.cache is the
+# fallback.
 # -----------------------------------------------------------------------------
 
-_host_require_root() {
-    if [[ -z "${ROOT:-}" ]]; then
-        error "host: \$ROOT is not set"
-        return 1
-    fi
-
-    if [[ ! -d "$ROOT" ]]; then
-        error "host: \$ROOT ('$ROOT') is not a directory"
-        return 1
-    fi
-}
+HOST_CACHE_DIR="${XDG_CACHE_DIR:-${HOME}/.cache}/host"
 
 _host_state_file() {
-    printf '%s/.cache/host/state.json' "$ROOT"
+    printf '%s/state.json' "$HOST_CACHE_DIR"
 }
 
 _host_require_jq() {
@@ -87,7 +81,7 @@ _host_ensure_state_file() {
     state_dir="$(dirname "$state_file")"
 
     if ! mkdir -p "$state_dir"; then
-        error "host: failed to create state directory '$state_dir'"
+        error "host: failed to create cache directory '$state_dir'"
         return 1
     fi
 
@@ -271,7 +265,6 @@ host() {
         fi
     fi
 
-    _host_require_root || return 1
     _host_require_jq || return 1
     _host_ensure_state_file || return 1
 
@@ -596,11 +589,6 @@ _host_apply_etc_hosts() {
     local name="$_HOST_PENDING_NAME"
     local ip="$_HOST_PENDING_AT"
     local state_file
-
-    _host_require_root || {
-        _host_reset_scope
-        return 1
-    }
 
     _host_require_jq || {
         _host_reset_scope

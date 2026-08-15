@@ -21,6 +21,7 @@ ensure_package() {
     # shellcheck disable=SC1091
     . /etc/os-release
     os_id="${ID:-}"
+    os_id="${os_id,,}"
 
     case "$os_id" in
         debian)
