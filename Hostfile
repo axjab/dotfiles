@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
 
-# TODO: INCLUDE SELF-SYNC HERE INSTEAD OF sync ~/etc
-# TODO: MAJOR WORK: Make this Hostfile orderless, parse everything THEN execute. Perhaps bash is not suited for this?
-# TODO: Do tasks in parallel
-# sync -> resolve conflicts -> rerun
-# TODO: cleanup variable snapshots and all other tmp state
-
-# let bin 	be /exe from 'github:axjab/executables'
-# let vault be /data/secrets from 'github:axjab/secrets'
+binaries='/exe from github:axjab/executables'
+vault='/data/secrets from github:axjab/vault'
 
 # IDENTITY
 create key gpg
@@ -18,12 +12,8 @@ hook tailnet	"Tailnet authenticated"
 hook github		"Github	authenticated"
 # hook garage		"S3 API authenticated"
 # hook nats			"Connected to NATS"
-
-sync ~/etc 					from 'github:axjab/dotfiles'    # self-update, make implicit
-sync /exe 					from 'github:axjab/executables'
-# sync bin
-sync /data/secrets	from 'github:axjab/secrets'     # change location? reconcile with bitwarden?
-# sync vault
+sync $binaries
+sync $vault
 
 install exe-path in sudoers <<-EOF
 	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
@@ -119,16 +109,3 @@ link sqlite/config				to ~/.sqliterc
 link starship/config			to ~/.config/starship.toml
 link taskdog/cli.toml			to ~/.config/taskdog/cli.toml
 link xdg/dirs 						to ~/.config/user-dirs.dirs   # /etc is preferable
-
-# POST-SCRIPTUM NOTES
-#
-# Namespaces should:
-#   - be located at the root of the filesystem
-# 	- be owned by $USER by default
-# 	- be honored in its purpose by utilities and services
-# 	- be mirroring my HOST IDENTITY FILESYSTEM standard
-
-# reload needed
-# 1. load language
-# 2. deploy config
-# 3. reload parent shell, is it possible?

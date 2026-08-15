@@ -41,3 +41,7 @@ THE HOST'S ENVIRONEMENT CONFIGURATION.
 
  TODO: PROMPT USER TO COMMIT A GIT REPO
 
+TODO: MAJOR WORK: Make this Hostfile orderless, parse everything THEN execute. Perhaps bash is not suited for this?
+TODO: Do tasks in parallel
+sync -> resolve conflicts -> rerun
+TODO: cleanup variable snapshots and all other tmp state
