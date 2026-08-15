@@ -5,69 +5,16 @@
 # TODO: Do tasks in parallel
 # sync -> resolve conflicts -> rerun
 # TODO: cleanup variable snapshots and all other tmp state
-# TODO ***********************************
-# 2. Start by establishing identity, this is done by generating keys (internet not needed)
-# 3. Add "auth"/"connect" directive at beginning, setup connection to ALL external services EARLY
-# 4. Remove namespaces? They don't add much, do they?
-# 5.Hostfile / DSL
-#  Replace require with hook
-#  Define exact hook directive syntax
-#  Define hook lookup location, probably ~/etc/hooks/<name>
-#  Define hook execution semantics
-#  exit 0 = success
-#  non-zero = failure
-#  execute in a way that is safe under parent set -e
-#  Define hook stdout protocol
-#  machine-parseable
-#  rich success/error messages
-#  distinguish stdout protocol from stderr diagnostics
-#  Decide whether hook response is line-based or JSON
-#  Define default success message supplied by Hostfile
-#  Define precedence between Hostfile message and hook-provided message
-#  Decide whether hooks may return arbitrary data/facts to the Hostfile
-#  Decide whether hooks support progress output
-#  Implement generic hook runner
-#  Remove _require_* dispatch architecture
-#  Convert existing internet, tailnet, ssh, keys, github implementations into hooks where appropriate
-# Bootstrap / ordering
-#  Establish common host bootstrap phases
-#  Creation/bootstrap must establish local identity before external dependencies
-#  Internet is an implicit universal prerequisite
-#  Gather external dependencies before synchronization/configuration
-#  Tailnet must be authenticated before private network-dependent operations
-#  GitHub must be authenticated before private repository synchronization
-#  Revisit exact ordering of SSH identity, GPG identity, Tailnet, GitHub
-#  Determine which things are genuinely universal versus provider-specific hooks
-# Keys / identity
-#  Clarify distinction between SSH host identity and GPG secret identity
-#  create key ssh / equivalent should create local SSH identity and configure SSH
-#  create key gpg / equivalent should create local GPG identity
-#  Automate GPG enrollment as much as possible
-#  Keep human-assisted enrollment where unavoidable
-#  Decide compact Unix-style GPG UID convention
-#  Document that fingerprints are public identifiers, not secret key material
-# Synchronization
-#  Keep GitHub authentication ahead of sync
-#  Revisit /data/secrets versus Bitwarden / other secret-management model
-#  Decide whether synchronization belongs to its own explicit phase
-#  Ensure bootstrap can synchronize the Hostfile/configuration itself
-# Hostfile structure
-#  Separate bootstrap/gathering from common state declarations
-#  Keep host declarations descriptive rather than procedural
-#  Separate services, installation, mounts, and configuration
-#  Define how common declarations and host-specific exceptions work
-#  Decide whether directories are implicitly created by namespace, sync, mount, etc.
-#  Remove stale/commented-out implementation experiments from the canonical Hostfile
 
+# IDENTITY
 create key gpg
 create key ssh
- 
-require tailnet 
-require github
-# hook tailnet	yields "Tailnet authenticated"
-# hook github		yields "Github	authenticated"
-# hook garage		yields "S3 API 	authenticated"
-# hook nats			yields "Connected to NATS"
+
+# INGREDIENTS
+hook tailnet	"Tailnet authenticated"
+hook github		"Github	authenticated"
+# hook garage		"S3 API authenticated"
+# hook nats			"Connected to NATS"
 
 sync ~/etc 					from 'github:axjab/dotfiles'    # self-update, make implicit
 sync /exe 					from 'github:axjab/executables'
