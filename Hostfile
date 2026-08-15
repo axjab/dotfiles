@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash 
 
-binaries='/exe from github:axjab/executables'
+bin='/exe from github:axjab/executables'
 vault='/data/secrets from github:axjab/vault'
 
 # IDENTITY
@@ -12,13 +12,11 @@ hook tailnet	"Tailnet authenticated"
 hook github		"Github	authenticated"
 # hook garage		"S3 API authenticated"
 # hook nats			"Connected to NATS"
-sync $binaries
+sync $bin
 sync $vault
 
-install exe-path in sudoers <<-EOF
-	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
-EOF
-# replace with COPY directive IF possible (hide the details)
+# SYSTEM CONFIG
+copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY
 
 # HOSTS ******************************************
 
@@ -74,7 +72,7 @@ host service uptime-kuma	at majula
 # for pc
 # 	install vivaldi
 # 	install code
-
+exit 0
 # FILESYSTEM MOUNTPOINTS **************************
 set +e
 

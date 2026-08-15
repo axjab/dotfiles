@@ -436,7 +436,7 @@ _host_check_ssh() {
     local name="$1"
 
     if _host_test_ssh "$name"; then
-        printf '\033[1;32m[+] SSH %s reachable\033[0m\n' "$name"
+        # printf '\033[1;32m[+] SSH %s reachable\033[0m\n' "$name"
         return 0
     fi
 

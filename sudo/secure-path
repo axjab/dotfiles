@@ -1,0 +1,3 @@
+
+# This file adds /exe to sudo's PATH.
+Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
