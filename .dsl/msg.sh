@@ -1,6 +1,6 @@
 msg() {
     local name="$1"
-    local body="$2"
+    local body="${2:-}"
 
     name="${name^^}"
 

@@ -1,33 +1,11 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
-# ETC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export BIN="$ROOT/.bin"		# contains dependencies
-export DSL="$ROOT/.dsl"		# contains language definitions
-export GUM_SPIN_SPINNER=meter
-export GUM_SPIN_ALIGN=left
-export GUM_SPIN_TIMEOUT=300s
-export GUM_SPIN_SHOW_ERROR=true
-# GUM_SPIN_SHOW_OUTPUT=true
-export gum=$BIN/gum
 
 # TODO: INCLUDE SELF-SYNC HERE INSTEAD OF sync ~/etc
 # TODO: MAJOR WORK: Make this Hostfile orderless, parse everything THEN execute. Perhaps bash is not suited for this?
 # TODO: Do tasks in parallel
 # sync -> resolve conflicts -> rerun
 # TODO: cleanup variable snapshots and all other tmp state
-
-for dsl in "$DSL"/*.sh; do
-    source "$dsl"
-done
-
-require internet  # IMPLICIT
-
-##############################################################
-
 # TODO ***********************************
-# 1. Make internet requirement implicit and part of launch, not Hostfile
 # 2. Start by establishing identity, this is done by generating keys (internet not needed)
 # 3. Add "auth"/"connect" directive at beginning, setup connection to ALL external services EARLY
 # 4. Remove namespaces? They don't add much, do they?
@@ -100,6 +78,7 @@ sync /data/secrets	from 'github:axjab/secrets'     # change location? reconcile 
 install exe-path in sudoers <<-EOF
 	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"
 EOF
+# replace with COPY directive IF possible (hide the details)
 
 # HOSTS ******************************************
 
@@ -119,13 +98,13 @@ host majula at 100.109.130.76
 	os		Debian	
 :
 host xenon
-	is	 gaming pc
+	is	 nvidia gaming pc
 	user ash
 	os 	 PikaOS
 	de	 Niri
 :
 host luminous at 100.95.238.38
-	is gaming pc
+	is nvidia gaming pc
 	user axjab
 	os PikaOS
 	de Niri
@@ -146,6 +125,7 @@ host service uptime-kuma	at majula
 # INSTALLATION ************************************
 
 # for all
+# 	install	eza
 # 	install tldr
 # 	install nfs-common (?) for mountpoints
 # 	install unison
@@ -168,8 +148,9 @@ set +e
 set -e
 
 # CONFIGURATION ***********************************
-link gopass/config	to ~/.config/gopass/config
 link /usr/bin/pinentry-curses to /usr/bin/pinentry
+
+link gopass/config	to ~/.config/gopass/config
 process	 shell/env 	to ~/.env
 link shell/aliases	to ~/.aliases
 link shell/bashrc  	to ~/.bashrc
