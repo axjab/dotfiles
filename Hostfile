@@ -59,10 +59,8 @@
 #  Decide whether directories are implicitly created by namespace, sync, mount, etc.
 #  Remove stale/commented-out implementation experiments from the canonical Hostfile
 
-require ssh
-require keys
-# create key gpg
-# create key ssh
+create key gpg
+create key ssh
  
 require tailnet 
 require github
