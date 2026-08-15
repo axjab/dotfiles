@@ -6,6 +6,9 @@
 # sync -> resolve conflicts -> rerun
 # TODO: cleanup variable snapshots and all other tmp state
 
+# let bin 	be /exe from 'github:axjab/executables'
+# let vault be /data/secrets from 'github:axjab/secrets'
+
 # IDENTITY
 create key gpg
 create key ssh
@@ -18,7 +21,9 @@ hook github		"Github	authenticated"
 
 sync ~/etc 					from 'github:axjab/dotfiles'    # self-update, make implicit
 sync /exe 					from 'github:axjab/executables'
+# sync bin
 sync /data/secrets	from 'github:axjab/secrets'     # change location? reconcile with bitwarden?
+# sync vault
 
 install exe-path in sudoers <<-EOF
 	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/exe"

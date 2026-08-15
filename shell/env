@@ -10,8 +10,10 @@
 #░░ ░░░░░░░░░░ ░░░░░    ░░░░░      ░░░      
 
 # READ-ONLY:
-# Edit ~/env/shell/env.templ then
-# exec ~/env/rebuild to apply
+# Edit ~/etc/shell/env.templ then
+# exec ~/etc/rebuild to apply
+
+export HOSTFILE=$HOME/etc/Hostfile
 
 # GENERAL
 # ------------------
