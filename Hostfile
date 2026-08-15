@@ -1,5 +1,7 @@
 #!/usr/bin/env bash 
 
+# Configfile a.k.a Hostfile
+
 bin='/exe from github:axjab/executables'
 vault='/data/secrets from github:axjab/vault'
 
@@ -61,17 +63,17 @@ host service uptime-kuma	at majula
 
 # INSTALLATION ************************************
 
-# for all
-# 	install	eza
-# 	install tldr
-# 	install nfs-common (?) for mountpoints
-# 	install unison
-# 	install kitty-terminfo
-#
-# for pc
-# 	install vivaldi
-# 	install code
-exit 0
+install	eza
+install tree
+install tldr
+install nfs-common
+install unison
+install kitty-terminfo
+
+install vivaldi IF NOT headless
+install code		IF NOT headless
+
+exit 1
 
 # FILESYSTEM MOUNTPOINTS **************************
 set +e

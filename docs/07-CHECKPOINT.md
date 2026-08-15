@@ -1,3 +1,29 @@
+# Current State
+
+This file is mutable. Verify important details against the code when code is
+available.
+
+## LAST UPDATES
+
+- We created hostcfg which updates $HOSTFILE/.. and loads $HOSTFILE
+- 
+
+## Repository
+
+Repository: `~/etc`
+
+`$ROOT` is established by the rebuild entrypoint.
+
+DSL implementations live under:
+
+    $ROOT/.dsl/
+
+General runtime state:
+
+    $XDG_CACHE_DIR/hostcfg.json  (~/.cache)
+
+Namespaces and repository/executable bootstrap intentionally happen early.
+
 # Hostcfg / Hostfile — Session Handoff
 
 ## Purpose
@@ -633,27 +659,6 @@ Some are currently guarded with `set +e` because host-specific mounts may legiti
 
 ---
 
-# Namespace question
-
-Current conceptual namespaces:
-
-```text
-namespace data
-namespace repo
-namespace exe
-namespace log
-namespace net
-namespace svc
-namespace job
-```
-
-Open question:
-
-* Should namespace declarations create directories?
-* Or do namespaces merely establish semantic filesystem roles?
-* Could paths instead be created when a directive actually needs them?
-
-Prefer the smallest meaningful semantics. Do not create machinery just because namespaces currently exist.
 
 ---
 
@@ -689,3 +694,15 @@ The next substantive task is to settle and implement the **hook mechanism**:
 
 Do not assume anything not present in the actual source.
 
+# Session Notes
+
+Things discovered during the current/previous conversation.
+
+- `require keys` previously produced `keys=` after `gpg --list-secret-keys`.
+- The old implementation appeared to fall through instead of completing the
+  enrollment workflow.
+- We want enrollment confirmation persisted by fingerprint.
+- `gum` should be preferred for interaction.
+- Do not repeatedly display enrollment instructions after confirmation.
+
+These notes are context, not authoritative specification.
