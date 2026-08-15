@@ -20,36 +20,35 @@ copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY
 
 # HOSTS ******************************************
 
-host firelink at 100.121.116.55  # THIS TAKES A SNAPSHOT OF VARIABLES
-	is='headless server'  # instead of implementing a
-	at=100.121.116.55			# new key each time, pull declared
-	user=ash							# variables from local -p or declare -p
+host firelink
+	is='headless server'
+	at=100.121.116.55
+	user=ash
 	os=Debian
-	is  	headless server
-	# at
-	user 	ash 	
-	os 		Debian
-:  # REPLACE WITH DOT (.)
-host majula at 100.109.130.76 
-	is		headless server
-	user	solaire
-	os		Debian	
+:
+host majula
+	is='headless server'
+	at=100.109.130.76
+	user=solaire
+	os=Debian
 :
 host xenon
-	is	 nvidia gaming pc
-	user ash
-	os 	 PikaOS
-	de	 Niri
+	is='nvidia gaming pc'
+	at=100.66.43.42
+	user=ash
+	os=PikaOS
+	de=Niri
 :
-host luminous at 100.95.238.38
-	is nvidia gaming pc
-	user axjab
-	os PikaOS
-	de Niri
+host luminous
+	is='nvidia gaming pc'
+	at='100.95.238.38'
+	user=axjab
+	os=PikaOS
+	de=Niri
 :
 host aran
-	is 	low-powered pc
-	os	Debian
+	is='low-powered pc'
+	os=Debian
 :
 
 # SERVICES ****************************************
@@ -73,6 +72,7 @@ host service uptime-kuma	at majula
 # 	install vivaldi
 # 	install code
 exit 0
+
 # FILESYSTEM MOUNTPOINTS **************************
 set +e
 
@@ -95,6 +95,7 @@ link shell/bashrc  	to ~/.bashrc
 sync /data/helix		with 'ssh://majula//data/helix'
 sync ~/host  # move to .host?
 link niri/config.kdl			to ~/.config/niri/config.kdl
+link niri/animation				to ~/.config/niri/animation
 link helix/config.toml		to ~/.config/helix/config.toml
 link helix/lang.toml			to ~/.config/helix/languages.toml
 link ~/.config/helix 			to /root/.config/helix

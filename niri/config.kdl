@@ -1,3 +1,6 @@
+
+include "animation"  // ~/etc/niri/animations
+
 input {
     keyboard {
         repeat-delay 300
@@ -104,13 +107,6 @@ hotkey-overlay {
 //screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 screenshot-path null
 screenshot-notification-disable
-animations {
-    // Uncomment to turn off all animations.
-    // off
-
-    // Slow down all animations by this factor. Values below 1 speed them up instead.
-    // slowdown 3.0
-}
 
 window-rule {
     match app-id="^(steam_app_.*)$"

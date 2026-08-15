@@ -360,7 +360,7 @@ host_service() {
     local status
     status="$(_host_service_apply_etc_hosts "$service" "$ip")" || return 1
 
-    msg SERVICE "$service <--- $target ($status)"
+    msg SERVE "$service <--- $target ($status)"
 
     return 0
 }
