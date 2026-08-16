@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sync() {
+Sync() {
     local target="${1:-}"
     local prep="${2:-}"
     local source="${3:-}"

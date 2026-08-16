@@ -24,7 +24,7 @@ resolve_path() {
     fi
 }
 
-copy() {
+Copy() {
     local raw_source="${1:-}"
     local prep="${2:-}"
     local raw_target="${3:-}"

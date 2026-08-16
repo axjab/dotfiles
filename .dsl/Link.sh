@@ -27,7 +27,7 @@ symlink() {
     link "$@"
 }
 
-link() {
+Link() {
     local raw_source="${1:-}"
     local prep="${2:-}"
     local raw_target="${3:-}"

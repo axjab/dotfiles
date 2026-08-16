@@ -2,106 +2,127 @@
 
 # Configfile a.k.a Hostfile
 
-bin='/exe from github:axjab/executables'
-vault='/data/secrets from github:axjab/vault'
-
 # IDENTITY
-create key gpg
-create key ssh
+Create key gpg
+Create key ssh
 
 # INGREDIENTS
-hook tailnet	"Tailnet authenticated"
-hook github		"Github	authenticated"
+Hook tailnet	"Tailnet authenticated"
+Hook github		"Github	authenticated"
 # hook garage		"S3 API authenticated"
 # hook nats			"Connected to NATS"
-sync $bin
-sync $vault
+
+Sync /exe from github:axjab/executables
+Sync /data/secrets from github:axjab/vault
 
 # SYSTEM CONFIG
-copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY
+Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY
 
 # HOSTS ******************************************
 
-host firelink
+Host firelink
 	is='headless server'
 	at=100.121.116.55
 	user=ash
 	os=Debian
-:
-host majula
+: # use this --- or ~~ as scope terminators
+
+# THE SCOPE TERMINATOR --- is a legitimate directive
+# which executes the LAST CALLED directive with additional context
+# Here is how it works:
+# SCOPED_DIRECTIVE [args...]   	# a SCOPED_DIRECTIVE may be in a single line
+# 															# in such cases, it can either be:
+# 															# 1. Implicitely terminated with a special arg
+# 															# 2. Explicitely terminated with a scope terminator
+#
+# 	x=a													# The previous directive is now in-effect.
+# 	y=b													# Every subsequent variable will be contained
+# 	z=c													# only within its scope or context
+# ---														# This directive collects all declared variables
+# 															# and reexecutes the directive like:
+# 				x=a y=b z=c SCOPED_DIRECTIVE [args...] ---
+
+Host majula
 	is='headless server'
 	at=100.109.130.76
 	user=solaire
 	os=Debian
 :
-host xenon
+# equivalent to
+# is='headless server' at=100.109.130.76 user=solaire os=Debian Host majula ---
+Host xenon
 	is='nvidia gaming pc'
 	at=100.66.43.42
 	user=ash
 	os=PikaOS
-	de=Niri
 :
-host luminous
+Host luminous
 	is='nvidia gaming pc'
 	at='100.95.238.38'
 	user=axjab
 	os=PikaOS
-	de=Niri
 :
-host aran
+Host aran
 	is='low-powered pc'
 	os=Debian
 :
 
 # SERVICES ****************************************
 
-host service wiki 				at localhost
-host service nats					at majula
-host service repository		at majula
-host service pocketbase		at majula
-host service uptime-kuma	at majula
+Host service wiki 				at localhost
+Host service nats					at majula
+Host service repository		at majula
+Host service pocketbase		at majula
+Host service uptime-kuma	at majula
+
+# FILESYSTEM MOUNTPOINTS **************************
+
+# For all devices under /dev, PRINT THEIR /etc/fstab entry
+# lsblk -f /dev/sda1
+# Device /dev/sda1 is not mounted!
+# Add <> to /etc/fstab
+
+set +e
+
+# For all but majula \  ( only execute this step if host is NOT majula)
+		Mount nfs majula:/mnt/ssd 			onto /mnt/majula.ssd
+		Mount dir /mnt/majula.ssd/files onto /repo
+# ---
+:
+For majula only
+	Mount dir /mnt/ssd/data/garage	onto /data/garage/data
+# ---
+set -e
 
 # INSTALLATION ************************************
 
-install	eza
-install tree
-install nfs-common
-install kitty-terminfo
+Install	eza
+Install tree
+Install nfs-common
+Install kitty-terminfo
 
+# For not headless
 # install vivaldi IF NOT headless   # TODO
 # install code		IF NOT headless		# TODO
 
-# FILESYSTEM MOUNTPOINTS **************************
-set +e
-
-# for all but majula  ( only execute this step if host is NOT majula)
-		mount nfs majula:/mnt/ssd 			onto /mnt/majula.ssd
-		mount dir /mnt/majula.ssd/files onto /repo
-
-# for majula
-	mount dir /mnt/ssd/data/garage	onto /data/garage/data
-
-set -e
-
 # CONFIGURATION ***********************************
-link /usr/bin/pinentry-curses to /usr/bin/pinentry
+Link /usr/bin/pinentry-curses to /usr/bin/pinentry
 
-link gopass/config	to ~/.config/gopass/config
-process	 shell/env 	to ~/.env
-link shell/aliases	to ~/.aliases
-link shell/bashrc  	to ~/.bashrc
-sync /data/helix		with 'ssh://majula//data/helix'  # every 6h # TODO: SLOW....
-link niri/config.kdl			to ~/.config/niri/config.kdl
-link niri/animation				to ~/.config/niri/animation
-link helix/config.toml		to ~/.config/helix/config.toml
-link helix/lang.toml			to ~/.config/helix/languages.toml
-link ~/.config/helix 			to /root/.config/helix
-process aichat/config.yaml 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
-link bat/config						to /etc/bat/config
-link gh/config.yml				to ~/.config/gh/config.yml
-link git/config						to /etc/gitconfig
+Link gopass/config	to ~/.config/gopass/config
+Process	 shell/env 	to ~/.env
+Link shell/aliases	to ~/.aliases
+Link shell/bashrc  	to ~/.bashrc
+Sync /data/helix		with 'ssh://majula//data/helix'  # every 6h # TODO: optimize
+Link niri/config.kdl			to ~/.config/niri/config.kdl
+Link niri/animation				to ~/.config/niri/animation
+Link helix/config.toml		to ~/.config/helix/config.toml
+Link helix/lang.toml			to ~/.config/helix/languages.toml
+Process aichat/config.yaml 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
+Link bat/config						to /etc/bat/config
+Link gh/config.yml				to ~/.config/gh/config.yml
+Link git/config						to /etc/gitconfig
 # link gnupg/config					to ~/.gnupg/gpg-agent.conf
-link sqlite/config				to ~/.sqliterc
-link starship/config			to ~/.config/starship.toml
-link taskdog/cli.toml			to ~/.config/taskdog/cli.toml
-link xdg/dirs 						to ~/.config/user-dirs.dirs   # /etc is preferable
+Link sqlite/config				to ~/.sqliterc
+Link starship/config			to ~/.config/starship.toml
+Link taskdog/cli.toml			to ~/.config/taskdog/cli.toml
+Link xdg/dirs 						to ~/.config/user-dirs.dirs   # /etc is preferable

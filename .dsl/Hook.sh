@@ -16,7 +16,7 @@
 # returns 1 — does NOT exit the parent shell.
 # =============================================================================
 
-hook() {
+Hook() {
     if [[ $# -lt 1 ]]; then
         error "hook: expected a hook name"
         return 1

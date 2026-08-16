@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-mount() {
+Mount() {
     local type="$1"
 
     case "$type" in

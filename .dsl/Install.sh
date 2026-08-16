@@ -106,7 +106,7 @@ _install_condition_matches() {
 # install PACKAGE [IF TAG | IF NOT TAG]
 # -----------------------------------------------------------------------------
 
-install() {
+Install() {
     local package="${1:-}"
 
     if [[ -z "$package" ]]; then

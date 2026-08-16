@@ -7,7 +7,7 @@
 #
 # =============================================================================
 
-create() {
+Create() {
     if [[ $# -lt 1 ]]; then
         error "create: expected a subcommand"
         return 1

@@ -1,7 +1,7 @@
 
 export gopass=$BIN/gopass
 
-process() {
+Process() {
     local source=$1
     local target=$3
     local template="$ROOT/$source"
