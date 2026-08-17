@@ -95,11 +95,13 @@ set -e
 
 # INSTALLATION ************************************
 
+Install pipx
 Install	eza
 Install tree
 Install nfs-common
 Install kitty-terminfo
 Install cmatrix
+# Install taskdog-ui via pipx
 
 # For not headless
 # install vivaldi IF NOT headless   # TODO
