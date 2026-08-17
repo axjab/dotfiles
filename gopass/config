@@ -3,7 +3,7 @@
 # $XDG_DATA_HOME/gopass/stores/root
 # TODO: rename to /data/vault or /vault
 [mounts]
-	path = /data/secrets
+	path = /data/vault
 
 [recipients]
 	# check = false

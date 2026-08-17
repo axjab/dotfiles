@@ -13,7 +13,7 @@ Hook github	"Github	authenticated"
 # hook nats	"Connected to NATS"
 
 Sync /exe from 'github:axjab/executables'
-Sync /data/secrets from 'github:axjab/vault'
+Sync /data/vault from 'github:axjab/vault'
 
 # SYSTEM CONFIG
 Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY
@@ -117,6 +117,7 @@ Link niri/config.kdl			to ~/.config/niri/config.kdl
 Link niri/animation				to ~/.config/niri/animation
 Link helix/config.toml		to ~/.config/helix/config.toml
 Link helix/lang.toml			to ~/.config/helix/languages.toml
+Link ly/config.ini				to /etc/ly/config.ini
 Process aichat/config.yaml 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
 Link bat/config						to /etc/bat/config
 Link gh/config.yml				to ~/.config/gh/config.yml
