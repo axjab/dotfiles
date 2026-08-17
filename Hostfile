@@ -69,8 +69,8 @@ Host aran
 
 # SERVICES ****************************************
 
-Host service wiki 		at localhost
-Host service nats		at majula
+Host service wiki					at localhost
+Host service nats					at majula
 Host service repository		at majula
 Host service pocketbase		at majula
 Host service uptime-kuma	at majula
@@ -99,6 +99,7 @@ Install	eza
 Install tree
 Install nfs-common
 Install kitty-terminfo
+Install cmatrix
 
 # For not headless
 # install vivaldi IF NOT headless   # TODO
