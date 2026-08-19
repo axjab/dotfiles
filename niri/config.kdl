@@ -14,6 +14,7 @@ input {
 
     mouse {
         accel-profile "flat"
+        accel-speed 0.9
     }
     focus-follows-mouse max-scroll-amount="0%"
 }
@@ -127,6 +128,7 @@ window-rule {
 binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
     Mod+Return { spawn "kitty"; }
+    Mod+T { spawn "kitty"; }
     Mod+D { spawn "pikabar-launcher"; }
     Super+Alt+L { spawn "pikabar-lock"; }
 
@@ -145,6 +147,7 @@ binds {
     Mod+J     { focus-window-down; }
     Mod+K     { focus-window-up; }
     Mod+L     { focus-column-right; }
+    //Mod+L       { spawn "swaylock"; }
 
     Mod+Ctrl+Left  { move-column-left; }
     Mod+Ctrl+Down  { move-window-down; }

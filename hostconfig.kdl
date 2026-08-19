@@ -1,0 +1,123 @@
+// Hostfile.kdl
+
+// IDENTITY
+create key gpg
+create key ssh
+
+// INGREDIENTS
+run "hooks/tailnet" {
+	if-ok "Tailnet authenticated"
+}
+run "hooks/github" {
+	if-ok "Github authenticated"
+	if-fail exit	
+}
+run "hooks/garage" {
+	if-ok "S3 API authenticated"
+}
+run "hooks/nats" {
+	if-ok "Connected to NATS"
+}
+
+sync "/exe" from "github:axjab/executables"
+sync "/data/vault" from "github:axjab/vault"
+copy "sudo/secure-path" to "/etc/sudoers.d/" mode=read-only
+
+hosts {
+    firelink {
+        ip '100.121.116.55'
+        user ash
+        os Debian
+        type server
+    }
+
+    majula {
+        ip '100.109.130.76'
+        user solaire
+        os Debian
+        type server
+    }
+
+    xenon {
+        ip '100.123.039.117'
+        user axjab
+        os PikaOS
+        type "nvidia gaming niri pc"
+    }
+
+    luminous {
+        address '100.95.238.38'
+        user axjab
+        os PikaOS
+        type "nvidia gaming niri pc"
+    }
+}
+
+services {
+    wiki        at localhost
+    nats        at majula
+    repository  at majula
+    pocketbase  at majula
+    uptime-kuma at majula
+}
+
+// FILESYSTEM MOUNTPOINTS
+for host is not majula {
+	mount nfs "majula:/mnt/ssd" onto "/mnt/majula.ssd"
+	mount dir "/mnt/majula.ssd/files" onto "/repo"
+}
+
+// INSTALLATION
+for all {  // alias to for host=*
+	install pipx;
+	install eza;
+	install tree;
+	install nfs-common;
+	install kitty-terminfo;
+	install cmatrix;
+	install taskdog-ui via=pipx;
+}
+
+for type=server {
+	
+}
+
+for os=PikaOS {
+	
+}
+
+for type=nvidia {
+	install "nvidia-driver"
+}
+
+// CONFIGURATION
+link "/usr/bin/pinentry-curses" to "/usr/bin/pinentry"
+
+link "gopass/config" to "~/.config/gopass/config"
+process "shell/env" to "~/.env"
+link "shell/aliases" to "~/.aliases"
+link "shell/bashrc" to "~/.bashrc"
+
+sync "/data/helix" with "ssh://majula//data/helix" every='6h'
+
+link "niri/config.kdl" to "~/.config/niri/config.kdl"
+link "niri/animation" to "~/.config/niri/animation"
+
+link "helix/config.toml" to "~/.config/helix/config.toml"
+link "helix/lang.toml" to "~/.config/helix/languages.toml"
+
+link "ly/config.ini" to "/etc/ly/config.ini"
+
+process "aichat/config.yaml" to "~/.config/aichat/config.yaml"
+
+link "bat/config" to "/etc/bat/config"
+link "gh/config.yml" to "~/.config/gh/config.yml"
+link "git/config" to "/etc/gitconfig"
+
+// link "gnupg/config" to "~/.gnupg/gpg-agent.conf"
+
+link "sqlite/config" to "~/.sqliterc"
+link "starship/config" to "~/.config/starship.toml"
+link "taskdog/cli.toml" to "~/.config/taskdog/cli.toml"
+link "tldr/config.toml" to "~/.config/tealdear/config.toml"
+link "xdg/dirs" to "~/.config/user-dirs.dirs"
