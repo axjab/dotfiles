@@ -128,4 +128,5 @@ Link git/config						to /etc/gitconfig
 Link sqlite/config				to ~/.sqliterc
 Link starship/config			to ~/.config/starship.toml
 Link taskdog/cli.toml			to ~/.config/taskdog/cli.toml
+Link tldr/config.toml			tp ~/.config/tealdeer/config.toml
 Link xdg/dirs 						to ~/.config/user-dirs.dirs   # /etc is preferable
