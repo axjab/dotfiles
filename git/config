@@ -1,15 +1,17 @@
 [user]
-	name = ahmad
-	email = axjab@x.alj.cx
+	name = axjab
+	email = axjab@github.com
 [core]
 	editor = /exe/hx
+[fetch]
+	# auto-prune remote branch
+	prune = true
+# [pull]
+	# rebase = false
 [alias]
-	# a = add
-	# aa = add .
 	ac = ! git add . && git commit -v
 	br = branch
 	co = checkout
-	cf = cat-file
 	cm = commit -v
 	cmm = commit -vm
 	df = diff
@@ -31,7 +33,5 @@
 	up = "! git remote update -p; git merge --ff-only @{u}"
 	# send = "! f() { git commit -v && git push; }; f"
 	sync = "! f() { git add . && git commit -v && git pull && git push; }; f"
-[credential "https://github.com"]
-	helper = !gh auth git-credential
-[pull]
-	rebase = false
+# [credential "https://github.com"]
+	# helper = !gh auth git-credential
