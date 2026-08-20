@@ -98,6 +98,7 @@ set -e
 Install pipx
 Install	eza
 Install tree
+Install kdiff3
 Install nfs-common
 Install kitty-terminfo
 Install cmatrix
@@ -115,6 +116,7 @@ Process	 shell/env 	to ~/.env
 Link shell/aliases	to ~/.aliases
 Link shell/bashrc  	to ~/.bashrc
 Sync /data/helix		with 'ssh://majula//data/helix'  # every 6h # TODO: optimize
+Sync /data/dns			with 'ssh://majula//data/dns'
 Link niri/config.kdl			to ~/.config/niri/config.kdl
 Link niri/animation				to ~/.config/niri/animation
 Link helix/config.toml		to ~/.config/helix/config.toml

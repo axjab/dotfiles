@@ -1,15 +1,24 @@
 #!/bin/bash
 
+DEBUG_BASHRC=true
+
+# ENVIRONMENT & ALIASES
+# -----------------------------------------------
+if [[ -f ~/.env ]]; then
+    set -a
+    source ~/.env
+    set +a
+else
+    echo -e "\033[1;33mWARNING: ~/.env not found — environment variables not loaded\033[0m" >&2
+    sleep 4
+fi
+[[ -f ~/.aliases ]] && source ~/.aliases
+
 # -----------------------------------------------
 # NON-INTERACTIVE GUARD
 # If not running interactively, don't do anything
 # -----------------------------------------------
 [[ $- != *i* ]] && return
-
-# ENVIRONMENT & ALIASES
-# -----------------------------------------------
-[[ -f ~/.env     ]] && source ~/.env  || echo -e "\033[1;33mWARNING: ~/.env not found — environment variables not loaded\033[0m" >&2
-[[ -f ~/.aliases ]] && source ~/.aliases
 
 # -----------------------------------------------
 # HISTORY
@@ -40,7 +49,7 @@ if [[ -x /usr/bin/dircolors ]]; then
 fi
 
 # -----------------------------------------------
-# BASH COMPLETION
+# COMPLETIONS (work-in-progress)
 # -----------------------------------------------
 if ! shopt -oq posix; then
     if [[ -f /usr/share/bash-completion/bash_completion ]]; then
@@ -49,6 +58,7 @@ if ! shopt -oq posix; then
         source /etc/bash_completion
     fi
 fi
+eval "$(dns shell-completion bash)"
 
 # -----------------------------------------------
 # PROMPT

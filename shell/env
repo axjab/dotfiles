@@ -11,65 +11,58 @@
 
 # READ-ONLY:
 # Edit ~/etc/shell/env.templ then
-# exec ~/etc/rebuild to apply
+# run `hostcfg` to apply
 
-export HOSTFILE=$HOME/etc/Hostfile
+PATH=$PATH:/exe
+HOSTFILE=$HOME/etc/Hostfile  # hostconfig.kdl
 
-# GENERAL
+# LOCALE
 # ------------------
 LANG='en_CA.UTF-8'
 LC_ALL='en_CA.UTF-8'
-export PATH=$PATH:/exe
-export TZ="America/Toronto"
-EDITOR=hx
-# export EDITOR='micro -eofnewline false'     # TUI, no new lines for gopass
-# export VISUAL='code --new-window --wait'    # GUI, wait files to load
-#-----------
+TZ='America/Toronto'
 
-# EDITING
+# FILE READ/WRITE
 # ------------------
-export BAT_STYLE="changes,header,header-filename,header-filesize,snip"
-if [[ -z "$SSH_CONNECTION" ]] && \
-   command -v code >/dev/null 2>&1 && \
-   { [[ -n "$DISPLAY" ]] || [[ -n "$WAYLAND_DISPLAY" ]]; }; then
-    export EDITOR=hx
-    export VISUAL='code --new-window --wait'
-else
-    # export EDITOR='micro -eofnewline false'
-	export EDITOR=hx
-    export VISUAL="$EDITOR"
-fi
+EDITOR=hx
+BAT_STYLE="changes,header,header-filename,header-filesize,snip"
 
-# DATA MANAGEMENT
+# if 	[[ -z "$SSH_CONNECTION" ]] &&
+	# command -v code >/dev/null 2>&1 &&
+	# { [[ -n "$DISPLAY" ]] || [[ -n "$WAYLAND_DISPLAY" ]]; }
+# then
+	# VISUAL='code --new-window --wait'
+# else
+	# VISUAL="$EDITOR"
+# fi
+
+# DATA STORAGE
 # ---------------------------
-export HELIX_RUNTIME=/data/helix
-export PASSWORD_STORE_DIR="/data/secrets"
-export UNISON=/data/unison
-export GOPATH=/exe
-export NVM_DIR="$HOME/.nvm"
+HELIX_RUNTIME=/data/helix
+PASSWORD_STORE_DIR="/data/vault"
+UNISON=/data/unison
+GOPATH=/exe
+NVM_DIR="$HOME/.nvm"
+CHARM_DATA_DIR=/data/charm
+DNS_CONTROL_DIR=/data/dns
 
-############################
-# SERVICES
-############################
+# API KEYS
+# ---------------------------
+BELFRY_TOKEN={{ getpw "belfry/token" }}
 
-export BELFRY_TOKEN={{ getpw "belfry/token" }}
+CALDAV_URL="https://caldav.alj.cx"
+CALDAV_USER={{ getpw "caldav/user" }}
+CALDAV_PASS="{{ getpw "caldav/pass" }}"
+CALDAV_API_KEY={{ getpw "caldav/api-key" }}
 
-export CALDAV_URL="https://caldav.alj.cx"
-export CALDAV_USER={{ getpw "caldav/user" }}
-export CALDAV_PASS="{{ getpw "caldav/pass" }}"
-export CALDAV_API_KEY={{ getpw "caldav/api-key" }}
+CHARM_IDENTITY_KEY=DOES-NOT-EXIST
 
-export NATS_URL='nats://nats:4222'
+NATS_URL='nats://nats:4222'
 
-export NTFY_URL={{ getpw "ntfy/url" }}
-export NTFY_TOKEN={{ getpw "ntfy/token" }}
-export NTFY_TOKEN_64=$( echo -n "Bearer $NTFY_TOKEN" | base64 )
+NTFY_URL={{ getpw "ntfy/url" }}
+NTFY_TOKEN={{ getpw "ntfy/token" }}
+NTFY_TOKEN_64=$( echo -n "Bearer $NTFY_TOKEN" | base64 )
 
-export SILVERBULLET_DOCS="$HOME/docs"
+SILVERBULLET_DOCS="$HOME/docs"
 
-# All should be defined in cli.toml
-# export TASKDOG_REGION_COUNTRY="CA"
-# export TASKDOG_API_HOST="firelink"
-# export TASKDOG_API_PORT=8000
-export TASKDOG_API_KEY={{ getpw "taskdog/api_key" }}
-# export TASKDOG_GANTT_MIN_DISPLAY_DAYS=56
+TASKDOG_API_KEY={{ getpw "taskdog/api_key" }}
