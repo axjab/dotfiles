@@ -72,6 +72,7 @@ layer-rule {
     place-within-backdrop true
 }
 
+spawn-sh-at-startup "xhost +SI:localuser:root" // allows GUI to be opened by sudo
 spawn-at-startup "/usr/bin/mate-polkit"
 spawn-at-startup "pikabar"
 spawn-at-startup "systemctl" "--user" "enable" "--now" "hypridle"
