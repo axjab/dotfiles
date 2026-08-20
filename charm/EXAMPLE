@@ -1,0 +1,8 @@
+  Host        string `env:"CHARM_HOST" envDefault:"cloud.charm.sh"`
+  SSHPort     int    `env:"CHARM_SSH_PORT" envDefault:"35353"`
+  HTTPPort    int    `env:"CHARM_HTTP_PORT" envDefault:"35354"`
+  Debug       bool   `env:"CHARM_DEBUG" envDefault:"false"`
+  Logfile     string `env:"CHARM_LOGFILE" envDefault:""`
+  KeyType     string `env:"CHARM_KEY_TYPE" envDefault:"ed25519"`
+  DataDir     string `env:"CHARM_DATA_DIR" envDefault:""`
+  IdentityKey string `env:"CHARM_IDENTITY_KEY" envDefault:""`
