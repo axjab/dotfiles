@@ -1,4 +1,0 @@
-
-binds {
-	Super+L { spwan "swaylock"; }
-}

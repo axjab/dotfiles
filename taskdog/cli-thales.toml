@@ -1,0 +1,9 @@
+[api]
+host = "tasks.thales.alj.cx"
+port = 80
+
+[region]
+country = "CA"
+
+[ui]
+theme = "tokyo-night"
