@@ -27,21 +27,6 @@ Host firelink at 100.121.116.55
 	os=Debian
 : # use this --- or ~~ as scope terminators
 
-# THE SCOPE TERMINATOR --- is a legitimate directive
-# which executes the LAST CALLED directive with additional context
-# Here is how it works:
-# SCOPED_DIRECTIVE [args...]   	# a SCOPED_DIRECTIVE may be in a single line
-# 															# in such cases, it can either be:
-# 															# 1. Implicitely terminated with a special arg
-# 															# 2. Explicitely terminated with a scope terminator
-#
-# 	x=a													# The previous directive is now in-effect.
-# 	y=b													# Every subsequent variable will be contained
-# 	z=c													# only within its scope or context
-# ---														# This directive collects all declared variables
-# 															# and reexecutes the directive like:
-# 				x=a y=b z=c SCOPED_DIRECTIVE [args...] ---
-
 Host majula at 100.109.130.76
 	is='headless server'
 	at=100.109.130.76
@@ -95,7 +80,8 @@ set -e
 
 # INSTALLATION ************************************
 
-Install pipx
+Install pipx  # for Python applications like Taskdog
+# curl https://sh.rustup.rs -sSf | sh # for Rust applications like bluetui and impala
 Install	eza
 Install tree
 Install kdiff3
@@ -111,10 +97,11 @@ Install cmatrix
 # CONFIGURATION ***********************************
 Link /usr/bin/pinentry-curses to /usr/bin/pinentry
 
+Process env to ~/.env
+
+Link bash/aliases	to ~/.aliases
+Link bash/bashrc  to ~/.bashrc
 Link gopass/config	to ~/.config/gopass/config
-Process	 shell/env 	to ~/.env
-Link shell/aliases	to ~/.aliases
-Link shell/bashrc  	to ~/.bashrc
 Sync /data/helix		with 'ssh://majula//data/helix'  # every 6h # TODO: optimize
 Sync /data/dns			with 'ssh://majula//data/dns'
 Link niri/config.kdl			to ~/.config/niri/config.kdl
@@ -127,8 +114,7 @@ Link bat/config						to /etc/bat/config
 Link gh/config.yml				to ~/.config/gh/config.yml
 Link git/config						to /etc/gitconfig
 # link gnupg/config					to ~/.gnupg/gpg-agent.conf
-Link sqlite/config				to ~/.sqliterc
-Link starship/config			to ~/.config/starship.toml
+Link starship/config.toml	to ~/.config/starship.toml
 Link taskdog/cli.toml			to ~/.config/taskdog/cli.toml
 Link tldr/config.toml			to ~/.config/tealdeer/config.toml
 Link xdg/dirs 						to ~/.config/user-dirs.dirs   # /etc is preferable

@@ -10,7 +10,7 @@
 #░░ ░░░░░░░░░░ ░░░░░    ░░░░░      ░░░      
 
 # READ-ONLY:
-# Edit ~/etc/shell/env.templ then
+# Edit ~/etc/env then
 # run `hostcfg` to apply
 
 PATH=$PATH:/exe
@@ -26,15 +26,6 @@ TZ='America/Toronto'
 # ------------------
 EDITOR=hx
 BAT_STYLE="changes,header,header-filename,header-filesize,snip"
-
-# if 	[[ -z "$SSH_CONNECTION" ]] &&
-	# command -v code >/dev/null 2>&1 &&
-	# { [[ -n "$DISPLAY" ]] || [[ -n "$WAYLAND_DISPLAY" ]]; }
-# then
-	# VISUAL='code --new-window --wait'
-# else
-	# VISUAL="$EDITOR"
-# fi
 
 # DATA STORAGE
 # ---------------------------
