@@ -81,7 +81,8 @@ set -e
 # INSTALLATION ************************************
 
 Install pipx  # for Python applications like Taskdog
-# curl https://sh.rustup.rs -sSf | sh # for Rust applications like bluetui and impala
+# curl https://sh.rustup.rs -sSf| sh # for Rust applications like bluetui and impala
+# curl https://starship.rs/install.sh -sS | sh
 Install	eza
 Install tree
 Install kdiff3
@@ -114,7 +115,7 @@ Link bat/config						to /etc/bat/config
 Link gh/config.yml				to ~/.config/gh/config.yml
 Link git/config						to /etc/gitconfig
 # link gnupg/config					to ~/.gnupg/gpg-agent.conf
-Link starship/config.toml	to ~/.config/starship.toml
+Link starship/config			to ~/.config/starship.toml
 Link taskdog/cli.toml			to ~/.config/taskdog/cli.toml
 Link tldr/config.toml			to ~/.config/tealdeer/config.toml
 Link xdg/dirs 						to ~/.config/user-dirs.dirs   # /etc is preferable
