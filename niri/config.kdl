@@ -19,6 +19,11 @@ input {
     focus-follows-mouse max-scroll-amount="0%"
 }
 
+// output "DP-1" {
+    // mode "2560x1440@165.001"
+    // mode "2560x1440@60.000"
+// }
+
 // This affects Luminous's display, lower's framerate defualt
 // for better battery life. Look into conditionals?
 output "eDP-1" {
@@ -46,25 +51,62 @@ layout {
     gaps 4
     center-focused-column "never"
     preset-column-widths {
+        proportion 0.25
         proportion 0.33333
         proportion 0.5
         proportion 0.66667
+        proportion 0.75
         proportion 1.0
     }
 
     focus-ring {
-        off
+        width 3
+        active-gradient from="#f6d365" to="#c87532" angle=135
+        inactive-gradient from="#514536" to="#29251f" angle=135
     }
 
     background-color "transparent"
 
-    default-column-width { proportion 0.66667; }
+    // default-column-width { proportion 0.66667; }
+    default-column-width { }
 
     border {
+        off
         width 2
         active-gradient from="#0DB7D4" to="#9778D0" angle=90
         inactive-color "#04404A"
     }
+
+    // shadow {
+    //     on
+    //     // By default, the shadow draws only around its window, and not behind it.
+    //     // Uncomment this setting to make the shadow draw behind its window.
+    //     //
+    //     // Note that niri has no way of knowing about the CSD window corner
+    //     // radius. It has to assume that windows have square corners, leading to
+    //     // shadow artifacts inside the CSD rounded corners. This setting fixes
+    //     // those artifacts.
+    //     //
+    //     // However, instead you may want to set prefer-no-csd and/or
+    //     // geometry-corner-radius. Then, niri will know the corner radius and
+    //     // draw the shadow correctly, without having to draw it behind the
+    //     // window. These will also remove client-side shadows if the window
+    //     // draws any.
+    //     //
+    //     // draw-behind-window true
+
+    //     // You can change how shadows look. The values below are in logical
+    //     // pixels and match the CSS box-shadow properties.
+
+    //     // Softness controls the shadow blur radius.
+    //     softness 30
+    //     // Spread expands the shadow.
+    //     spread 5
+    //     // Offset moves the shadow relative to the window.
+    //     offset x=0 y=5
+    //     // You can also change the shadow color and opacity.
+    //     color "#0007"
+    // }
 
     struts {
         left 2
@@ -81,7 +123,7 @@ layer-rule {
 
 spawn-sh-at-startup "xhost +SI:localuser:root" // allows GUI to be opened by sudo
 spawn-at-startup "/usr/bin/mate-polkit"
-spawn-at-startup "pikabar"
+spawn-at-startup "pikabar" // alt: waybar
 spawn-at-startup "systemctl" "--user" "enable" "--now" "hypridle"
 spawn-at-startup "swww-daemon"
 
