@@ -1,6 +1,6 @@
 [api]
 enabled = true
-base_url = "tasks.thales.alj.cx"
+base_url = "https://tasks.thales.alj.cx"
 
 [region]
 country = "CA"

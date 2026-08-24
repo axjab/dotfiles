@@ -7,7 +7,7 @@
 # TODO:
 # 1. Indicate ACTIVE SSH session
 # 2. Report connection errors: Internet, Tailscale, NATS, LoRa, etc.
-# 3. NOTIFICATION COUNTER; new ntfy messages, new NATS messages, etc.
+# 3. [in progress] NOTIFICATION COUNTER; new ntfy messages, new NATS messages, etc.
 # 4. 
 
 add_newline = false
@@ -16,19 +16,24 @@ command_timeout = 500
 # palette = 'foo'  # defined last
 # follow_symlinks
 
+# logical context and device metrics
 format = """
-$username@$hostname \
-$custom $cmd_duration \
-$git_branch $git_commit$git_state $git_metrics $git_status\
-$fill\
-${line_break}\
-$battery$jobs$directory$sudo$shlvl$status$character
+$cmd_duration\
+$git_branch$git_commit$git_state\
+$git_metrics\
+$git_status\
+$battery\
+$jobs\
+$sudo\
+(\n${custom.messages})
+$directory\
+$shlvl\
+$status\
+$character
 """
-# sample:
-# etc #>>>>>> 
 
-
-right_format = "${time}"
+# session and physical context, answers who? where? when?
+right_format = "$username@$hostname$time"
 
 # pinned
 
@@ -47,11 +52,10 @@ format = '[$user]($style)'
 [hostname]
 ssh_only = false
 format = '[$hostname]($style) $ssh_symbol'
-style = 'dimmed white'
-ssh_symbol = '\[SSH ACTIVE\]'  # failed to get symbol in other part of prompt
+style = 'dimmed gray'
+ssh_symbol = '[\[SSH ACTIVE\] ](bold blue)'  # failed to get symbol in other part of prompt
 
 [character]
-# symbol = (sudo) # conditional?
 success_symbol = '[>](bold green)'
 error_symbol = '[>](bold red)'
 
@@ -65,6 +69,15 @@ format = '[$symbol]($style)'
 style = 'bold purple'
 
 # CUSTOM SCRIPTS: https://github.com/starship/starship/discussions/1252?sort=top
+# IDEA: TIMER, POMODORO, NEXT DEADLINE (calnedar integration)
+  [custom.messages]
+  disabled = false
+  description = "Inbound NATS message indicator. Topics: whatsapp, email, ntfy, system, etc."
+  when = '(( ${nats_msg:-0} > 0 ))'
+  command = 'echo "$nats_msg"'
+  symbol = '◈'
+  format = '[$symbol$output](bold green)'
+  # warning: ⚠
 
   # [custom.live-clock-icon]
   # command = 'echo "" | cut -c $(($(date +%H)%12+1))'
@@ -265,7 +278,7 @@ empty_symbol = '☠'
   discharging_symbol = '󰂀'
   style = 'dimmed green'
 
-  [[battery.display]]
+  [[battery.display]] # < 90%
   threshold = 89
   discharging_symbol = '󰂁'
   style = 'dimmed green'
