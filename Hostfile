@@ -78,7 +78,7 @@ set +e
 # ---
 set -e
 
-# INSTALLATION ************************************
+# IMPORT ************************************
 
 Install pipx  # for Python applications like Taskdog
 # curl https://sh.rustup.rs -sSf| sh # for Rust applications like bluetui and impala
@@ -98,6 +98,10 @@ Install cmatrix
 # install vivaldi IF NOT headless   # TODO
 # install code		IF NOT headless		# TODO
 
+# TODO: TOO SLOW, make concurrent?
+Sync /data/helix	with 'ssh://majula//data/helix'  # every 6h # TODO: optimize
+Sync /data/dns		with 'ssh://majula//data/dns'
+
 # CONFIGURATION ***********************************
 Link /usr/bin/pinentry-curses to /usr/bin/pinentry
 
@@ -106,8 +110,6 @@ Process env to ~/.env
 Link bash/aliases	to ~/.aliases
 Link bash/bashrc  to ~/.bashrc
 Link gopass/config	to ~/.config/gopass/config
-Sync /data/helix		with 'ssh://majula//data/helix'  # every 6h # TODO: optimize
-Sync /data/dns			with 'ssh://majula//data/dns'
 Link niri/config.kdl			to ~/.config/niri/config.kdl
 Link niri/animation				to ~/.config/niri/animation
 Link helix/config.toml		to ~/.config/helix/config.toml
