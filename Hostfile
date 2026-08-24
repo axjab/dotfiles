@@ -82,7 +82,6 @@ set -e
 
 Install pipx  # for Python applications like Taskdog
 # curl https://sh.rustup.rs -sSf| sh # for Rust applications like bluetui and impala
-# curl https://starship.rs/install.sh -sS | sh
 Install	eza
 Install tree
 Install kdiff3
@@ -90,6 +89,10 @@ Install nfs-common
 Install kitty-terminfo
 Install cmatrix
 # Install taskdog-ui via pipx
+
+# curl https://starship.rs/install.sh -sS | sh
+# curl -L https://github.com/akinomyoga/ble.sh/releases/download/nightly/ble-nightly.tar.xz | tar xJf -
+# bash ble-nightly/ble.sh --install ~/.local/share
 
 # For not headless
 # install vivaldi IF NOT headless   # TODO
