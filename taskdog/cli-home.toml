@@ -1,19 +1,10 @@
+
 [api]
 enabled = true
-host = "firelink"
-port = 8000
-# api_key = "{{ getpw "taskdog/api_key" }}"   # GET FROM ENV INSTEAD
+base_url = "https://task.alj.cx"
 
 [region]
 country = "CA"
 
 [ui]
-theme = "tokyo-night"           # good
-# theme = "catppuccin-mocha"    # nah
-# theme = "kaolin-valley-dark"  # not supported
-# theme = "onedark"             # not supported
-
-# textual-dark - Default dark theme
-# dracula - Dracula color scheme
-# nord - Nord color scheme
-# gruvbox - Gruvbox color scheme
+theme = "tokyo-night"

@@ -1,6 +1,6 @@
 [api]
-host = "tasks.thales.alj.cx"
-port = 80
+enabled = true
+base_url = "tasks.thales.alj.cx"
 
 [region]
 country = "CA"
