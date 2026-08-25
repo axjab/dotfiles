@@ -108,7 +108,8 @@ Link /usr/bin/pinentry-curses to /usr/bin/pinentry
 Process env to ~/.env
 
 Link bash/aliases	to ~/.aliases
-Link bash/bashrc  to ~/.bashrc
+Link bash/rc  		to ~/.bashrc
+Link ble/rc				to ~/.blerc
 Link gopass/config	to ~/.config/gopass/config
 Link niri/config.kdl			to ~/.config/niri/config.kdl
 Link niri/animation				to ~/.config/niri/animation

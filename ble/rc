@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# ---------------------------------------------------------------------------
+# Prompt / execution markers
+
+# Disable "[ble: EOF]" when command output doesn't end in a newline.
+bleopt prompt_eol_mark=
+
+# Disable "[ble: exit <status>]" for failed commands.
+bleopt exec_errexit_mark=
+
+# Disable "[ble: exit]" when the Bash session exits.
+bleopt exec_exit_mark=
+
+# ---------------------------------------------------------------------------
+# Completion
+
+# Disable automatic completion suggestions while typing.
+bleopt complete_auto_complete=
+
+# Disable automatic completion menu.
+bleopt complete_auto_menu=
+
+# Disable menu-style completion.
+bleopt complete_menu_complete=
+
+# Disable dynamic filtering of the completion menu.
+bleopt complete_menu_filter=
+
+# ---------------------------------------------------------------------------
+# Optional: keep ble.sh syntax highlighting
+#
+# Leave these enabled (the defaults) unless you specifically want
+# completely plain command-line text.
+#
+# bleopt highlight_syntax=
+# bleopt highlight_filename=
+# bleopt highlight_variable=

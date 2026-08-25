@@ -23,7 +23,7 @@ format = """
   \n\
 )\
 $battery\
-($username(@$hostname):)$directory$git_branch \
+($username(@$hostname):)($git_branch )$directory \
 $shlvl$character
 """
 # NOTE: $fill has been intentionally omitted because it
@@ -131,9 +131,7 @@ min_time = 2000
 format = '⏳[$duration]($style)'	# The format for the module.
 style = 'yellow'
 show_milliseconds = true # Shortest duration to show time for (in milliseconds).
-show_notifications = true	# Show desktop notifications when command completes.
-min_time_to_notify = 60000	# Shortest duration for notification (in milliseconds).
-# notification_timeout		# Duration to show notification for (in milliseconds). If unset, notification timeout will be determined by daemon. Not all notification daemons honor this option.
+show_notifications = false	# Show desktop notifications when command completes.
 
 # WIP ====================
 
