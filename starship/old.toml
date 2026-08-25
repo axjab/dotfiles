@@ -1,0 +1,234 @@
+# ~/.config/starship.toml
+
+# DETAILS: https://starship.rs/config
+
+format = """
+${username}${hostname} $localip\
+$custom $cmd_duration $memory_usage\
+$git_branch $git_commit$git_state $git_metrics $git_status\
+$fill ${time}${line_break}\
+${battery}${jobs}${directory}${shlvl}${status}${character}${sudo}
+"""
+
+# CUSTOM SCRIPTS: https://github.com/starship/starship/discussions/1252?sort=top
+[custom.files]
+description = "Show files count for current directory"
+command = "find ./ -maxdepth 1 -type f | wc -l"
+format = "📄[$output]($style) "
+style = "white"
+when = "true"
+
+[custom.directories]
+description = "Show directory count count for current directory"
+command = "find ./ -maxdepth 1 -type d | tail -n +2 | wc -l"
+format = "📁[$output]($style)"
+style = "blue"
+when = "true"
+
+# CUSTOM SCRIPTS END
+
+[time]
+disabled = false
+format = ' [$time]($style) '
+style = 'bold green'
+time_format = '%T'
+# utc_time_offset = '-4'
+# time_range = '10:00:00-14:00:00'
+
+[sudo]
+disabled = false
+format = '[$symbol]($style)'
+style = 'bold green'
+symbol = '#'
+
+[status]
+disabled = false
+map_symbol = true
+recognize_signal_code = true
+format = '$symbol[${status}(/${signal_name})]($style)$symbol'
+# format = '[\[$symbol$common_meaning$signal_name$maybe_int\]]($style) '
+# style = 'bg:blue'
+symbol = ''
+sigint_symbol = '⚡'
+# not_found_symbol sigint_symbol signal_symbol 
+# not_executable_symbol
+
+[shell]
+disabled = true
+
+[character]
+success_symbol = '[❯](bold green)'
+error_symbol = '[❯](bold red)'
+
+[shlvl]
+disabled = false
+format = '[$symbol]($style)'
+repeat = true
+symbol = '❯'
+repeat_offset = 1
+threshold = 0
+
+[os]
+disabled = false
+format = "[($name $symbol)]($style)"
+style = "bold blue"
+[os.symbols]
+EndeavourOS = "🚀"
+
+[memory_usage]
+disabled = false
+threshold = -1
+format = 'via $symbol [${ram}\(${ram_pct}\)( | ${swap})]($style) '
+symbol = 'RAM'
+style = 'bold dimmed green'
+
+[line_break]
+disabled = false
+
+[jobs]
+disabled = false
+format = '[❮](bold green)[$symbol$number jobs]($style) | '
+symbol = '+'
+symbol_threshold = 1
+number_threshold = 2
+
+[username]
+disabled = true
+style_user = 'dimmed white'
+style_root = 'white bold'
+format = '[$user]($style)@'
+show_always = true
+# aliases = { "corpuser034g" = "matchai" }
+
+[hostname]
+disabled = false
+ssh_only = false
+format = '[$ssh_symbol$hostname]($style)'
+style = 'dimmed white'
+# ssh_symbol
+
+[localip]
+disabled = false
+ssh_only = false
+format = '[\[$localipv4\]]($style) '
+style = 'dimmed yellow'
+
+[git_status]
+disabled = false
+conflicted = '🏳'
+ahead = '🏎💨'
+behind = '😰'
+diverged = '😵'
+up_to_date = '✓'
+untracked = '🤷'
+stashed = '📦'
+modified = '📝'
+staged = '[++\($count\)](green)'
+renamed = '👅'
+deleted = '🗑'
+
+[git_metrics]
+disabled = false
+
+[git_state]
+disabled = false
+
+[git_commit]
+disabled = false
+# commit_hash_length = 4
+tag_symbol = '🔖 '
+
+[git_branch]
+disabled = false
+
+[fill]
+disabled = false
+symbol = ' '
+style = 'dimmed white'
+
+[env_var.SHIT]
+disabled = true
+format = "with [$env_value]($style) "
+default = ''
+
+[directory]
+disabled = false
+format = '[$path]($style)[$read_only]($read_only_style) '
+truncation_length = 3
+# truncate_to_repo
+# repo_root_style
+repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style)'
+
+[cmd_duration]
+disabled = true # Disables the cmd_duration module.
+format = '⏳[$duration]($style)'	# The format for the module.
+style = 'yellow'
+min_time = 0
+show_milliseconds = true # Shortest duration to show time for (in milliseconds).
+show_notifications = true	# Show desktop notifications when command completes.
+min_time_to_notify = 60000	# Shortest duration for notification (in milliseconds).
+# notification_timeout		# Duration to show notification for (in milliseconds). If unset, notification timeout will be determined by daemon. Not all notification daemons honor this option.
+
+[battery]
+disabled = false
+format = '[$symbol$percentage$battery]($style) '
+full_symbol = '󰁹 '
+charging_symbol = '󱐋' # ⚡️  󱐋 󰂄
+unknown_symbol = '?'
+empty_symbol = '☠'
+
+[[battery.display]] # < 10%
+threshold = 10
+discharging_symbol = '☠'
+style = 'bold red'
+
+[[battery.display]] # < 20%
+threshold = 19
+discharging_symbol = '󰁺'
+style = 'bold red'
+
+[[battery.display]] # < 30%
+threshold = 29
+discharging_symbol = '󰁻'
+style = 'bold yellow'
+
+[[battery.display]] # < 40%
+threshold = 39
+discharging_symbol = '󰁼'
+style = 'bold yellow'
+
+[[battery.display]] # < 50%
+threshold = 49
+discharging_symbol = '󰁽'
+style = 'dimmed yellow'
+
+[[battery.display]] # < 60%
+threshold = 59
+discharging_symbol = '󰁾'
+style = 'dimmed yellow'
+
+[[battery.display]] # < 70%
+threshold = 69
+discharging_symbol = '󰁿'
+style = 'dimmed yellow'
+
+[[battery.display]] # < 80%
+threshold = 79
+discharging_symbol = '󰂀'
+style = 'dimmed green'
+
+[[battery.display]]
+threshold = 89
+discharging_symbol = '󰂁'
+style = 'dimmed green'
+
+[[battery.display]] # < 100%
+threshold = 99
+discharging_symbol = '󱈏 '
+style = 'fg:#C37093'
+
+# Bright pink: (bg:#D1005B fg:#23000F)
+# Middle pink, bright text: (bg:#68032F fg:#F7BCD6)
+# Middle pink, faded text: (bg:#68032F fg:#D7748C)
+# Dark pink, regular text: (bg:#43001D fg:#C37093)
+# Dark pink, highlighted: (bg:#43001D fg:#D1005B)
