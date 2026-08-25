@@ -4,17 +4,27 @@
 # TODO:
 # - Report connection errors: Internet, Tailscale, NATS, LoRa, etc.
 
+# Two lines:
+# First line: status indicators: tasks, remidners, failrue, jobs, git, etc.
+# Second line: identity, filesystem, weather, and time
+
+### SAMPLE ##########################################################                                                                    #
+#  1 󰂚 1 [✎] +285 -34                          Python 3.14 KEY=val #
+# server etc >>                                   󰖕 -> 󰙾  16:37:33 #
+#####################################################################
+
 "$schema" = 'https://starship.rs/config-schema.json'
 add_newline = false
 scan_timeout = 30
 command_timeout = 500
 palette = 'foo'
 follow_symlinks = true
-right_format = "$time"
+
+right_format = "${custom.weather} $time"
 format = """
 (\
-  ($jobs )($memory_usage )($cmd_duration )\
-  ($netns )($nats )($custom )\
+  ($status )($jobs )($memory_usage )\
+  ($cmd_duration )($netns )($nats )($custom )\
   ($git_status )($git_commit )($git_state )($git_metrics )\
   (\
     $direnv$python$golang$nodejs$rust$env_var\
@@ -38,8 +48,14 @@ $shlvl$character
 # ===========================
 [time]
 disabled = false
-format = '[$time](bold green)' #
+format = '[$time](bold green)'
 time_format = '%T'
+[custom.weather]
+disabled = false
+description = "[POC] Current weather and weather transitions"
+when = true
+command = 'echo "󰖕 -> 󰙾 "'
+style = 'cyan'
 
 # LOWER LEFT
 # ===========================
@@ -48,8 +64,11 @@ disabled = false
 format = '[$symbol$percentage$battery]($style) '
 full_symbol = '󰁹 '
 charging_symbol = '󱐋' # ⚡️  󱐋 󰂄
-unknown_symbol = '?'
-empty_symbol = '☠'
+# unknown_symbol = '?'
+empty_symbol = '󰂎☠'
+#discharging_symbol = "󰂃 "
+unknown_symbol = "󰂑 "
+# empty_symbol = "󰂎 "
 [username]
 style_user = 'dimmed green'
 style_root = 'bold green'
@@ -60,7 +79,8 @@ format = '[$hostname](green)'
 ssh_symbol = '🌐'
 [directory]
 disabled = false
-format = '[$path]($style)[$read_only]($read_only_style)'
+read_only = "󰌾"
+format = '[$path](bold blue)[$read_only]($read_only_style)'
 truncation_length = 4
 repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style)'
 [git_branch]
@@ -86,28 +106,38 @@ symbol = ' '
 style = 'dimmed white'
 [direnv]
 disabled = false
+symbol = " "
 
 # UPPER LEFT
 # ==============================
+[status]
+disabled = false
+map_symbol = true
+recognize_signal_code = true
+format = '[$symbol](red)[${status}(/${signal_name})](bold red)'
+symbol = ' ' 
+sigint_symbol = '⚡'
 [jobs]
-symbol = '⚙'
-format = '[$symbol$number]($style)'
+symbol = ' '
+format = '[$symbol](blue)[$number]($style)'
 number_threshold = 1
 [memory_usage]
 disabled = false
 threshold = 70
-symbol = '⚠RAM'
-format = '[$symbol $ram/$ram_total($ram_pct)]($style)'
+# symbol = '⚠RAM'
+symbol = "󰍛 "
+format = '[$symbol$ram/$ram_total($ram_pct)]($style)'
 style = 'bold #ff9f1c'
 [nats]
 disabled = false
-[custom.nats]
-disabled = false
-description = "Inbound NATS message indicator. Topics: whatsapp, email, ntfy, system, etc."
-when = '(( ${nats_msg:-0} > 0 ))'
-command = 'echo "$nats_msg"'
-symbol = '◈'
-format = '[$symbol$output](bold green)'
+symbol = " "
+# [custom.nats]
+# disabled = false
+# description = "Inbound NATS message indicator. Topics: whatsapp, email, ntfy, system, etc."
+# when = '(( ${nats_msg:-0} > 0 ))'
+# command = 'echo "$nats_msg"'
+# symbol = '◈'
+# format = '[$symbol$output](bold green)'
 [git_status]
 style = "bold yellow"
 format = '([\[$all_status$ahead_behind\]]($style))'
@@ -125,6 +155,7 @@ disabled = false
 disabled = false
 [git_commit]
 disabled = false
+tag_symbol = ' '
 [cmd_duration]
 disabled = false
 min_time = 2000
@@ -133,11 +164,8 @@ style = 'yellow'
 show_milliseconds = true # Shortest duration to show time for (in milliseconds).
 show_notifications = false	# Show desktop notifications when command completes.
 
-# WIP ====================
-
 # CUSTOM SCRIPTS: https://github.com/starship/starship/discussions/1252?sort=top
 # IDEA: TIMER, POMODORO, NEXT DEADLINE (calnedar integration)
-
 [custom.status]
 disabled = true
 when = true #'[[ "$STARSHIP_CMD_STATUS" != "0" ]]'
@@ -146,28 +174,94 @@ symbol = ''
 format = '[$output]($style) '
 style = 'red'
 
-[status]
+# Internet — only show when unavailable
+[custom.internet]
 disabled = false
-map_symbol = true
-recognize_signal_code = true
-format = '$symbol[${status}(/${signal_name})]($style)$symbol'
-# format = '[\[$symbol$common_meaning$signal_name$maybe_int\]]($style) '
-# style = 'bg:blue'
-symbol = ''
-sigint_symbol = '⚡'
-# not_found_symbol sigint_symbol signal_symbol 
-# not_executable_symbol
+description = "Internet unavailable"
+when = '!(timeout 0.2 bash -c "</dev/tcp/1.1.1.1/443" 2>/dev/null)'
+command = "true"
+symbol = ' 󰖪 '
+format = '[$symbol](bold red)'
+
+# Tailnet — only show when disconnected
+[custom.tailnet]
+disabled = false
+description = "Tailnet disconnected"
+when = '[[ "$(tailscale status --json 2>/dev/null | jq -r ".BackendState // empty")" != "Running" ]]'
+command = "true"
+symbol = ' 󰖪 '
+format = '[$symbol](bold red)'
+
+# NATS — only show when unreachable
+[custom.nats]
+disabled = false
+description = "NATS unavailable"
+when = '!(timeout 0.2 bash -c "</dev/tcp/nats/4222" 2>/dev/null)'
+command = "true"
+symbol = ' 󰒋 '
+format = '[$symbol](bold red)'
+
+# GPG — only show when this machine has no secret key
+[custom.gpg]
+disabled = false
+description = "No GPG secret key"
+when = '[[ -z "$(gpg --list-secret-keys --with-colons 2>/dev/null)" ]]'
+command = "true"
+symbol = ' 󰌆 '
+format = '[$symbol](bold red)'
+
+# SSH identity — only show when the host identity is missing
+[custom.ssh_identity]
+disabled = false
+description = "SSH host identity missing"
+when = '[[ ! -f "$HOME/.ssh/$(hostname).key" ]]'
+command = "true"
+symbol = ' 󰣀 '
+format = '[$symbol](bold red)'
+
+[custom.timer]
+disabled = true
+description = "[POC] Countdown timer"
+when = true
+command = '''
+remaining=$((30 - ($(date +%s) % 60)))
+((remaining < 0)) && remaining=0
+printf '󰔛 %02d' "$remaining"
+'''
+format = '[$output](yellow)'
+
+[custom.todo]
+disabled = true
+description = "[POC] TODO count"
+when = true
+command = 'printf "󰄲 %s" "$(wc -l < "$HOME/todo.md")"'
+format = '[$output](white)'
+
+[custom.blink]
+disabled = true
+description = "[POC] Blink test"
+when = true
+command = 'echo "󰀠 BLINK"'
+style = 'blink red'
+
+[custom.belfry]
+disabled = false
+description = "Unacknowledged Belfry reminders"
+when = '[[ "$(belfry 2>/dev/null | wc -l)" -gt 0 ]]'
+command = 'belfry 2>/dev/null | wc -l'
+symbol = '󰂚 '
+format = '[$symbol](yellow)[$output](bold yellow)'
 
 # BATTERY DETAILS ***********************************
 [[battery.display]] # < 10%
 threshold = 10
-discharging_symbol = '☠'
-style = 'bold red'
+discharging_symbol = ' '
+style = 'blink bold red'
 
 [[battery.display]] # < 20%
 threshold = 19
 discharging_symbol = '󰁺'
-style = 'bold red'
+style = 'blink bold red'
 
 [[battery.display]] # < 30%
 threshold = 29
@@ -206,7 +300,7 @@ style = 'dimmed green'
 
 [[battery.display]] # < 100%
 threshold = 95
-discharging_symbol = '󱈏'
+discharging_symbol = '󱈏 '
 style = 'fg:#C37093'
 #**********************************************8
 
@@ -219,3 +313,169 @@ pink_bright_text = 'bg:#68032F fg:#F7BCD6'
 pink_faded_text = 'bg:#68032F fg:#D7748C'
 dark_pink = 'bg:#43001D fg:#C37093'
 dark_pink_highlight = 'bg:#43001D fg:#D1005B'
+
+# dump
+
+[buf]
+symbol = " "
+[bun]
+symbol = " "
+[c]
+symbol = " "
+[cpp]
+symbol = " "
+[cmake]
+symbol = " "
+[cobol]
+symbol = " "
+[conda]
+symbol = " "
+[container]
+symbol = " "
+[crystal]
+symbol = " "
+[dart]
+symbol = " "
+[deno]
+symbol = " "
+[docker_context]
+symbol = " "
+[dotnet]
+symbol = " "
+[elixir]
+symbol = " "
+[elm]
+symbol = " "
+[erlang]
+symbol = " "
+[fennel]
+symbol = " "
+[fortran]
+symbol = " "
+[fossil_branch]
+symbol = " "
+[gcloud]
+symbol = "󱇶 "
+[gleam]
+symbol = " "
+[golang]
+symbol = " "
+[gradle]
+symbol = " "
+[guix_shell]
+symbol = " "
+[haskell]
+symbol = " "
+[haxe]
+symbol = " "
+[helm]
+symbol = " "
+[hg_branch]
+symbol = " "
+[java]
+symbol = " "
+[julia]
+symbol = " "
+[kotlin]
+symbol = " "
+[kubernetes]
+symbol = "󱃾 "
+[lua]
+symbol = " "
+[maven]
+symbol = " "
+[meson]
+symbol = "󰔷 "
+[mojo]
+symbol = "󰈸 "
+[netns]
+symbol = "󰛳 "
+[nim]
+symbol = " "
+[nix_shell]
+symbol = " "
+[nodejs]
+symbol = " "
+[ocaml]
+symbol = " "
+[odin]
+symbol = "󰟢 "
+[opa]
+symbol = " "
+[openstack]
+symbol = " "
+[os.symbols]
+AIX = " "
+AlmaLinux = " "
+Alpaquita = " "
+Alpine = " "
+ALTLinux = " "
+Amazon = " "
+Android = " "
+AOSC = " "
+Arch = " "
+Artix = " "
+Bluefin = " "
+CachyOS = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Elementary = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = " "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = " "
+InstantOS = " "
+Ios = "󰀷 "
+Kali = " "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+Nobara = " "
+OpenBSD = " "
+OpenCloudOS = " "
+openEuler = " "
+openSUSE = " "
+OracleLinux = "󰺡 "
+PikaOS = " "
+Pop = " "
+Raspbian = " "
+Redhat = "󱄛 "
+RedHatEnterprise = "󱄛 "
+Redox = "󰀘 "
+RockyLinux = " "
+Solus = " "
+SUSE = " "
+Ubuntu = " "
+Ultramarine = " "
+Unknown = " "
+Uos = " "
+Void = " "
+Windows = "󰍲 "
+Zorin = " "
+[package]
+symbol = "󰏗 "
+[perl]
+symbol = " "
+[php]
+symbol = " "
+[pijul_channel]
+symbol = " "
+[pixi]
+symbol = "󰏗 "
+[pulumi]
+symbol = " "
+[purescript]
+symbol = " "
+[python]
+symbol = " "
