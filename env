@@ -15,6 +15,7 @@
 
 PATH=$PATH:/exe
 HOSTFILE=$HOME/etc/Hostfile  # hostconfig.kdl
+STARSHIP_CMD_STATUS=0        # for prompt string
 
 # LOCALE
 # ------------------
