@@ -307,6 +307,7 @@ style = 'fg:#C37093'
 # [palettes]
 [palettes.foo]
 # blue = '21'  # will overwrite
+darkgreen = '#006400'
 mustard = '#af8700'
 bright_pink = 'bg:#D1005B fg:#23000F'
 pink_bright_text = 'bg:#68032F fg:#F7BCD6'
