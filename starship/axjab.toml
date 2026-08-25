@@ -32,10 +32,12 @@ format = """
   )\
   \n\
 )\
-$battery\
+($battery )\
 ($username(@$hostname):)($git_branch )$directory \
+(${env_var.prompt_break}\n)\
 $shlvl$character
 """
+# NOTE: 
 # NOTE: $fill has been intentionally omitted because it
 # causes ( $fill $emptyvar ) to ALWAYS render (as space)
 # when it's the opposite of the desired effect
@@ -61,7 +63,7 @@ style = 'cyan'
 # ===========================
 [battery]
 disabled = false
-format = '[$symbol$percentage$battery]($style) '
+format = '[$symbol$percentage$battery]($style)'
 full_symbol = '󰁹 '
 charging_symbol = '󱐋' # ⚡️  󱐋 󰂄
 # unknown_symbol = '?'
@@ -81,7 +83,7 @@ ssh_symbol = '🌐'
 disabled = false
 read_only = "󰌾"
 format = '[$path](bold blue)[$read_only]($read_only_style)'
-truncation_length = 4
+truncation_length = 5
 repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style)'
 [git_branch]
 disabled = false
@@ -110,6 +112,11 @@ symbol = " "
 
 # UPPER LEFT
 # ==============================
+[env_var.prompt_break]
+description = "Raise this flag to insert a line break just before the prompt character"
+symbol = '󱞦 '
+variable = 'PROMPT_BREAK'
+format = '$symbol'
 [status]
 disabled = false
 map_symbol = true
@@ -251,6 +258,13 @@ when = '[[ "$(belfry 2>/dev/null | wc -l)" -gt 0 ]]'
 command = 'belfry 2>/dev/null | wc -l'
 symbol = '󰂚 '
 format = '[$symbol](yellow)[$output](bold yellow)'
+
+# [env_var]
+# format = " [$env_value]($style)"
+[env_var.TEST_ONE]
+format = "  [$env_value]($style)"
+[env_var.TEST_TWO]
+format = "  [$env_value]($style)"
 
 # BATTERY DETAILS ***********************************
 [[battery.display]] # < 10%
