@@ -107,7 +107,8 @@ Link /usr/bin/pinentry-curses to /usr/bin/pinentry
 
 Process env to ~/.env
 
-Link bash/aliases	to ~/.aliases
+# Link bash/aliases	to ~/.aliases   # DEPRECATED IN FAVOUR OF ~/.bash
+Link bash					to ~/.bash
 Link bash/rc  		to ~/.bashrc
 Link ble/rc				to ~/.blerc
 Link gopass/config	to ~/.config/gopass/config

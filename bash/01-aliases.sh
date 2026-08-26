@@ -16,9 +16,6 @@ alias alias-edit='edit-alias'
 alias as='as-user'
 alias lazylog='sudo lazyjournal -u 2 -t 1000'   # update every 2 seconds, reduce max to 100 lines to make fster
 
-## EDITOR
-alias mu=e
-
 # DOCKER
 alias d='sudo docker'
 alias d-ps='sudo docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"' #\t{{.Image}}"'
@@ -28,12 +25,9 @@ alias d-watch='sudo docker logs -f'
 
 
 ## navigation: cd, ls =================================
-export _ZO_DATA_DIR=/data/zoxide 	#Path for zoxide data files
-# export _ZO_ECHO=1    				#Print the matched directory before navigating to it when set to 1
-# make this one conditional, if zoxide installed
-if command -v zoxide; then
-	alias cd='z'
-fi
+has zoxide && alias cd='z'
+# ALTERNATIVE syntax: a cd='z' if has zoxide
+# a x=y if <CONDITION>
 alias ..='cd ..'
 alias .-='cd -'
 alias cdi='cd "$(gum file -a --height=20 --directory)"'
@@ -51,9 +45,7 @@ alias fm="source $HOME/bin/fm"
 
 
 ## filesystem ops =======================
-if command -v bat &> /dev/null; then
-    alias cat='bat'
-fi
+has bat && alias cat='bat'
 alias compress='tar -czvf'
 alias extract='tar -xzvf'
 alias tarlist='tar -tzvf'

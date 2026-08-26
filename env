@@ -13,9 +13,17 @@
 # Edit ~/etc/env then
 # run `hostcfg` to apply
 
+set -a # export all
+
 PATH=$PATH:/exe
 HOSTFILE=$HOME/etc/Hostfile  # hostconfig.kdl
 STARSHIP_CMD_STATUS=0        # for prompt string
+
+# HISTORY
+# ------------------
+HISTCONTROL=ignoreboth       # ignore duplicates and lines starting with space
+HISTSIZE=5000
+HISTFILESIZE=10000
 
 # LOCALE
 # ------------------
@@ -37,6 +45,7 @@ GOPATH=/exe
 NVM_DIR="$HOME/.nvm"
 CHARM_DATA_DIR=/data/charm
 DNS_CONTROL_DIR=/data/dns
+_ZO_DATA_DIR=/data/zoxide 	#Path for zoxide data files
 
 # API KEYS
 # ---------------------------
@@ -58,3 +67,5 @@ NTFY_TOKEN_64=$( echo -n "Bearer $NTFY_TOKEN" | base64 )
 SILVERBULLET_DOCS="$HOME/docs"
 
 TASKDOG_API_KEY={{ getpw "taskdog/api_key" }}
+
+set -a # end export

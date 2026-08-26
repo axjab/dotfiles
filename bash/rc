@@ -1,110 +1,25 @@
 #!/bin/bash
 
-DEBUG_BASHRC=true
+# issues:
+# 1. Make some of these optional
 
-# ENVIRONMENT & ALIASES
-# -----------------------------------------------
-if [[ -f ~/.env ]]; then
-    set -a
-    source ~/.env
-    set +a
-else
-    echo -e "\033[1;33mWARNING: ~/.env not found — environment variables not loaded\033[0m" >&2
-    sleep 4
-fi
-[[ -f ~/.aliases ]] && source ~/.aliases
-
-# -----------------------------------------------
 # NON-INTERACTIVE GUARD
-# If not running interactively, don't do anything
-# -----------------------------------------------
 [[ $- != *i* ]] && return
 
-# -----------------------------------------------
-# HISTORY
-# -----------------------------------------------
-HISTCONTROL=ignoreboth       # ignore duplicates and lines starting with space
-HISTSIZE=5000
-HISTFILESIZE=10000
+source "$HOME/.bash/dsl/00-loader.sh"
 
-# -----------------------------------------------
-# SHELL OPTIONS
-# -----------------------------------------------
-shopt -s checkwinsize        # update LINES and COLUMNS after each command
-shopt -s expand_aliases      # allow aliases to propagate to subshells
-shopt -s histappend          # append to history, don't overwrite
+load ~/.env
+load ~/.cargo/env
+load ~/.local/share/blesh/ble.sh
+load ~/.nvm/nvm.sh  # This loads nvm 
+load ~/.nvm/bash_completion  # This loads nvm bash_completion
+load 01-aliases
+load 02-shell
+load 03-lesspipe
+load 04-dircolors
+load 05-completion
+load 06-prompt
+load 07-yazi
 
-# -----------------------------------------------
-# LESSPIPE
-# Makes less handle non-text files (binaries, archives, etc.)
-# -----------------------------------------------
-[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# -----------------------------------------------
-# COLORS
-# Enable colored ls output if dircolors is available
-# -----------------------------------------------
-if [[ -x /usr/bin/dircolors ]]; then
-    [[ -r ~/.dircolors ]] && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-fi
-
-# -----------------------------------------------
-# COMPLETIONS (work-in-progress)
-# -----------------------------------------------
-if ! shopt -oq posix; then
-    if [[ -f /usr/share/bash-completion/bash_completion ]]; then
-        source /usr/share/bash-completion/bash_completion
-    elif [[ -f /etc/bash_completion ]]; then
-        source /etc/bash_completion
-    fi
-fi
-eval "$(dns shell-completion bash)"
-
-# -----------------------------------------------
-# PROMPT
-# Use starship if available, otherwise fall back to a sensible default.
-# The fallback also sets the xterm/rxvt window title to user@host:dir.
-# -----------------------------------------------
-if command -v starship &>/dev/null; then
-    eval "$(starship init bash)"
-else
-    # Chroot indicator (harmless on non-Debian systems)
-    if [[ -z "${debian_chroot:-}" ]] && [[ -r /etc/debian_chroot ]]; then
-        debian_chroot=$(cat /etc/debian_chroot)
-    fi
-
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-
-    # Set terminal window title for xterm/rxvt
-    case "$TERM" in
-        xterm*|rxvt*)
-            PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-            ;;
-    esac
-fi
-
-# -----
-# Allows filesystem naviagation with ease
-# ---
-y () 
-{ 
-    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd;
-    command yazi "$@" --cwd-file="$tmp";
-    IFS= read -r -d '' cwd < "$tmp";
-    [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd";
-    command rm -f -- "$tmp"
-}
-
-# ---
-# Setup zoxide on shell
-# ----
-if command -v zoxide >/dev/null; then
-	eval "$(zoxide init bash)"
-fi
-
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-. "$HOME/.cargo/env"
-
-# this is for the prompt string, straship
-source -- ~/.local/share/blesh/ble.sh
+activate dns shell-completion bash
+activate zoxide init bash
