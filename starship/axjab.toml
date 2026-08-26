@@ -113,7 +113,7 @@ symbol = " "
 # UPPER LEFT
 # ==============================
 [env_var.prompt_break]
-description = "Raise this flag to insert a line break just before the prompt character"
+description = "A flag raised to insert a line break just before the prompt character: export PROMPT_BREAK=true"
 symbol = '󱞦 '
 variable = 'PROMPT_BREAK'
 format = '$symbol'
