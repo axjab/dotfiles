@@ -1,1 +1,32 @@
-rc
+#!/bin/bash
+
+# NON-INTERACTIVE GUARD
+[[ $- != *i* ]] && return
+
+DEBUG_BASHRC=1
+DSL_LOADER="$HOME/.bash/dsl/00-loader.sh"
+
+[[ -f "$DSL_LOADER" ]] || {
+    printf '%s\n' "~/.bashrc: DSL LOADER NOT FOUND" >&2
+    return 1
+}
+
+source $DSL_LOADER
+
+# modules
+import ~/.env
+import 01-aliases
+import 02-shell
+import 03-lesspipe
+import 04-dircolors
+import 05-completion
+import 06-prompt
+import 07-yazi
+import? ~/.cargo/env
+import? ~/.nvm/nvm.sh  # This loads nvm 
+
+activate dns shell-completion bash
+activate zoxide init bash
+
+# MUST BE LAST
+import 99-ble
