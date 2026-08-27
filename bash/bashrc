@@ -1,9 +1,11 @@
 #!/bin/bash
 
+__bashrc_start=$(date +%s%N)
+
 # NON-INTERACTIVE GUARD
 [[ $- != *i* ]] && return
 
-DEBUG_BASHRC=1
+DEBUG_BASHRC=
 DSL_LOADER="$HOME/.bash/dsl/00-loader.sh"
 
 [[ -f "$DSL_LOADER" ]] || {
@@ -30,3 +32,9 @@ activate zoxide init bash
 
 # MUST BE LAST
 import 99-ble
+
+# Bottom
+__bashrc_end=$(date +%s%N)
+
+printf 'bashrc: %d ms\n' \
+  "$(( (__bashrc_end - __bashrc_start) / 1000000 ))"
