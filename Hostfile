@@ -103,26 +103,23 @@ Sync /data/helix	with 'ssh://majula//data/helix'  # every 6h # TODO: optimize
 Sync /data/dns		with 'ssh://majula//data/dns'
 
 # CONFIGURATION ***********************************
-Link /usr/bin/pinentry-curses to /usr/bin/pinentry
 
 Process env to ~/.env
-
-# Link bash/aliases	to ~/.aliases   # DEPRECATED IN FAVOUR OF ~/.bash
-Link bash					to ~/.bash
-Link bash/rc  		to ~/.bashrc
-Link ble/rc				to ~/.blerc
-Link gopass/config	to ~/.config/gopass/config
-Link niri/config.kdl			to ~/.config/niri/config.kdl
-Link niri/animation				to ~/.config/niri/animation
-Link helix/config.toml		to ~/.config/helix/config.toml
-Link helix/lang.toml			to ~/.config/helix/languages.toml
-Link ly/config.ini				to /etc/ly/config.ini
+Link /usr/bin/pinentry-curses to /usr/bin/pinentry
+Link bash								to ~/.bash
+Link bash/rc  					to ~/.bashrc
+Link ble/rc							to ~/.blerc
+Link bat/config					to /etc/bat/config
+Link git/config					to /etc/gitconfig
+Link gh/config					to ~/.config/gh/config.yml
+Link gopass/config			to ~/.config/gopass/config
+Link helix/config.toml	to ~/.config/helix/config.toml
+Link helix/lang.toml		to ~/.config/helix/languages.toml
+Link ly/config.ini			to /etc/ly/config.ini
+Link niri/config.kdl		to ~/.config/niri/config.kdl
+Link niri/animation			to ~/.config/niri/animation
+Link starship/config		to ~/.config/starship.toml
+Link taskdog/cli.toml		to ~/.config/taskdog/cli.toml
+Link tldr/config.toml		to ~/.config/tealdeer/config.toml
+Link xdg/dirs 					to ~/.config/user-dirs.dirs   # /etc is preferable
 Process aichat/config.yaml 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
-Link bat/config						to /etc/bat/config
-Link gh/config.yml				to ~/.config/gh/config.yml
-Link git/config						to /etc/gitconfig
-# link gnupg/config					to ~/.gnupg/gpg-agent.conf
-Link starship/config			to ~/.config/starship.toml
-Link taskdog/cli.toml			to ~/.config/taskdog/cli.toml
-Link tldr/config.toml			to ~/.config/tealdeer/config.toml
-Link xdg/dirs 						to ~/.config/user-dirs.dirs   # /etc is preferable
