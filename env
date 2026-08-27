@@ -13,7 +13,7 @@
 # Edit ~/etc/env then
 # run `hostcfg` to apply
 
-set -a # export all
+set -a # export all, no errors allowed
 
 PATH=$PATH:/exe
 HOSTFILE=$HOME/etc/Hostfile  # hostconfig.kdl
@@ -68,4 +68,4 @@ SILVERBULLET_DOCS="$HOME/docs"
 
 TASKDOG_API_KEY={{ getpw "taskdog/api_key" }}
 
-set -a # end export
+set +a # end export

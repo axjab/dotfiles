@@ -1,25 +1,27 @@
 #!/bin/bash
 
-# issues:
-# 1. Make some of these optional
-
 # NON-INTERACTIVE GUARD
 [[ $- != *i* ]] && return
 
+DEBUG_BASHRC=1
+
 source "$HOME/.bash/dsl/00-loader.sh"
 
-load ~/.env
-load ~/.cargo/env
-load ~/.local/share/blesh/ble.sh
-load ~/.nvm/nvm.sh  # This loads nvm 
-load ~/.nvm/bash_completion  # This loads nvm bash_completion
-load 01-aliases
-load 02-shell
-load 03-lesspipe
-load 04-dircolors
-load 05-completion
-load 06-prompt
-load 07-yazi
+import? ~/.cargo/env
+import? ~/.nvm/nvm.sh  # This loads nvm 
+
+# modules
+import ~/.env
+import 01-aliases
+import 02-shell
+import 03-lesspipe
+import 04-dircolors
+import 05-completion
+import 06-prompt
+import 07-yazi
 
 activate dns shell-completion bash
 activate zoxide init bash
+
+# MUST BE LAST
+import 99-ble
