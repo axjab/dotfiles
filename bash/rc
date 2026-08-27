@@ -15,7 +15,7 @@ __dsl_loader="$HOME/.bash/dsl/00-loader.sh"
 source $__dsl_loader
 
 # modules
-# import ~/.env   # ---> import!: EXIT on failure
+import ~/.env   # ---> import!: EXIT on failure
 import 01-aliases
 import 02-shell
 import 03-lesspipe
