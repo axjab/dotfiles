@@ -81,9 +81,9 @@ format = '[$hostname](green)'
 ssh_symbol = '🌐'
 [directory]
 disabled = false
-read_only = "󰌾"
-format = '[$path](bold blue) [$read_only]($read_only_style)'
-truncation_length = 5
+read_only = " 󰌾"
+format = '[$path](bold blue)[$read_only]($read_only_style)'
+truncation_length = 4
 repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style)'
 [git_branch]
 disabled = false
