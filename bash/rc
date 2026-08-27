@@ -15,7 +15,7 @@ __dsl_loader="$HOME/.bash/dsl/00-loader.sh"
 source $__dsl_loader
 
 # modules
-import ~/.env   # ---> import!: EXIT on failure
+# import ~/.env   # ---> import!: EXIT on failure
 import 01-aliases
 import 02-shell
 import 03-lesspipe
@@ -30,7 +30,7 @@ no_ssh activate dns shell-completion bash
 activate zoxide init bash
 
 # MUST BE LAST, put in background?
-import 99-ble
+# import 99-ble
 
 __bashrc_end=$(date +%s%N)
 
