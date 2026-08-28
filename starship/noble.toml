@@ -25,11 +25,11 @@ follow_symlinks = true
 # right_format = "${custom.weather} $time"   # no ble.sh dependency
 format = """
 (\
-  $custom
+  ($status )($custom )\
 )\
 $fill\
 (\
-  ($status )($jobs )($memory_usage )($cmd_duration )\
+  ($jobs )($memory_usage )($cmd_duration )\
   ($netns )($nats )($direnv )($env_var )\
   ($git_status )($git_commit )($git_state )($git_metrics )\
   ($python )($golang )($nodejs )($rust )\
