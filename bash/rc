@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Current average startup: 60ms (>300ms with ble.sh)
+
 # NON-INTERACTIVE GUARD
 [[ $- != *i* ]] && return
 
@@ -29,7 +31,10 @@ import? ~/.nvm/nvm.sh  # This loads nvm
 no_ssh activate dns shell-completion bash
 activate zoxide init bash
 
-# MUST BE LAST, put in background?
+# +300 ms delay, too expensive, perhaps try:
+# load in background then attach to active TTY?
+# ditch completely in favour of straship $fill?
+# MUST BE LAST
 # import 99-ble
 
 __bashrc_end=$(date +%s%N)
