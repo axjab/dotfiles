@@ -27,7 +27,7 @@ format = """
   ($cmd_duration )($netns )($nats )($custom )\
   ($git_status )($git_commit )($git_state )($git_metrics )\
   (\
-    $direnv$python$golang$nodejs$rust$env_var\
+    $direnv($python )$golang$nodejs$rust$env_var\
     $container$docker_container\
   )\
   \n\
@@ -494,3 +494,4 @@ symbol = " "
 symbol = " "
 [python]
 symbol = " "
+format = '[${symbol}](yellow)[${pyenv_prefix}(${version})(\($virtualenv\))]($style)'
