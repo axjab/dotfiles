@@ -111,6 +111,7 @@ Link bash/rc  					to ~/.bashrc
 Link ble/rc							to ~/.blerc
 Link bat/config					to /etc/bat/config
 Link git/config					to /etc/gitconfig
+Link git/config					to ~/.gitconfig
 Link gh/config					to ~/.config/gh/config.yml
 Link gopass/config			to ~/.config/gopass/config
 Link helix/config.toml	to ~/.config/helix/config.toml
