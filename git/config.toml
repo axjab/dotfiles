@@ -1,12 +1,12 @@
 [init]
 	defaultBranch = master
 
-[remotes]
-	gh = github
-	up = github majula
+# [remotes]
+	# gh = github
+	# up = github majula
 
-[remote]
-	pushDefault = majula
+# [remote]
+	# pushDefault = gh
 
 [user]
 	name = axjab
