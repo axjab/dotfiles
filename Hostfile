@@ -80,6 +80,9 @@ set -e
 
 # IMPORT ************************************
 
+Install asciidoctor
+Install cmake
+Install make
 Install pipx  # for Python applications like Taskdog
 # curl https://sh.rustup.rs -sSf| sh # for Rust applications like bluetui and impala
 Install	eza
