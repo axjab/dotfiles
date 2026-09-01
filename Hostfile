@@ -101,9 +101,11 @@ Install cmatrix
 # install vivaldi IF NOT headless   # TODO
 # install code		IF NOT headless		# TODO
 
-# TODO: TOO SLOW, make concurrent?
-Sync /data/helix	with 'ssh://majula//data/helix'  # every 6h # TODO: optimize
-Sync /data/dns		with 'ssh://majula//data/dns'
+# DATA ********************************************
+Sync /data/helix	with 'ssh://majula//data/helix'  # BAD: SLOW
+Sync /data/dns		with 'ssh://majula//data/dns'		 # ?
+Link /data/timewarrior to		~/.local/share/timewarrior
+Sync /data/timewarrior from 'majula:/data/timewarrior.git'
 
 # CONFIGURATION ***********************************
 
@@ -124,6 +126,7 @@ Link niri/config.kdl		to ~/.config/niri/config.kdl
 Link niri/animation			to ~/.config/niri/animation
 Link starship/config		to ~/.config/starship.toml
 Link taskdog/cli.toml		to ~/.config/taskdog/cli.toml
+Link timewarrior			  to ~/.config/timewarrior
 Link tldr/config.toml		to ~/.config/tealdeer/config.toml
 Link xdg/dirs 					to ~/.config/user-dirs.dirs   # /etc is preferable
 Process aichat/config.yaml 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
