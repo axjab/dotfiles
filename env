@@ -46,28 +46,31 @@ NVM_DIR="$HOME/.nvm"
 CHARM_DATA_DIR=/data/charm
 DNS_CONTROL_DIR=/data/dns
 _ZO_DATA_DIR=/data/zoxide 	#Path for zoxide data files
+SILVERBULLET_DOCS="$HOME/docs"  # better: stash:notes
 
-# API KEYS AND ENDPOINTS
-# ---------------------------
-BELFRY_TOKEN={{ getpw "belfry/token" }}
-
+# ENDPOINTS
+# ----------------------------
 CALDAV_URL="https://caldav.alj.cx"
-CALDAV_USER={{ getpw "caldav/user" }}
-CALDAV_PASS="{{ getpw "caldav/pass" }}"
-CALDAV_API_KEY={{ getpw "caldav/api-key" }}
 
 CHARM_HOST=firelink
 CHARM_SSH_PORT=3300
 CHARM_HTTP_PORT=3400
-CHARM_IDENTITY_KEY="$HOME/.ssh/$(hostname).key"
 
 NATS_URL='nats://nats:4222'
 
 NTFY_URL={{ getpw "ntfy/url" }}
+
+
+# API KEYS
+# ---------------------------
+BELFRY_TOKEN={{ getpw "belfry/token" }}
+
+CALDAV_USER={{ getpw "caldav/user" }}
+CALDAV_PASS="{{ getpw "caldav/pass" }}"
+CALDAV_API_KEY={{ getpw "caldav/api-key" }}
+
 NTFY_TOKEN={{ getpw "ntfy/token" }}
 NTFY_TOKEN_64=$( echo -n "Bearer $NTFY_TOKEN" | base64 )
-
-SILVERBULLET_DOCS="$HOME/docs"
 
 TASKDOG_API_KEY={{ getpw "taskdog/api_key" }}
 
