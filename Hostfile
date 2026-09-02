@@ -13,7 +13,7 @@ Hook github	"Github	authenticated"
 # hook nats	"Connected to NATS"
 
 Sync /exe from 'github:axjab/executables'
-Sync /data/vault from 'github:axjab/vault'
+Sync /data/vault from  'github:axjab/vault' # 'repo:vault'
 
 # SYSTEM CONFIG
 Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY
@@ -47,18 +47,20 @@ Host luminous at 100.95.238.38
 	user=axjab
 	os=PikaOS
 :
-Host aran
-	is='low-powered pc'
-	os=Debian
+Host repo at majula
+	is='system user'
+	user=git
 :
-
+Host store at majula
+	is='system user'
+	user=store
+:
 # SERVICES ****************************************
 
 Host service charm				at firelink
 Host service thales-nats	at majula
 Host service wiki					at localhost
 Host service nats					at firelink
-Host service repository		at majula
 Host service pocketbase		at majula
 Host service uptime-kuma	at majula
 
@@ -76,7 +78,7 @@ set +e
 		Mount dir /mnt/majula.ssd/files onto /repo
 # ---
 # For majula only
-	Mount dir /mnt/ssd/data/garage	onto /data/garage/data
+	# Mount dir /mnt/ssd/data/garage	onto /data/garage/data
 # ---
 set -e
 
@@ -106,8 +108,8 @@ Install cmatrix
 # DATA ********************************************
 Sync /data/helix	with 'ssh://majula//data/helix'  # BAD: SLOW
 Sync /data/dns		with 'ssh://majula//data/dns'		 # ?
-Link /data/timewarrior to		~/.local/share/timewarrior
-Sync /data/timewarrior from 'majula:/data/timewarrior.git'
+Link /data/timewarrior.git to		~/.local/share/timewarrior
+Sync /data/timewarrior.git from 'repo:timewarrior'
 
 # CONFIGURATION ***********************************
 
@@ -131,4 +133,5 @@ Link taskdog/cli.toml		to ~/.config/taskdog/cli.toml
 Link timewarrior			  to ~/.config/timewarrior
 Link tldr/config.toml		to ~/.config/tealdeer/config.toml
 Link xdg/dirs 					to ~/.config/user-dirs.dirs   # /etc is preferable
+Link yazi								to ~/.config/yazi
 Process aichat/config.yaml 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice

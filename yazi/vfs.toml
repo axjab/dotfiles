@@ -1,0 +1,5 @@
+[sftp.store]
+host = "100.109.130.76"
+user = "store"
+port = 22
+key_file = "~/.ssh/xenon.key"
