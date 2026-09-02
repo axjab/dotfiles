@@ -54,6 +54,8 @@ Host aran
 
 # SERVICES ****************************************
 
+Host service charm				at firelink
+Host service thales-nats	at majula
 Host service wiki					at localhost
 Host service nats					at firelink
 Host service repository		at majula
