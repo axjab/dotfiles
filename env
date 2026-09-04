@@ -47,6 +47,7 @@ CHARM_DATA_DIR=/data/charm
 DNS_CONTROL_DIR=/data/dns
 _ZO_DATA_DIR=/data/zoxide 	#Path for zoxide data files
 SILVERBULLET_DOCS="$HOME/docs"  # better: stash:notes
+WATCHFILE="$HOME/Watchfile"
 
 # ENDPOINTS
 # ----------------------------

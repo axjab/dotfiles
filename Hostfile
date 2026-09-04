@@ -84,6 +84,7 @@ set -e
 
 # IMPORT ************************************
 
+Install wev
 Install asciidoctor
 Install cmake
 Install make
