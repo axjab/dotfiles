@@ -24,7 +24,7 @@ input {
     // mode "2560x1440@60.000"
 // }
 
-// This affects Luminous's display, lower's framerate defualt
+// This affects Luminous's display, lower's framerate default
 // for better battery life. Look into conditionals?
 output "eDP-1" {
 //   Available modes:

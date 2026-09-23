@@ -45,3 +45,4 @@ printf 'bashrc: %d ms\n' \
   "$(( (__bashrc_end - __bashrc_start) / 1000000 ))"
 
 # magentish: \033[35m
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

@@ -196,7 +196,7 @@ format = '[$symbol](bold red)'
 [custom.tailnet]
 disabled = false
 description = "Tailnet disconnected"
-when = '[[ "$(tailscale status --json 2>/dev/null | jq -r ".BackendState // empty")" != "Running" ]]'
+when = '[[ "$(timeout -v 0.01 tailscale status --json | jq -r ".BackendState")" != "Running" ]]'
 command = "true"
 symbol = ' 󰖪 '
 format = '[$symbol](bold red)'

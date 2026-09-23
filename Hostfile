@@ -101,6 +101,7 @@ set -e
 
 # IMPORT ************************************
 
+Install wlr-randr   # control settings via CLI
 Install wev
 Install asciidoctor
 Install cmake
