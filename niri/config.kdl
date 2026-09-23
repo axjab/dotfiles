@@ -34,8 +34,15 @@ output "eDP-1" {
 
    scale 1
    transform "normal"
-   position x=0 y=0
+   position x=1200 y=1355
    // variable-refresh-rate on-demand=false
+}
+
+output "HDMI-A-1" {
+    mode "1920x1200@59.950"
+    scale 1
+    transform "270"
+    position x=0 y=0
 }
 // axjab@luminous:~$ niri msg outputs
 // Output "Najing CEC Panda FPD Technology CO. ltd 0x0036 Unknown" (eDP-1)
