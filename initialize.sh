@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# URL: https://raw.githubusercontent.com/axjab/etc/server/initialize.sh
+
 main() {
     record_initialization
     ensure_arch
@@ -13,8 +15,14 @@ run_tests() {
     _test "Default user"    test_user
     _test "GPG Fingerprint" test_gpg_fp
     _test "SSH Host Key"    test_ssh_key
+    _test "Repo host"       test_git_server
+    _test "Store host"      test_file_server
     _test "Tailnet status"  test_tailscale
     _test "Github status"   test_github
+    _test "Executables"     test_executables
+    _test "Configuration"   test_configuration
+    _test "Credentials"     test_credentials
+    _test "Vault decryption" test_vault_decryption
 }
 
 _test() {
@@ -273,6 +281,128 @@ test_github() {
         local gh_user
         gh_user="$(echo "$ssh_out" | sed -n 's/.*Hi \([^!]*\)!.*/\1/p')"
         echo "Authenticated (${gh_user:-ok})"
+        return 0
+    fi
+
+    return 1
+}
+
+test_git_server() {
+    if [[ "$1" == "--explain" ]]; then
+        printf '       -> Fix: Add Host repo (git server) block to ~/.ssh/config:\n'
+        printf '               Host repo\n'
+        printf '                   Hostname majula\n'
+        printf '                   User git\n'
+        return 1
+    fi
+
+    # Verify ~/.ssh/config contains the repo host block
+    grep -Fqx "Host repo" "$HOME/.ssh/config" 2>/dev/null || return 1
+
+    # Test Git SSH authentication (git-shell returns exit code 128 on successful auth)
+    local ssh_out
+    ssh_out="$(ssh -o ConnectTimeout=3 -T repo 2>&1)"
+    local status=$?
+
+    if [[ $status -eq 128 ]] || echo "$ssh_out" | grep -q "Run with no arguments or with -c cmd"; then
+        echo "Authenticated (repo / majula)"
+        return 0
+    fi
+
+    return 1
+}
+
+test_file_server() {
+    if [[ "$1" == "--explain" ]]; then
+        printf '       -> Fix: Add Host store block to ~/.ssh/config:\n'
+        printf '               Host store\n'
+        printf '                   HostName majula\n'
+        printf '                   User store\n'
+        return 1
+    fi
+
+    grep -Fqx "Host store" "$HOME/.ssh/config" 2>/dev/null || return 1
+
+    ssh -o ConnectTimeout=3 -T store >/dev/null 2>&1
+    local status=$?
+
+    if [[ $status -eq 0 || $status -eq 1 ]]; then
+        echo "Reachable (100.109.130.76)"
+        return 0
+    fi
+
+    return 1
+}
+
+test_executables() {
+    if [[ "$1" == "--explain" ]]; then
+        printf '       -> Fix: Clone or sync executables from github:axjab/executables to /exe\n'
+        return 1
+    fi
+
+    [[ -d "/exe" ]] || return 1
+    # Verify at least one executable exists or check sync status
+    find /exe -maxdepth 1 -type f | grep -q . || return 1
+    echo "Installed (/exe)"
+}
+
+test_configuration() {
+    if [[ "$1" == "--explain" ]]; then
+        printf '       -> Fix: Ensure required dotfiles and links are present in ~/.config/etc or home directory\n'
+        return 1
+    fi
+
+    # Verify presence of core configuration or environment files mapped from Hostfile
+    [[ -f "$HOME/.env" || -d "$HOME/etc" ]] || return 1
+    echo "Installed"
+}
+
+test_credentials() {
+    if [[ "$1" == "--explain" ]]; then
+        printf '       -> Fix: Sync /data/vault from repo or ensure credential mounts exist\n'
+        return 1
+    fi
+
+    # Verify vault data or credential path existence
+    [[ -d "/data/vault" || -f "$HOME/.config/gopass/config" ]] || return 1
+    echo "Installed (/data/vault)"
+}
+
+test_vault_decryption() {
+    local fp hostname confirm
+    fp="$(_get_machine_info "GPG_FP")"
+    hostname="$(hostname -s 2>/dev/null || hostname)"
+
+    if [[ "$1" == "--explain" ]]; then
+        printf '\n'
+        printf '  ┌─────────────────────────────────────────────────────────────────┐\n'
+        printf '  │  ENROLL THIS HOST IN THE PASSWORD STORE                         │\n'
+        printf '  │  Run the following on a peer host that can decrypt (e.g. majula)│\n'
+        printf '  └─────────────────────────────────────────────────────────────────┘\n'
+        printf '\n'
+        printf '  1. Import this host'\''s public key on peer:\n'
+        printf '     gpg --import <(ssh %s gpg --armor --export %s)\n\n' "$hostname" "${fp:-<GPG_FP>}"
+        printf '  2. Add key and sync password store on peer:\n'
+        printf '     gopass recipients add %s\n' "${fp:-<GPG_FP>}"
+        printf '     gopass sync\n\n'
+        printf '  3. Pull updated vault on this host:\n'
+        printf '     PASSWORD_STORE_DIR=/data/vault gopass sync\n'
+
+        if [[ -t 0 ]]; then
+            read -r -p "  Has this host been enrolled in gopass and synced? [y/N]: " confirm
+            if [[ "$confirm" =~ ^[Yy]$ ]]; then
+                git -C /data/vault pull >/dev/null 2>&1
+            fi
+        fi
+        return 1
+    fi
+
+    command -v gopass >/dev/null 2>&1 || return 1
+    [[ -d "/data/vault" ]] || return 1
+
+    # Verify secret decryption capability
+    if PASSWORD_STORE_DIR=/data/vault gopass gitlab/token >/dev/null 2>&1; then
+        echo "Decryption functional (/data/vault)"
         return 0
     fi
 

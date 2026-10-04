@@ -1,33 +1,30 @@
-#!/usr/bin/env bash 
+#!/usr/bin/env bash
 
 # Configfile a.k.a Hostfile
 
-# ============================================= 
+# =============================================
 # CURRENT ISSUE s
-# 1. TODO: Create a common BASH LIBRARY for all automations sourced separately
-# 2. ISSUE: Store registry of /etc/machine-info somewhere to query peers
-# 3. ISSUE: Use SSHFS and SFTP instead of NFS
-# 4. Sync SSH config between hosts direclty
-# 5. Use /data/store and /data/git as the CANONICAL: storage location for everything
-# 6. template files must be marked with ".T", or .processor-name like .gopass for example
-# 7. ISSUE: INTRODUCE CONDITION HANDLING API, MAKE EVERY STATEMENT CONDITIONAL
+# 1. TODO: MOVE ALL HOSTS TO API SERVER
+# 2. TODO: Create a common BASH LIBRARY for all automations sourced separately
+# 3. ISSUE: Store registry of /etc/machine-info somewhere to query peers
+# 4. ISSUE: Use SSHFS and SFTP instead of NFS
+# 5. Sync SSH config between hosts direclty
+# 6. Use /data/store and /data/git as the CANONICAL: storage location for everything
+# 7. template files must be marked with ".T", or .processor-name like .gopass for example
+# 8. ISSUE: INTRODUCE CONDITION HANDLING API, MAKE EVERY STATEMENT CONDITIONAL
 # 		DECLARE who the hosts are first by name/ip/port, such that hostnamectl can query
-# 8. Replace "hook" hardcoded to ~/etc/hooks with "run" which is global
-# 
+#
 # =============================================
 
-# ===MOVED TO INITIALIZATION SCRIPT======================
+# =====================================================
+# HOST IS INITIALIZED WITH
+# https://raw.githubusercontent.com/axjab/etc/server/initialize.sh
+# =====================================================
 
-# /etc/machine-info attributes set
-# Create key gpg
-# Create key ssh
-# Hook tailnet	"Tailnet authenticated"
-# Hook github	"Github	authenticated"
-#
-# =======================================================
 
+# move to maintained file?
 Sync /exe from 'github:axjab/executables'
-Sync /data/vault from  'github:axjab/vault' # 'repo:vault'
+Sync /data/vault from  'repo:vault'
 
 # SYSTEM CONFIG
 Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY
@@ -71,10 +68,10 @@ Host store at 100.109.130.76
 :
 # SERVICES ****************************************
 
-Host service charm				at firelink
+Host service charm			at firelink
 Host service thales-nats	at majula
-Host service wiki					at localhost
-Host service nats					at firelink
+Host service wiki			at localhost
+Host service nats			at firelink
 Host service pocketbase		at majula
 Host service uptime-kuma	at majula
 

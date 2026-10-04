@@ -1,6 +1,14 @@
 
 # HOST CONFIGURATION
 
+## INITIALIZATION
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/axjab/etc/server/initialize.sh | bash
+```
+
+Open question: deos it work in other shells (sh?)
+
 ## FAST DEPLOYMENT
 
 1. Clone this repo to `~/etc`
