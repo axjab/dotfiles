@@ -5,8 +5,7 @@
 # ============================================= 
 # CURRENT ISSUE s
 # 1. TODO: Create a common BASH LIBRARY for all automations sourced separately
-# 2. ISSUE: Store host metadata in /etc/machine-info and query with hostnamectl -j
-# 					hostnamectl can also query REMOTELY, use as source of truth of machine/host
+# 2. ISSUE: Store registry of /etc/machine-info somewhere to query peers
 # 3. ISSUE: Use SSHFS and SFTP instead of NFS
 # 4. Sync SSH config between hosts direclty
 # 5. Use /data/store and /data/git as the CANONICAL: storage location for everything
@@ -17,17 +16,15 @@
 # 
 # =============================================
 
+# ===MOVED TO INITIALIZATION SCRIPT======================
 
-# IDENTITY
-# FIX: MISSING METADATA: /etc/machine-info
-Create key gpg   # ERROR: cannot enroll a key with peers, if peer is NOT defined!
-Create key ssh
-
-# INGREDIENTS
-Hook tailnet	"Tailnet authenticated"   # ERROR: failed! interaction bot visible
-Hook github	"Github	authenticated"
-# hook garage	"S3 API authenticated"
-# hook nats	"Connected to NATS"
+# /etc/machine-info attributes set
+# Create key gpg
+# Create key ssh
+# Hook tailnet	"Tailnet authenticated"
+# Hook github	"Github	authenticated"
+#
+# =======================================================
 
 Sync /exe from 'github:axjab/executables'
 Sync /data/vault from  'github:axjab/vault' # 'repo:vault'
@@ -36,7 +33,7 @@ Sync /data/vault from  'github:axjab/vault' # 'repo:vault'
 Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY
 
 # HOSTS ******************************************
-# FIX: USE hostnamectl -j
+# FIX: USE CENTRALIZED INVENTORY
 Host firelink at 100.121.116.55
 	is='headless server'
 	at=100.121.116.55
