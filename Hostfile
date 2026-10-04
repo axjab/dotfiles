@@ -25,45 +25,34 @@
 # move to maintained file?
 Sync /exe from 'github:axjab/executables'
 Sync /data/vault from  'repo:vault'
-
-# SYSTEM CONFIG
 Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY
 
 # HOSTS ******************************************
 # FIX: USE CENTRALIZED INVENTORY
-Host firelink at 100.121.116.55
-	is='headless server'
+Host firelink at 100.121.116.55  # headless server
 	at=100.121.116.55
 	user=ash
-	os=Debian
-: # use this --- or ~~ as scope terminators
+:
 
-Host majula at 100.109.130.76
-	is='headless server'
+Host majula at 100.109.130.76  # headless server
 	at=100.109.130.76
 	user=solaire
-	os=Debian
 :
-# equivalent to
-# is='headless server' at=100.109.130.76 user=solaire os=Debian Host majula ---
-Host xenon at 100.123.39.117
-	is='nvidia gaming pc'
+
+Host xenon at 100.123.39.117   # nvidia gaming pc
 	at=100.123.39.117
 	user=axjab
-	os=PikaOS
 :
-Host luminous at 100.95.238.38
-	is='nvidia gaming pc'
+
+Host luminous at 100.95.238.38    # nvidia gaming pc
 	at='100.95.238.38'
 	user=axjab
-	os=PikaOS
 :
+
 Host repo at 100.109.130.76
-	is='system user'
 	user=git
 :
 Host store at 100.109.130.76
-	is='system user'
 	user=store
 :
 # SERVICES ****************************************
@@ -105,8 +94,8 @@ Install pipx  # for Python applications like Taskdog
 Install	eza
 Install tree
 Install kdiff3
-Install nfs-common
-Install kitty-terminfo
+# Install nfs-common
+# Install kitty-terminfo
 Install cmatrix
 # Install taskdog-ui via pipx
 
@@ -141,6 +130,7 @@ Link helix/lang.toml		to ~/.config/helix/languages.toml
 Link ly/config.ini			to /etc/ly/config.ini
 Link niri/config.kdl		to ~/.config/niri/config.kdl
 Link niri/animation			to ~/.config/niri/animation
+Link niri/display				to ~/.config/niri/display
 Link qmk        				to ~/.config/qmk
 Link starship/config		to ~/.config/starship.toml
 Link taskdog/cli.toml		to ~/.config/taskdog/cli.toml

@@ -29,9 +29,6 @@
 #   ~/.ssh/config
 #   ${XDG_CACHE_DIR:-~/.cache}/host/state.json
 #
-# SSH connectivity is tested after convergence. Failure is soft: the user is
-# shown the local host public key and given an opportunity to install it on
-# the remote host.
 # =============================================================================
 
 HOSTS_FILE="/etc/hosts"
@@ -408,40 +405,6 @@ _host_test_ssh() {
         "$name" true >/dev/null 2>&1
 }
 
-_host_check_ssh() {
-    local name="$1"
-
-    if _host_test_ssh "$name"; then
-        return 0
-    fi
-
-    error "host: SSH connection to '$name' failed"
-
-    local key="$HOME/.ssh/$(hostname).key.pub"
-
-    if [[ ! -f "$key" ]]; then
-        error "host: public key not found: $key"
-        return 0
-    fi
-
-    printf '\n'
-    printf '\033[93mSSH public key to add to %s:~/.ssh/authorized_keys\033[0m\n' "$name"
-    printf '\n'
-    cat "$key"
-    printf '\n\n'
-
-    printf 'Add the key to the remote host, then press Enter to retry SSH. '
-    read -r
-
-    if _host_test_ssh "$name"; then
-        printf '\033[1;32m[+] SSH %s reachable\033[0m\n' "$name"
-    else
-        error "host: SSH connection to '$name' still unavailable"
-    fi
-
-    return 0
-}
-
 # -----------------------------------------------------------------------------
 # /etc/hosts convergence
 # -----------------------------------------------------------------------------
@@ -688,8 +651,6 @@ _host_apply_etc_hosts() {
             _host_reset_scope
             return 1
         fi
-
-        _host_check_ssh "$name"
     fi
 
     # -------------------------------------------------------------------------

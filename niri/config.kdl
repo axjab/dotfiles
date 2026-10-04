@@ -1,5 +1,6 @@
 
-include "animation"  // ~/etc/niri/animations
+include "animation"
+include "display"
 
 input {
     keyboard {
@@ -44,15 +45,6 @@ output "HDMI-A-1" {
     transform "270"
     position x=0 y=0
 }
-// axjab@luminous:~$ niri msg outputs
-// Output "Najing CEC Panda FPD Technology CO. ltd 0x0036 Unknown" (eDP-1)
-//   Current mode: 1920x1080 @ 120.035 Hz (preferred)
-//   Variable refresh rate: not supported
-//   Physical size: 340x190 mm
-//   Logical position: 0, 0
-//   Logical size: 1920x1080
-//   Scale: 1
-//   Transform: normal
 
 layout {
     gaps 4
