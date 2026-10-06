@@ -128,9 +128,13 @@ Link gopass/config			to ~/.config/gopass/config
 Link helix/config.toml	to ~/.config/helix/config.toml
 Link helix/lang.toml		to ~/.config/helix/languages.toml
 Link ly/config.ini			to /etc/ly/config.ini
-Link niri/config.kdl		to ~/.config/niri/config.kdl
-Link niri/animation			to ~/.config/niri/animation
-Link niri/display				to ~/.config/niri/display
+
+# === DANGEROUS! ====================
+# Link niri/config.kdl		to ~/.config/niri/config.kdl
+# Link niri/animation			to ~/.config/niri/animation
+# Link niri/display				to ~/.config/niri/display
+# ===
+
 Link qmk        				to ~/.config/qmk
 Link starship/config		to ~/.config/starship.toml
 Link taskdog/cli.toml		to ~/.config/taskdog/cli.toml

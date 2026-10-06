@@ -1,6 +1,6 @@
 
 include "animation"
-include "display"
+// include "display"
 
 input {
     keyboard {
