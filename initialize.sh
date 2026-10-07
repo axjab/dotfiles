@@ -2,10 +2,50 @@
 
 # URL: https://raw.githubusercontent.com/axjab/etc/server/initialize.sh
 
+# set -e
+# set -u
+
+# Configuration Constants
+SSH_TIMEOUT=3
+
 main() {
+    install_dependencies
     record_initialization
     ensure_arch
     run_tests
+}
+
+install_dependencies() {
+    local deps=("jq" "git" "gpg" "gopass")
+    local missing=()
+
+    for dep in "${deps[@]}"; do
+        if ! command -v "$dep" >/dev/null 2>&1; then
+            missing+=("$dep")
+        fi
+    done
+
+    if (( ${#missing[@]} > 0 )); then
+        printf 'Missing dependencies detected: %s. Installing automatically...\n' "${missing[*]}"
+        sudo apt-get update -y
+        
+        for dep in "${missing[@]}"; do
+            case "$dep" in
+                tailscale)
+                    curl -fsSL https://tailscale.com/install.sh | sh
+                    ;;
+                gopass)
+                    sudo apt-get install -y gopass
+                    ;;
+                *)
+                    sudo apt-get install -y "$dep"
+                    ;;
+            esac
+        done
+
+        clear
+        exec "$0" "$@"
+    fi
 }
 
 run_tests() {
@@ -30,39 +70,39 @@ _test() {
     local test_fn="$2"
     local val
 
-    # Execute test and capture stdout value
-    val="$("$test_fn" 2>/dev/null)"
+    # Execute test and capture stdout; errors flow directly to stderr/console
+    val="$("$test_fn")"
     local status=$?
 
     if [[ $status -eq 0 && -n "$val" ]]; then
         printf '\033[0;32m[OK]\033[0m   %-22s -> %s\n' "$label" "$val"
     else
-        printf '\033[0;31m[FAIL]\033[0m %-22s\n' "$label"
+        printf '\033[0;31m[FAIL]\033[0m %-22s (Exit code: %d)\n' "$label" "$status"
         "$test_fn" --explain
     fi
 }
 
 _get_machine_info() {
     local key="$1"
-    command -v jq >/dev/null 2>&1 || return 1
+    command -v jq >/dev/null 2>&1 || return 21
 
     local json
-    json="$(hostnamectl status --json=short 2>/dev/null)" || return 1
+    json="$(hostnamectl status --json=short)" || return 22
 
     case "$key" in
         PRETTY_HOSTNAME)
             local val
-            val="$(echo "$json" | jq -r '.PrettyHostname // empty' 2>/dev/null)"
+            val="$(echo "$json" | jq -r '.PrettyHostname // empty')"
             [[ -n "$val" ]] && { echo "$val"; return 0; }
             ;;
         LOCATION)
             local val
-            val="$(echo "$json" | jq -r '.Location // empty' 2>/dev/null)"
+            val="$(echo "$json" | jq -r '.Location // empty')"
             [[ -n "$val" ]] && { echo "$val"; return 0; }
             ;;
     esac
 
-    echo "$json" | jq -r --arg k "$key=" '.MachineInformationData[]? | select(startswith($k)) | sub("^" + $k; "")' 2>/dev/null
+    echo "$json" | jq -r --arg k "$key=" '.MachineInformationData[]? | select(startswith($k)) | sub("^" + $k; "")'
 }
 
 _set_machine_info() {
@@ -70,13 +110,13 @@ _set_machine_info() {
     local val="$2"
     local file="/etc/machine-info"
 
-    sudo -v || return 1
+    sudo -v || return 31
 
     if [[ ! -f "$file" ]]; then
-        sudo touch "$file" || return 1
+        sudo touch "$file" || return 32
     fi
 
-    if grep -q "^${key}=" "$file" 2>/dev/null; then
+    if grep -q "^${key}=" "$file"; then
         sudo sed -i "s|^${key}=.*|${key}=\"${val}\"|" "$file"
     else
         echo "${key}=\"${val}\"" | sudo tee -a "$file" >/dev/null
@@ -85,10 +125,10 @@ _set_machine_info() {
 
 _relative_time() {
     local iso="$1"
-    [[ -n "$iso" ]] || return 1
+    [[ -n "$iso" ]] || return 41
 
     local past now diff
-    past=$(date -d "$iso" +%s 2>/dev/null) || return 1
+    past=$(date -d "$iso" +%s) || return 42
     now=$(date +%s)
     diff=$((now - past))
 
@@ -105,7 +145,7 @@ _relative_time() {
 
 record_initialization() {
     local prev_init ago
-    prev_init="$(_get_machine_info "INITIALIZED_AT")"
+    prev_init="$(_get_machine_info "INITIALIZED_AT")" || true
 
     if [[ -n "$prev_init" ]]; then
         ago="$(_relative_time "$prev_init")"
@@ -126,105 +166,100 @@ ensure_arch() {
 test_pretty_hostname() {
     if [[ "$1" == "--explain" ]]; then
         printf '       -> Fix: sudo hostnamectl set-hostname --pretty "My Host Name"\n'
-        return 1
+        return 101
     fi
 
     local val
-    val="$(_get_machine_info "PRETTY_HOSTNAME")"
-    [[ -n "$val" ]] || return 1
+    val="$(_get_machine_info "PRETTY_HOSTNAME")" || return 101
+    [[ -n "$val" ]] || return 101
     echo "$val"
 }
 
 test_location() {
     if [[ "$1" == "--explain" ]]; then
         printf '       -> Fix: sudo hostnamectl location "LAT,LON"\n'
-        return 1
+        return 102
     fi
 
     local val
-    val="$(_get_machine_info "LOCATION")"
-    [[ -n "$val" ]] || return 1
+    val="$(_get_machine_info "LOCATION")" || return 102
+    [[ -n "$val" ]] || return 102
     echo "$val"
 }
 
 test_tags() {
     if [[ "$1" == "--explain" ]]; then
         printf '       -> Fix: sudo bash -c '\''echo "TAGS=server:media" >> /etc/machine-info'\''\n'
-        return 1
+        return 103
     fi
 
     local val
-    val="$(_get_machine_info "TAGS")"
-    [[ -n "$val" ]] || return 1
+    val="$(_get_machine_info "TAGS")" || return 103
+    [[ -n "$val" ]] || return 103
     echo "$val"
 }
 
 test_user() {
     if [[ "$1" == "--explain" ]]; then
         printf '       -> Fix: sudo bash -c '\''echo "USER=%s" >> /etc/machine-info'\''\n' "${USER:-username}"
-        return 1
+        return 104
     fi
 
     local val
-    val="$(_get_machine_info "USER")"
-    [[ -n "$val" ]] || return 1
+    val="$(_get_machine_info "USER")" || return 104
+    [[ -n "$val" ]] || return 104
     echo "$val"
 }
 
 test_gpg_fp() {
     if [[ "$1" == "--explain" ]]; then
         local host
-        host="$(hostname -s 2>/dev/null || hostname)"
+        host="$(hostname -s || hostname)"
         printf '       -> Fix: Generate key via "gpg --full-generate-key" and record FP:\n'
         printf '               sudo bash -c '\''echo "GPG_FP=<FINGERPRINT>" >> /etc/machine-info'\''\n'
-        return 1
+        return 111
     fi
 
-    command -v gpg >/dev/null 2>&1 || return 1
+    command -v gpg >/dev/null 2>&1 || return 111
 
     local fp
-    fp="$(_get_machine_info "GPG_FP")"
-    [[ -n "$fp" ]] || return 1
+    fp="$(_get_machine_info "GPG_FP")" || return 112
+    [[ -n "$fp" ]] || return 112
 
-    # Verify the fingerprint registered in machine-info actually exists in secret keyring
-    if gpg --batch --quiet --list-secret-keys --with-colons 2>/dev/null | grep -Fq ":$fp:"; then
+    if gpg --batch --quiet --list-secret-keys --with-colons | grep -Fq ":$fp:"; then
         echo "$fp"
         return 0
     fi
 
-    return 1
+    return 113
 }
 
 test_ssh_key() {
     local host key_priv key_pub
-    host="$(hostname -s 2>/dev/null || hostname)"
+    host="$(hostname -s || hostname)"
     key_priv="$HOME/.ssh/$host.key"
     key_pub="$HOME/.ssh/$host.key.pub"
 
     if [[ "$1" == "--explain" ]]; then
         printf '       -> Fix: ssh-keygen -t ed25519 -f "%s" -C "%s"\n' "$key_priv" "$host"
         printf '               sudo bash -c '\''echo "SSH_KEY=$(cat %s)" >> /etc/machine-info'\''\n' "$key_pub"
-        return 1
+        return 121
     fi
 
-    # 1. Check local key files exist on disk
-    [[ -f "$key_priv" && -f "$key_pub" ]] || return 1
+    [[ -f "$key_priv" && -f "$key_pub" ]] || return 121
 
-    # 2. Check SSH_KEY entry in machine-info
     local reg_key
-    reg_key="$(_get_machine_info "SSH_KEY")"
-    [[ -n "$reg_key" ]] || return 1
+    reg_key="$(_get_machine_info "SSH_KEY")" || return 122
+    [[ -n "$reg_key" ]] || return 122
 
-    # 3. Verify public key on disk matches the registered SSH_KEY content
     local disk_pub
-    disk_pub="$(cat "$key_pub" 2>/dev/null)"
+    disk_pub="$(cat "$key_pub")"
     if [[ "$disk_pub" == "$reg_key" ]]; then
-        # Print key type and comment/fingerprint for output display
-        awk '{print $1, $3}' "$key_pub" 2>/dev/null || echo "valid"
+        awk '{print $1, $3}' "$key_pub" || echo "valid"
         return 0
     fi
 
-    return 1
+    return 123
 }
 
 test_tailscale() {
@@ -236,28 +271,26 @@ test_tailscale() {
         printf '       -> Fix: Install and activate Tailscale SSH:\n'
         printf '               curl -fsSL https://tailscale.com/install.sh | sh\n'
         printf '               sudo tailscale up --ssh --operator %s\n' "$user"
-        return 1
+        return 131
     fi
 
-    # 1. Check binary exists
-    command -v tailscale >/dev/null 2>&1 || return 1
+    command -v tailscale >/dev/null 2>&1 || return 131
 
-    # 2. Check daemon state via status JSON
     local state
     if command -v jq >/dev/null 2>&1; then
-        state="$(sudo tailscale status --json 2>/dev/null | jq -r '.BackendState // empty' 2>/dev/null)"
+        state="$(sudo tailscale status --json | jq -r '.BackendState // empty')"
     else
-        state="$(sudo tailscale status --json 2>/dev/null | grep -o '"BackendState"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*:[[:space:]]*"//; s/"$//')"
+        state="$(sudo tailscale status --json | grep -o '"BackendState"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*:[[:space:]]*"//; s/"$//')"
     fi
 
     if [[ "$state" == "Running" ]]; then
         local ip
-        ip="$(tailscale ip -4 2>/dev/null)"
+        ip="$(tailscale ip -4)"
         echo "Running (${ip:-connected})"
         return 0
     fi
 
-    return 1
+    return 132
 }
 
 test_github() {
@@ -266,17 +299,20 @@ test_github() {
         printf '               Host github\n'
         printf '                   Hostname github.com\n'
         printf '                   User git\n'
-        return 1
+        return 141
     fi
 
-    # 1. Verify ~/.ssh/config contains the required Host block
-    grep -Fqx "Host github" "$HOME/.ssh/config" 2>/dev/null || return 1
+    # Check for Host entry or Hostname directive, ignoring leading whitespace and case
+    if [[ -f "$HOME/.ssh/config" ]]; then
+        grep -iqE '^[[:space:]]*(Host[[:space:]]+github|Hostname[[:space:]]+github\.com)' "$HOME/.ssh/config" || return 141
+    else
+        return 141
+    fi
 
-    # 2. Test SSH connection to GitHub (uses alias "github" or fallback git@github.com)
     local ssh_out
-    ssh_out="$(ssh -T -o StrictHostKeyChecking=accept-new github 2>&1)"
+    echo "FIX: HARD-CODED Host *******************" >&2
+    ssh_out="$(ssh -T -o StrictHostKeyChecking=accept-new gh 2>&1)"
 
-    # 3. Check for GitHub's auth success message ("Hi <username>! You've successfully authenticated...")
     if echo "$ssh_out" | grep -q "You've successfully authenticated"; then
         local gh_user
         gh_user="$(echo "$ssh_out" | sed -n 's/.*Hi \([^!]*\)!.*/\1/p')"
@@ -284,7 +320,7 @@ test_github() {
         return 0
     fi
 
-    return 1
+    return 142
 }
 
 test_git_server() {
@@ -293,15 +329,13 @@ test_git_server() {
         printf '               Host repo\n'
         printf '                   Hostname majula\n'
         printf '                   User git\n'
-        return 1
+        return 151
     fi
 
-    # Verify ~/.ssh/config contains the repo host block
-    grep -Fqx "Host repo" "$HOME/.ssh/config" 2>/dev/null || return 1
+    grep -Fqx "Host repo" "$HOME/.ssh/config" || return 151
 
-    # Test Git SSH authentication (git-shell returns exit code 128 on successful auth)
     local ssh_out
-    ssh_out="$(ssh -o ConnectTimeout=3 -T repo 2>&1)"
+    ssh_out="$(timeout "$SSH_TIMEOUT" ssh -o ConnectTimeout="$SSH_TIMEOUT" -o BatchMode=yes -T repo 2>&1)"
     local status=$?
 
     if [[ $status -eq 128 ]] || echo "$ssh_out" | grep -q "Run with no arguments or with -c cmd"; then
@@ -309,7 +343,7 @@ test_git_server() {
         return 0
     fi
 
-    return 1
+    return 152
 }
 
 test_file_server() {
@@ -318,12 +352,12 @@ test_file_server() {
         printf '               Host store\n'
         printf '                   HostName majula\n'
         printf '                   User store\n'
-        return 1
+        return 161
     fi
 
-    grep -Fqx "Host store" "$HOME/.ssh/config" 2>/dev/null || return 1
+    grep -Fqx "Host store" "$HOME/.ssh/config" || return 161
 
-    ssh -o ConnectTimeout=3 -T store >/dev/null 2>&1
+    timeout "$SSH_TIMEOUT" ssh -o ConnectTimeout="$SSH_TIMEOUT" -o BatchMode=yes -T store
     local status=$?
 
     if [[ $status -eq 0 || $status -eq 1 ]]; then
@@ -331,47 +365,44 @@ test_file_server() {
         return 0
     fi
 
-    return 1
+    return 162
 }
 
 test_executables() {
     if [[ "$1" == "--explain" ]]; then
         printf '       -> Fix: Clone or sync executables from github:axjab/executables to /exe\n'
-        return 1
+        return 171
     fi
 
-    [[ -d "/exe" ]] || return 1
-    # Verify at least one executable exists or check sync status
-    find /exe -maxdepth 1 -type f | grep -q . || return 1
+    [[ -d "/exe" ]] || return 171
+    find /exe -maxdepth 1 -type f | grep -q . || return 172
     echo "Installed (/exe)"
 }
 
 test_configuration() {
     if [[ "$1" == "--explain" ]]; then
         printf '       -> Fix: Ensure required dotfiles and links are present in ~/.config/etc or home directory\n'
-        return 1
+        return 181
     fi
 
-    # Verify presence of core configuration or environment files mapped from Hostfile
-    [[ -f "$HOME/.env" || -d "$HOME/etc" ]] || return 1
+    [[ -f "$HOME/.env" || -d "$HOME/etc" ]] || return 181
     echo "Installed"
 }
 
 test_credentials() {
     if [[ "$1" == "--explain" ]]; then
         printf '       -> Fix: Sync /data/vault from repo or ensure credential mounts exist\n'
-        return 1
+        return 191
     fi
 
-    # Verify vault data or credential path existence
-    [[ -d "/data/vault" || -f "$HOME/.config/gopass/config" ]] || return 1
+    [[ -d "/data/vault" || -f "$HOME/.config/gopass/config" ]] || return 191
     echo "Installed (/data/vault)"
 }
 
 test_vault_decryption() {
     local fp hostname confirm
-    fp="$(_get_machine_info "GPG_FP")"
-    hostname="$(hostname -s 2>/dev/null || hostname)"
+    fp="$(_get_machine_info "GPG_FP")" || true
+    hostname="$(hostname -s || hostname)"
 
     if [[ "$1" == "--explain" ]]; then
         printf '\n'
@@ -391,22 +422,21 @@ test_vault_decryption() {
         if [[ -t 0 ]]; then
             read -r -p "  Has this host been enrolled in gopass and synced? [y/N]: " confirm
             if [[ "$confirm" =~ ^[Yy]$ ]]; then
-                git -C /data/vault pull >/dev/null 2>&1
+                git -C /data/vault pull
             fi
         fi
-        return 1
+        return 201
     fi
 
-    command -v gopass >/dev/null 2>&1 || return 1
-    [[ -d "/data/vault" ]] || return 1
+    command -v gopass >/dev/null 2>&1 || return 201
+    [[ -d "/data/vault" ]] || return 202
 
-    # Verify secret decryption capability
-    if PASSWORD_STORE_DIR=/data/vault gopass gitlab/token >/dev/null 2>&1; then
+    if PASSWORD_STORE_DIR=/data/vault gopass gitlab/token; then
         echo "Decryption functional (/data/vault)"
         return 0
     fi
 
-    return 1
+    return 203
 }
 
 main

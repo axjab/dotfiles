@@ -21,6 +21,8 @@
 # https://raw.githubusercontent.com/axjab/etc/server/initialize.sh
 # =====================================================
 
+# TODO: ASYNC DOWNLOAD LIST
+# exe, etc, vault, 
 
 # move to maintained file?
 Sync /exe from 'github:axjab/executables'
@@ -115,8 +117,11 @@ Sync /data/timewarrior.git from 'repo:timewarrior'
 
 # CONFIGURATION ***********************************
 
-Process env to ~/.env
-Link /usr/bin/pinentry-curses to /usr/bin/pinentry
+Process env.T to ~/.env
+
+# already included in DMS
+# Link /usr/bin/pinentry-curses to /usr/bin/pinentry
+
 Link bash								to ~/.bash
 Link bash/rc  					to ~/.bashrc
 Link ble/rc							to ~/.blerc

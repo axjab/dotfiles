@@ -3,6 +3,11 @@
 
 #:schema https://yazi-rs.github.io/schemas/keymap.json
 
+[[mgr.prepend_keymap]]
+
+on  = "M"
+run = "plugin mount"
+
 [mgr]
 
 keymap = [
