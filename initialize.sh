@@ -28,7 +28,7 @@ install_dependencies() {
     if (( ${#missing[@]} > 0 )); then
         printf 'Missing dependencies detected: %s. Installing automatically...\n' "${missing[*]}"
         sudo apt-get update -y
-        
+
         for dep in "${missing[@]}"; do
             case "$dep" in
                 tailscale)
@@ -357,11 +357,11 @@ test_file_server() {
 
     grep -Fqx "Host store" "$HOME/.ssh/config" || return 161
 
-    timeout "$SSH_TIMEOUT" ssh -o ConnectTimeout="$SSH_TIMEOUT" -o BatchMode=yes -T store
+    timeout "$SSH_TIMEOUT" ssh -o ConnectTimeout="$SSH_TIMEOUT" -o BatchMode=yes -T store true  # execute any command so that it does get killed
     local status=$?
 
     if [[ $status -eq 0 || $status -eq 1 ]]; then
-        echo "Reachable (100.109.130.76)"
+        echo "Reachable"
         return 0
     fi
 
