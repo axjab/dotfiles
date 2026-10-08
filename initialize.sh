@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# ISSUES:
+# 1. Infinite loop when missing dependecies like gopass
+#     - [ ] Write my own apt package, install alongside others
+# 2. Test NetworkManager misconfiguration
+#     ifupdown.managed = true # FALSE WILL CAUSE FAIL TO DETEC SSIDs
+
 # URL: https://raw.githubusercontent.com/axjab/etc/server/initialize.sh
 
 # set -e

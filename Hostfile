@@ -25,7 +25,7 @@
 # exe, etc, vault, 
 
 # move to maintained file?
-Sync /exe from 'github:axjab/executables'
+Sync /exe from 'gh:axjab/executables'
 Sync /data/vault from  'repo:vault'
 Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY
 
