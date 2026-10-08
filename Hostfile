@@ -1,36 +1,32 @@
 #!/usr/bin/env bash
 
-# Configfile a.k.a Hostfile
+# === CURRENT ISSUEs:
+# 1. TODO: MOVE ALL HOSTS data to host of embers live inventory (source of truth)
+# 		Consolidate:
+# 			- /etc/machine-info
+# 2. System health:
+# 			- /etc/hosts and ~/.ssh/config must be synced to hosts of embers API
+# 3. dependencies: Create a common BASH LIBRARY (deb packages?) for all automations sourced separately
+# ===
 
-# =============================================
-# CURRENT ISSUE s
-# 1. TODO: MOVE ALL HOSTS TO API SERVER
-# 2. TODO: Create a common BASH LIBRARY for all automations sourced separately
-# 3. ISSUE: Store registry of /etc/machine-info somewhere to query peers
-# 4. ISSUE: Use SSHFS and SFTP instead of NFS
-# 5. Sync SSH config between hosts direclty
-# 6. Use /data/store and /data/git as the CANONICAL: storage location for everything
-# 7. template files must be marked with ".T", or .processor-name like .gopass for example
-# 8. ISSUE: INTRODUCE CONDITION HANDLING API, MAKE EVERY STATEMENT CONDITIONAL
-# 		DECLARE who the hosts are first by name/ip/port, such that hostnamectl can query
+# === Notes
 #
-# =============================================
+# 1. Host is expected to be kindled with
+# 		https://raw.githubusercontent.com/axjab/etc/server/initialize.sh (rename)
+# 		Offline initialization requires axjab/kindling
+#
+# 2. File servers, git servers, and other servers must be defined:
+# 		file server: majula:/data/store (need to plan access model: HTTP, SSH, S3?)
+# 		git server:  majula:/data/git
+#			...more to come
+# ===
 
-# =====================================================
-# HOST IS INITIALIZED WITH
-# https://raw.githubusercontent.com/axjab/etc/server/initialize.sh
-# =====================================================
+Sync /exe from 'gh:axjab/executables'  							# move to apt, pipx, go, etc.?
+Sync /data/vault from  'repo:vault'    							# move to gopass sync
+Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY	# move to initialze provisioning step and doctor
 
-# TODO: ASYNC DOWNLOAD LIST
-# exe, etc, vault, 
-
-# move to maintained file?
-Sync /exe from 'gh:axjab/executables'
-Sync /data/vault from  'repo:vault'
-Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY
-
-# HOSTS ******************************************
-# FIX: USE CENTRALIZED INVENTORY
+# === HOSTS ******************************************
+# TODO: Poll from host of embers endpoint
 Host firelink at 100.121.116.55  # headless server
 	at=100.121.116.55
 	user=ash
@@ -57,7 +53,9 @@ Host repo at 100.109.130.76
 Host store at 100.109.130.76
 	user=store
 :
-# SERVICES ****************************************
+
+# === SERVICES ****************************************
+# TBD
 
 Host service charm			at firelink
 Host service thales-nats	at majula
@@ -67,26 +65,34 @@ Host service pocketbase		at majula
 Host service uptime-kuma	at majula
 
 # FILESYSTEM MOUNTPOINTS **************************
+# provisioning and doctor
 
 # For all devices under /dev, PRINT THEIR /etc/fstab entry
 # lsblk -f /dev/sda1
 # Device /dev/sda1 is not mounted!
 # Add <> to /etc/fstab
 
-set +e
+# DEPRECATED: FAVOR SSHFS OVER NFS
+# Mount nfs majula:/mnt/ssd 			onto /mnt/majula.ssd
+# Mount dir /mnt/majula.ssd/files onto /repo
 
-# For all but majula \  ( only execute this step if host is NOT majula)
-		Mount nfs majula:/mnt/ssd 			onto /mnt/majula.ssd
-		Mount dir /mnt/majula.ssd/files onto /repo
-# ---
-# For majula only
-	# Mount dir /mnt/ssd/data/garage	onto /data/garage/data
-# ---
-set -e
+# === IMPORT ************************************
 
-# IMPORT ************************************
+# should probably move this to a separate list
+# OR BETTER YET:
+# List them ALL as dependencies when installing my personal
+# Debian package
+# or
+# use Ansible?
 
+Install network-manager
+Install pipewire
+Install curl
+Install gnupg2
+Install rsync
+Install jq
 Install wlr-randr   # control settings via CLI
+Install wl-clipboard
 Install wev
 Install asciidoctor
 Install cmake
@@ -96,18 +102,10 @@ Install pipx  # for Python applications like Taskdog
 Install	eza
 Install tree
 Install kdiff3
-# Install nfs-common
-# Install kitty-terminfo
 Install cmatrix
 # Install taskdog-ui via pipx
 
 # curl https://starship.rs/install.sh -sS | sh
-# curl -L https://github.com/akinomyoga/ble.sh/releases/download/nightly/ble-nightly.tar.xz | tar xJf -
-# bash ble-nightly/ble.sh --install ~/.local/share
-
-# For not headless
-# install vivaldi IF NOT headless   # TODO
-# install code		IF NOT headless		# TODO
 
 # DATA ********************************************
 Sync /data/helix	with 'ssh://majula//data/helix'  # BAD: SLOW
@@ -117,24 +115,27 @@ Sync /data/timewarrior.git from 'repo:timewarrior'
 
 # CONFIGURATION ***********************************
 
-Process env.T to ~/.env
+Process env.tmpl to ~/.env
 
 # already included in DMS
 # Link /usr/bin/pinentry-curses to /usr/bin/pinentry
 
 Link bash								to ~/.bash
 Link bash/rc  					to ~/.bashrc
-Link ble/rc							to ~/.blerc
+# Link ble/rc						to ~/.blerc
 Link bat/config					to /etc/bat/config
+Link dms/dankcal				to ~/.config/dankcal
 Link git/config					to /etc/gitconfig
 Link git/config					to ~/.gitconfig
 Link gh/config					to ~/.config/gh/config.yml
+Link ghostty						to ~/.config/ghostty
 Link gopass/config			to ~/.config/gopass/config
 Link helix/config.toml	to ~/.config/helix/config.toml
 Link helix/lang.toml		to ~/.config/helix/languages.toml
 Link ly/config.ini			to /etc/ly/config.ini
 
-# === DANGEROUS! ====================
+# === DANGER! ====================
+# Link dms/niri						to ~/.config/niri  # BUT ONLY IF SHELL IS DMS
 # Link niri/config.kdl		to ~/.config/niri/config.kdl
 # Link niri/animation			to ~/.config/niri/animation
 # Link niri/display				to ~/.config/niri/display
@@ -147,4 +148,4 @@ Link timewarrior			  to ~/.config/timewarrior
 Link tldr/config.toml		to ~/.config/tealdeer/config.toml
 Link xdg/dirs 					to ~/.config/user-dirs.dirs   # /etc is preferable
 Link yazi								to ~/.config/yazi
-Process aichat/config.yaml 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
+Process aichat/config.yaml.tmpl 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
