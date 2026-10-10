@@ -21,6 +21,13 @@
 #			...more to come
 # ===
 
+# === Doctor
+# Things to check for every host
+# 1. Are repos up to date
+# 2. Can sudo access the same commands as user: sudo/secure-path to /etc/sudoers.d/ READ-ONLY	
+# 2. Is user added to docker group?
+# ===
+
 Sync /exe from 'gh:axjab/executables'  							# move to apt, pipx, go, etc.?
 Sync /data/vault from  'repo:vault'    							# move to gopass sync
 Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY	# move to initialze provisioning step and doctor
@@ -85,24 +92,27 @@ Host service uptime-kuma	at majula
 # or
 # use Ansible?
 
-Install network-manager
-Install pipewire
+Install network-manager					# for nmcli and nmtui
+Install ddcutil									# for external monitor control
+Install power-profiles-daemon		# for battery mode support
+Install pipewire								# for audio support
 Install curl
 Install gnupg2
 Install rsync
 Install jq
-Install wlr-randr   # control settings via CLI
+Install wlr-randr   						# control settings via CLI
 Install wl-clipboard
+Install xdg-desktop-portal  		# for Teams screen sharing
 Install wev
 Install asciidoctor
 Install cmake
 Install make
-Install pipx  # for Python applications like Taskdog
+Install pipx  									# for Python applications like Taskdog
 # curl https://sh.rustup.rs -sSf| sh # for Rust applications like bluetui and impala
 Install	eza
 Install tree
 Install kdiff3
-Install cmatrix
+# Install cmatrix
 # Install taskdog-ui via pipx
 
 # curl https://starship.rs/install.sh -sS | sh

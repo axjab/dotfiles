@@ -55,7 +55,7 @@ disabled = false
 format = '[$time](bold green)'
 time_format = '%T'
 [custom.weather]
-disabled = false
+disabled = true
 description = "[POC] Current weather and weather transitions"
 when = true
 command = 'echo "󰖕 -> 󰙾 "'
@@ -496,3 +496,4 @@ symbol = " "
 symbol = " "
 [python]
 symbol = " "
+format = '[$symbol($version )]($style)'

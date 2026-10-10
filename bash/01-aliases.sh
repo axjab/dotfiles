@@ -20,11 +20,12 @@ alias as='as-user'
 alias lazylog='sudo lazyjournal -u 2 -t 1000'   # update every 2 seconds, reduce max to 100 lines to make fster
 
 # DOCKER
-alias d='sudo docker'
-alias d-ps='sudo docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"' #\t{{.Image}}"'
-alias d-up='sudo docker compose up --remove-orphans'
-alias d-down='sudo docker compose down --remove-orphans'
-alias d-watch='sudo docker logs -f'
+# Add user to docker group!
+alias d='docker'
+alias d-ps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"' #\t{{.Image}}"'
+alias d-up='docker compose up --remove-orphans'
+alias d-down='docker compose down --remove-orphans'
+alias d-watch='docker logs -f'
 
 
 ## navigation: cd, ls =================================
