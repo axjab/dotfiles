@@ -97,9 +97,11 @@ Install ddcutil									# for external monitor control
 Install power-profiles-daemon		# for battery mode support
 Install pipewire								# for audio support
 Install curl
+Install sshfs
 Install gnupg2
 Install rsync
 Install jq
+Install tmux
 Install wlr-randr   						# control settings via CLI
 Install wl-clipboard
 Install xdg-desktop-portal  		# for Teams screen sharing

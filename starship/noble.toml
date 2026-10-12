@@ -194,7 +194,7 @@ format = '[$symbol](bold red)'
 
 # Tailnet — only show when disconnected
 [custom.tailnet]
-disabled = false
+disabled = true
 description = "Tailnet disconnected"
 when = '[[ "$(timeout -v 0.01 tailscale status --json | jq -r ".BackendState")" != "Running" ]]'
 command = "true"
@@ -203,7 +203,7 @@ format = '[$symbol](bold red)'
 
 # NATS — only show when unreachable
 [custom.nats]
-disabled = false
+disabled = true
 description = "NATS unavailable"
 when = '!(timeout 0.2 bash -c "</dev/tcp/nats/4222" 2>/dev/null)'
 command = "true"
