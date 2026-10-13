@@ -1,6 +1,0 @@
-.mode column
-.width auto
-.headers on
-.timer on
-.changes on
-.nullvalue NULL
