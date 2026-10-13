@@ -6,7 +6,6 @@
 **Move these to the Hosts of Embers project.**
 
 - [ ] SERVE hosts.alj.cx which contains LIVE data of my host based on the Beszel model
-- [ ] Rename this branch "master", delete all others
 - [ ] (firekeeper) During initializion, create a "Host daemon" which monitors the health
 			of its host, using a host "doctor" and notifies of drifting based on hosts.alj.cx
 - [ ] REPLACE Hostfile with solutions from https://github.com/axjab/hosts-of-embers.
