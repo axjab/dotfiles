@@ -1,8 +1,8 @@
 
-db = "/data/chroncal.db"
-
 # iCal PRODID for export.
 # product_id = "-//chroncal//chroncal//EN"
+
+db = "/data/chroncal/db"
 
 [ui]
 theme = "system"

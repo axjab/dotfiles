@@ -7,48 +7,19 @@
 # ██╗██║  ██║███████╗██║██║  ██║██████╔╝███████╗██████╔╝
 # ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═════╝
 
-# PINNED: Edit this file
-alias edit-alias='$(gum choose --header="Choose editor:" micro nano) $HOME/.aliases'
-alias alias-edit='edit-alias'
-#
-
-# AI
-alias gemini='aichat -m gemini'
-
-# unclassified
+# uncategorized
 alias as='as-user'
-alias lazylog='sudo lazyjournal -u 2 -t 1000'   # update every 2 seconds, reduce max to 100 lines to make fster
 
-# DOCKER
-# Add user to docker group!
-alias d='docker'
-alias d-ps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"' #\t{{.Image}}"'
-alias d-up='docker compose up --remove-orphans'
-alias d-down='docker compose down --remove-orphans'
-alias d-watch='docker logs -f'
+## === file management =======================
+alias fm=thunar
 
+alias -r='chmod -r'
+alias +r='chmod +r'
+alias -w='chmod -w'
+alias +w='chmod +w'
+alias -x='chmod -x'
+alias +x='chmod +x'
 
-## navigation: cd, ls =================================
-has zoxide && alias cd='z'
-# ALTERNATIVE syntax: a cd='z' if has zoxide
-# a x=y if <CONDITION>
-alias ..='cd ..'
-alias .-='cd -'
-alias cdi='cd "$(gum file -a --height=20 --directory)"'
-# eza
-eza_core="--header --long --icons --group-directories-first --time-style=relative --sort Name --ignore-glob='lost+found'"
-eza_git="$eza_core --git --git-repos"
-alias l="eza $eza_core"
-alias ls='l --smart-group --no-filesize'         # simple view
-alias ll="eza $eza_git --group --no-filesize"    # full view
-alias lls='ll --total-size'                      # + sizes (slower)
-alias ld="eza $eza_git --only-dirs  --all --smart-group --no-filesize"  # dirs only
-alias lf="eza $eza_git --only-files --all --smart-group --total-size"   # files only
-alias fm="source $HOME/bin/fm"
-# navigation ========================================================
-
-
-## filesystem ops =======================
 has bat && alias cat='bat'
 alias compress='tar -czvf'
 alias extract='tar -xzvf'
@@ -63,50 +34,58 @@ alias chmod='chmod -v'
 alias grep='grep --color=auto'
 # ======================================
 
+# === Git
+alias stage='git add'
+alias clone='git clone'
+alias commit="git commit -v"
+alias push="git push"
+alias pull="git pull"
 
-#===============================================================
+# === AI
+alias gemini='aichat -m gemini'
 
-# Tailscale
-alias vpn='sudo tailscale'
+# === Docker
+# Add user to docker group!
+alias d='docker'
+alias dps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"' #\t{{.Image}}"'
+alias dup='docker compose up --remove-orphans'
+alias ddn='docker compose down --remove-orphans'
+alias dwatch='docker logs -f'
+
+## === navigation
+has zoxide && alias cd='z'
+# ALTERNATIVE syntax: a cd='z' if has zoxide
+# a x=y if <CONDITION>
+alias ..='cd ..'
+alias .-='cd -'
+alias cdi='cd "$(gum file -a --height=20 --directory)"'
+eza_core="--header --long --icons --group-directories-first --time-style=relative --sort Name --ignore-glob='lost+found'"
+eza_git="$eza_core --git --git-repos"
+alias l="eza $eza_core"
+alias ls='l --smart-group --no-filesize'         # simple view
+alias ll="eza $eza_git --group --no-filesize"    # full view
+alias lls='ll --total-size'                      # + sizes (slower)
+alias ld="eza $eza_git --only-dirs  --all --smart-group --no-filesize"  # dirs only
+alias lf="eza $eza_git --only-files --all --smart-group --total-size"   # files only
+# navigation ========================================================
 
 # Systemctl
 alias sys='sudo systemctl'
-alias syslog='sudo journalctl -u'
+alias journal='sudo journalctl -u'
 alias sys-reload='sudo systemctl daemon-reload'
-
-
-
-# Python
-alias py='uv run'
-
-
-# gum
-export GUM_SPIN_SPINNER="points"
-alias gf='gum file -a --height=20'
-alias gd='gum file -a --height=20 --directory'
-
 
 ## network manager (nmcli)
 alias wifi='nmcli dev wifi'
 alias connect='nmcli --ask device wifi connect'
-## network manager (nmcli)
-
 
 ## common typos
 alias gti='git'
 alias sl='ls'
+alias xh=hx
 ## common typos
-
-
 
 ###################################################################################################################################
 
-# 
-# if [ $(command -v mycli) ]; then
-#     alias mysql='mycli -u adi'
-# else
-#     alias mysql='mysql -u adi -p'
-# fi
 # 
 # if [ $(command -v logo-ls) ]; then
 #     alias lls="logo-ls"
@@ -166,35 +145,6 @@ alias sl='ls'
 # else
 #     alias df='df -h'
 # fi
-# 
-# if [ $(command -v yay) ]; then
-#     alias yaconf='yay -Pg'
-#     alias yaupg='yay -Syu'
-#     alias yas='yay -Syu --noconfirm'
-#     alias yain='yay -S'
-#     alias yains='yay -U'
-#     alias yare='yay -R'
-#     alias yarem='yay -Rns'
-#     alias yarep='yay -Si'
-#     alias yareps='yay -Ss'
-#     alias yaloc='yay -Qi'
-#     alias yalocs='yay -Qs'
-#     alias yalst='yay -Qe'
-#     alias yaorph='yay -Qtd'
-#     alias yainsd='yay -S --asdeps'
-#     alias yamir='yay -Syy'
-#     alias yaupd="yay -Sy"
-#     alias upgrade='yay -Syu'
-# fi
-# 
-# if [ $(command -v emacs) ]; then
-#     alias em="/usr/bin/emacs -nw"
-#     alias emacs="emacsclient -c -a 'emacs'"
-#     alias doomsync="~/.emacs.d/bin/doom sync"
-#     alias doomdoctor="~/.emacs.d/bin/doom doctor"
-#     alias doomupgrade="~/.emacs.d/bin/doom upgrade"
-# fi
-
 # alias tsm='transmission-cli -D -u 10 -w ~/Downloads/torrents'
 # alias zth='zathura'
 # alias f="clr && fzf"
@@ -253,8 +203,6 @@ alias sl='ls'
 # alias rec='gpg --recv-keys --keyserver hkp://pgp.mit.edu'
 
 ## Additional Aliases
-# alias x='chmod +x'
-# alias porn='mpv "http://www.pornhub.com/random"'
 # alias ip='curl ipinfo.io/ip'
 # alias :q='exit'
 # alias please='sudo $(fc -ln -1)'
@@ -313,216 +261,7 @@ alias sl='ls'
 # alias .8='cd -8'
 # alias .9='cd -9'
 # alias _='sudo'
-# alias afind='ack -il'
-# 
-# alias rd='rmdir'
-# alias run-help='man'
-# 
-# alias i="sudo pacman -S"
-# alias pacupg='sudo pacman -Syu'
-# alias pacin='sudo pacman -S'
-# alias pacins='sudo pacman -U'
-# alias pacre='sudo pacman -R'
-# alias pacrem='sudo pacman -Rns'
-# alias pacrep='pacman -Si'
-# alias pacreps='pacman -Ss'
-# alias pacloc='pacman -Qi'
-# alias paclocs='pacman -Qs'
-# alias pacinsd='sudo pacman -S --asdeps'
-# alias pacmir='sudo pacman -Syy'
-# alias paclsorphans='sudo pacman -Qdt'
-# alias pacrmorphans='sudo pacman -Rs $(pacman -Qtdq)'
-# alias pacfileupg='sudo pacman -Fy'
-# alias pacfiles='pacman -F'
-# alias pacls='pacman -Ql'
-# alias pacown='pacman -Qo'
-# alias pacupd="sudo pacman -Sy"
-# alias upgrade='npm-update; pip-update; sudo pacman -Syyu'
-# alias update='sudo pacman -Syyu'
-# alias unlock='sudo rm /var/lib/pacman/db.lck'
-# alias cleanup='sudo pacman -Rns (pacman -Qtdq)'
-# 
-# alias clone='cd $HOME/Downloads/git-repos/ && git clone'
-# alias commit="git commit -m"
-# alias push="git push origin"
-# alias pull="git pull origin"
-# 
-# alias g=git
-# alias ga='git add'
-# alias gaa='git add --all'
-# alias gam='git am'
-# alias gama='git am --abort'
-# alias gamc='git am --continue'
-# alias gams='git am --skip'
-# alias gamscp='git am --show-current-patch'
-# alias gap='git apply'
-# alias gapa='git add --patch'
-# alias gapt='git apply --3way'
-# alias gau='git add --update'
-# alias gav='git add --verbose'
-# alias gb='git branch'
-# alias gbD='git branch -D'
-# alias gba='git branch -a'
-# alias gbd='git branch -d'
-# alias gbda='git branch --no-color --merged | command grep -vE "^([+*]|\s*($(git_main_branch)|$(git_develop_branch))\s*$)" | command xargs git branch -d 2>/dev/null'
-# alias gbl='git blame -b -w'
-# alias gbnm='git branch --no-merged'
-# alias gbr='git branch --remote'
-# alias gbs='git bisect'
-# alias gbsb='git bisect bad'
-# alias gbsg='git bisect good'
-# alias gbsr='git bisect reset'
-# alias gbss='git bisect start'
-# alias gc='git commit -v'
-# alias 'gc!'='git commit -v --amend'
-# alias gca='git commit -v -a'
-# alias 'gca!'='git commit -v -a --amend'
-# alias gcam='git commit -a -m'
-# alias 'gcan!'='git commit -v -a --no-edit --amend'
-# alias 'gcans!'='git commit -v -a -s --no-edit --amend'
-# alias gcas='git commit -a -s'
-# alias gcasm='git commit -a -s -m'
-# alias gcb='git checkout -b'
-# alias gcd='git checkout $(git_develop_branch)'
-# alias gcf='git config --list'
-# alias gclr='git clone --recurse-submodules'
-# alias gcl='git clone --quiet'
-# alias gcld='git clone --depth'
-# alias gclean='git clean -id'
-# alias gcm='git checkout $(git_main_branch)'
-# alias gcmsg='git commit -m'
-# alias 'gcn!'='git commit -v --no-edit --amend'
-# alias gco='git checkout'
-# alias gcor='git checkout --recurse-submodules'
-# alias gcount='git shortlog -sn'
-# alias gcp='git cherry-pick'
-# alias gcpa='git cherry-pick --abort'
-# alias gcpc='git cherry-pick --continue'
-# alias gcs='git commit -S'
-# alias gcsm='git commit -s -m'
-# alias gcss='git commit -S -s'
-# alias gcssm='git commit -S -s -m'
-# alias gd='git diff'
-# alias gdca='git diff --cached'
-# alias gdct='git describe --tags $(git rev-list --tags --max-count=1)'
-# alias gdcw='git diff --cached --word-diff'
-# alias gds='git diff --staged'
-# alias gdt='git diff-tree --no-commit-id --name-only -r'
-# alias gdup='git diff @{upstream}'
-# alias gdw='git diff --word-diff'
-# alias gf='git fetch'
-# alias gfa='git fetch --all --prune --jobs=10'
-# alias gfg='git ls-files | grep'
-# alias gfo='git fetch origin'
-# alias gg='git gui citool'
-# alias gga='git gui citool --amend'
-# alias ggpull='git pull origin "$(git_current_branch)"'
-# alias ggpur=ggu
-# alias ggpush='git push origin "$(git_current_branch)"'
-# alias ggsup='git branch --set-upstream-to=origin/$(git_current_branch)'
-# alias ghh='git help'
-# alias gignore='git update-index --assume-unchanged'
-# alias gignored='git ls-files -v | grep "^[[:lower:]]"'
-# alias git-svn-dcommit-push='git svn dcommit && git push github $(git_main_branch):svntrunk'
-# alias gk='\gitk --all --branches &!'
-# alias gke='\gitk --all $(git log -g --pretty=%h) &!'
-# alias gl='git pull'
-# alias glg='git log --stat'
-# alias glgg='git log --graph'
-# alias glgga='git log --graph --decorate --all'
-# alias glgm='git log --graph --max-count=10'
-# alias glgp='git log --stat -p'
-# alias glo='git log --oneline --decorate'
-# alias globurl='noglob urlglobber '
-# alias glod='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset'\'
-# alias glods='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset'\'' --date=short'
-# alias glog='git log --oneline --decorate --graph'
-# alias gloga='git log --oneline --decorate --graph --all'
-# alias glol='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'\'
-# alias glola='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'\'' --all'
-# alias glols='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'\'' --stat'
-# alias glp=_git_log_prettily
-# alias glum='git pull upstream $(git_main_branch)'
-# alias gm='git merge'
-# alias gma='git merge --abort'
-# alias gmom='git merge origin/$(git_main_branch)'
-# alias gmtl='git mergetool --no-prompt'
-# alias gmtlvim='git mergetool --no-prompt --tool=vimdiff'
-# alias gmum='git merge upstream/$(git_main_branch)'
-# alias gp='git push'
-# alias gpd='git push --dry-run'
-# alias gpf='git push --force-with-lease'
-# alias 'gpf!'='git push --force'
-# alias gpoat='git push origin --all && git push origin --tags'
-# alias gpr='git pull --rebase'
-# alias gpristine='git reset --hard && git clean -dffx'
-# alias gpsup='git push --set-upstream origin $(git_current_branch)'
-# alias gpu='git push upstream'
-# alias gpv='git push -v'
-# alias gr='git remote'
-# alias gra='git remote add'
-# alias grb='git rebase'
-# alias grwh='git rm --cached `git ls-files -i -c --exclude-from=.gitignore`'
-# alias grwhx='git ls-files -i -c --exclude-from=.gitignore | xargs git rm --cached'
-# alias grad='git rm -r --cached . && git add .'
-# alias grba='git rebase --abort'
-# alias grbc='git rebase --continue'
-# alias grbd='git rebase $(git_develop_branch)'
-# alias grbi='git rebase -i'
-# alias grbm='git rebase $(git_main_branch)'
-# alias grbo='git rebase --onto'
-# alias grbom='git rebase origin/$(git_main_branch)'
-# alias grbs='git rebase --skip'
-# alias grep='grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox}'
-# alias grev='git revert'
-# alias grh='git reset'
-# alias grhh='git reset --hard'
-# alias grm='git rm'
-# alias grmc='git rm --cached'
-# alias grmv='git remote rename'
-# alias groh='git reset origin/$(git_current_branch) --hard'
-# alias grrm='git remote remove'
-# alias grs='git restore'
-# alias grset='git remote set-url'
-# alias grss='git restore --source'
-# alias grst='git restore --staged'
-# alias grt='cd "$(git rev-parse --show-toplevel || echo .)"'
-# alias gru='git reset --'
-# alias grup='git remote update'
-# alias grv='git remote -v'
-# alias gsb='git status -sb'
-# alias gsd='git svn dcommit'
-# alias gsh='git show'
-# alias gsi='git submodule init'
-# alias gsps='git show --pretty=short --show-signature'
-# alias gsr='git svn rebase'
-# alias gss='git status -s'
-# alias gst='git status'
-# alias gsta='git stash push'
-# alias gstaa='git stash apply'
-# alias gstall='git stash --all'
-# alias gstc='git stash clear'
-# alias gstd='git stash drop'
-# alias gstl='git stash list'
-# alias gstp='git stash pop'
-# alias gsts='git stash show --text'
-# alias gstu='gsta --include-untracked'
-# alias gsu='git submodule update'
-# alias gsw='git switch'
-# alias gswc='git switch -c'
-# alias gswd='git switch $(git_develop_branch)'
-# alias gswm='git switch $(git_main_branch)'
-# alias gtl='gtl(){ git tag --sort=-v:refname -n -l "${1}*" }; noglob gtl'
-# alias gts='git tag -s'
-# alias gtv='git tag | sort -V'
-# alias gunignore='git update-index --no-assume-unchanged'
-# alias gunwip='git log -n 1 | grep -q -c "\-\-wip\-\-" && git reset HEAD~1'
-# alias gup='git pull --rebase'
-# alias gupa='git pull --rebase --autostash'
-# alias gupav='git pull --rebase --autostash -v'
-# alias gupv='git pull --rebase -v'
-# alias gwch='git whatchanged -p --abbrev-commit --pretty=medium'
-# alias gwip='git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign -m "--wip-- [skip ci]"'
+# alias afind='ack -il' 
 # 
 # alias ldot='ls -ld .*'
 # alias lS='ls -1FSsh'
@@ -531,11 +270,6 @@ alias sl='ls'
 # 
 # alias grepin='grep -i'
 # alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
-# 
-# alias t='tail -f'
-# alias tobash="sudo chsh $USER -s /bin/bash && echo 'Now log out.'"
-# alias tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'"
-# alias tofish="sudo chsh $USER -s /bin/fish && echo 'Now log out.'"
 # 
 # # Command line shortcuts
 # alias -g H='| head'
