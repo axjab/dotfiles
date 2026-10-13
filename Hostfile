@@ -136,6 +136,7 @@ Link bash								to ~/.bash
 Link bash/rc  					to ~/.bashrc
 # Link ble/rc						to ~/.blerc
 Link bat/config					to /etc/bat/config
+Link chroncal 					to ~/.config/chroncal
 Link dms/dankcal				to ~/.config/dankcal
 Link git/config					to /etc/gitconfig
 Link git/config					to ~/.gitconfig

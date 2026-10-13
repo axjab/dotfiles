@@ -1,0 +1,44 @@
+
+db = "/data/chroncal.db"
+
+# iCal PRODID for export.
+# product_id = "-//chroncal//chroncal//EN"
+
+[ui]
+theme = "system"
+week_start = "monday"
+# Default list/search format: "detail" or "compact".
+list_format = "detail"
+# Default forward window (days) for event list.
+event_list_days = 30
+# Confirm before quitting with q or Ctrl+C.
+confirm_quit = true
+
+[soft_delete]
+# Days to retain soft-deleted rows.
+# Set to 0 to disable automatic purging.
+purge_days = 30
+
+[sync]
+# Minimum interval between background CalDAV syncs.
+# Unset by default. Service installation defaults to 15m.
+interval = "5m"
+# Conflict resolution strategy.
+conflict_strategy = "prompt"
+# Timeout for each CalDAV HTTP request.
+http_timeout = "5m"
+
+[security]
+# Permit plaintext credentials if no OS keyring exists.
+allow_plaintext = false
+# Permit AUDIO alarms to attach arbitrary URIs.
+allow_unsafe_alarm_audio_attach = false
+# Permit EMAIL alarms to send to unverified attendees.
+allow_unsafe_alarm_email_attendees = false
+
+[smtp]
+host = "smtp.fastmail.com"
+port = 587
+from = "chroncal@x.alj.cx"
+# username = CHRONCAL_SMTP_USERNAME
+# password = CHRONCAL_SMTP_PASSWORD
