@@ -1,20 +1,40 @@
 
-# HOST CONFIGURATION
+# HOST KINDLING
+
+## TODO
+
+**Move these to the Hosts of Embers project.**
+
+- [ ] SERVE hosts.alj.cx which contains LIVE data of my host based on the Beszel model
+- [ ] Rename this branch "master", delete all others
+- [ ] (firekeeper) During initializion, create a "Host daemon" which monitors the health
+			of its host, using a host "doctor" and notifies of drifting based on hosts.alj.cx
+- [ ] REPLACE Hostfile with solutions from https://github.com/axjab/hosts-of-embers.
+			Make sure long tasks are run CONCURRENTLY.
 
 ## INITIALIZATION
 
+1. Initialize:
+
 ```bash
-curl -fsSL https://raw.githubusercontent.com/axjab/etc/server/initialize.sh | bash
+curl -fsSL https://raw.githubusercontent.com/axjab/etc/server/kindle.sh | bash
 ```
 
-Open question: deos it work in other shells (sh?)
+Future version:
 
-## FAST DEPLOYMENT
+```bash
+	curl -fsSL https://hosts.alj.cx/kindle.sh | bash
+```
 
-1. Clone this repo to `~/etc`
-2. Run `cd ~/etc && hostcfg`
+2. If step 1 worked: `git clone github:axjab/etc` (embed in kindle.sh?)
+3. Run `hostcfg` (sets up symlinks). Replace with `embers` command eventually.
 
 ## EVENTS
+
+2026 OCTOBER 13
+
+Hosts of embers project is born, designed to take over host provisioning and orchestration
+instead of weak Hostfile solution.
 
 2026 AUGUST 11
 
@@ -24,32 +44,3 @@ Named it the 'Hostfile'.
 
 INVENTED A NEW DSL FOR CONFIGURATION INSPIRED BY THE DOCKERFILE. IT SHALL BE THE SOURCE OF TRUTH FOR
 THE HOST'S ENVIRONEMENT CONFIGURATION.
-
-## TODO
-
-- [ ] NEED TO RECONCILE ALL BRANCHES (maybe just drop them)
-- [ ] Write a script like alj.cx/<.sh> which clones and executes
-- [ ] Add verbose option, show ALL directive outputs
-		Default: show ONLY changes
-
- Add no-sync or fast option ()
-
- MAKE ALL PROCESS directive output READ-ONLY
-
- TODO: consolidate all branches
-
- NOTE: man, this shit is slowly turning into a bashrc. Perhaps it's tiem for some changes
- 			in bashrc, check ~/env exists, if it exists, check if out of sync
- 			if out of sync, prompt for sync followed by ~/env/rebuild
- 			
-
- TODO: MOVE THIS PREAMBLE ELSEWHERE, THEN INTRODUCE RELOAD CONFIG
-
- TODO: PROCESS MUST ALWAYS CLEAN UP IF NO CHANGES SINCE LAST BACKUP
-
- TODO: PROMPT USER TO COMMIT A GIT REPO
-
-TODO: MAJOR WORK: Make this Hostfile orderless, parse everything THEN execute. Perhaps bash is not suited for this?
-TODO: Do tasks in parallel
-sync -> resolve conflicts -> rerun
-TODO: cleanup variable snapshots and all other tmp state

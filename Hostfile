@@ -1,39 +1,22 @@
 #!/usr/bin/env bash
 
-# === CURRENT ISSUEs:
-# 1. TODO: MOVE ALL HOSTS data to host of embers live inventory (source of truth)
-# 		Consolidate:
-# 			- /etc/machine-info
-# 2. System health:
-# 			- /etc/hosts and ~/.ssh/config must be synced to hosts of embers API
-# 3. dependencies: Create a common BASH LIBRARY (deb packages?) for all automations sourced separately
-# ===
-
-# === Notes
-#
-# 1. Host is expected to be kindled with
-# 		https://raw.githubusercontent.com/axjab/etc/server/initialize.sh (rename)
-# 		Offline initialization requires axjab/kindling
-#
-# 2. File servers, git servers, and other servers must be defined:
-# 		file server: majula:/data/store (need to plan access model: HTTP, SSH, S3?)
-# 		git server:  majula:/data/git
-#			...more to come
-# ===
-
-# === Doctor
-# Things to check for every host
-# 1. Are repos up to date
-# 2. Can sudo access the same commands as user: sudo/secure-path to /etc/sudoers.d/ READ-ONLY	
-# 2. Is user added to docker group?
-# ===
-
-Sync /exe from 'gh:axjab/executables'  							# move to apt, pipx, go, etc.?
-Sync /data/vault from  'repo:vault'    							# move to gopass sync
-Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY	# move to initialze provisioning step and doctor
+# === NOTE
+# There are PENDING tasks in ./README.md
+# 1. MOVE ALL HOSTS data to host of embers live inventory (source of truth)
+# 2. Peers information (/etc/hosts, ~/.ssh/config) must be synced to hosts of embers API
+# 3. Considering making an APT package?
+# 4. Host is expected to be kindled with
+# 		https://raw.githubusercontent.com/axjab/etc/server/kindle.sh
+# 		THIS IS ONLY THE PROTOTYPE. The new script will be hosted at
+# 		https://hosts.alj.cx/kindle.sh
+# 		instead.
+# 5. STEPS: Connect -> Dependencies -> Identity -> Enrollement -> Provisioning -> Inspection
 
 # === HOSTS ******************************************
-# TODO: Poll from host of embers endpoint
+# TODO: DISCOVER HOSTS FROM hosts.alj.cx
+# 				It does not suffice to maintain /etc/hosts
+# 				hosts.alj.cx --> (/etc/machine-info, /etc/hosts, ~/.ssh/config)
+
 Host firelink at 100.121.116.55  # headless server
 	at=100.121.116.55
 	user=ash
@@ -61,9 +44,6 @@ Host store at 100.109.130.76
 	user=store
 :
 
-# === SERVICES ****************************************
-# TBD
-
 Host service charm			at firelink
 Host service thales-nats	at majula
 Host service wiki			at localhost
@@ -71,57 +51,13 @@ Host service nats			at firelink
 Host service pocketbase		at majula
 Host service uptime-kuma	at majula
 
-# FILESYSTEM MOUNTPOINTS **************************
-# provisioning and doctor
-
-# For all devices under /dev, PRINT THEIR /etc/fstab entry
-# lsblk -f /dev/sda1
-# Device /dev/sda1 is not mounted!
-# Add <> to /etc/fstab
-
-# DEPRECATED: FAVOR SSHFS OVER NFS
-# Mount nfs majula:/mnt/ssd 			onto /mnt/majula.ssd
-# Mount dir /mnt/majula.ssd/files onto /repo
-
-# === IMPORT ************************************
-
-# should probably move this to a separate list
-# OR BETTER YET:
-# List them ALL as dependencies when installing my personal
-# Debian package
-# or
-# use Ansible?
-
-Install network-manager					# for nmcli and nmtui
-Install ddcutil									# for external monitor control
-Install power-profiles-daemon		# for battery mode support
-Install pipewire								# for audio support
-Install curl
-Install sshfs
-Install gnupg2
-Install rsync
-Install jq
-Install tmux
-Install wlr-randr   						# control settings via CLI
-Install wl-clipboard
-Install xdg-desktop-portal  		# for Teams screen sharing
-Install wev
-Install asciidoctor
-Install cmake
-Install make
-Install pipx  									# for Python applications like Taskdog
-# curl https://sh.rustup.rs -sSf| sh # for Rust applications like bluetui and impala
-Install	eza
-Install tree
-Install kdiff3
-# Install cmatrix
-# Install taskdog-ui via pipx
-
-# curl https://starship.rs/install.sh -sS | sh
-
-# DATA ********************************************
+# === DATA ********************************************
+# Replace with `embers sync`
+Sync /exe from 'gh:axjab/executables'  							# move to kindle.sh: apt install/upgrade <fire theme?>
+Sync /data/vault from  'repo:vault'    							# move to embers sync
+Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY	# move to kindle.sh and check with embers doctor
 Sync /data/helix	with 'ssh://majula//data/helix'  # BAD: SLOW
-Sync /data/dns		with 'ssh://majula//data/dns'		 # ?
+Sync /data/dns		with 'ssh://majula//data/dns'
 Link /data/timewarrior.git to		~/.local/share/timewarrior
 Sync /data/timewarrior.git from 'repo:timewarrior'
 
@@ -134,7 +70,6 @@ Process env.tmpl to ~/.env
 
 Link bash								to ~/.bash
 Link bash/rc  					to ~/.bashrc
-# Link ble/rc						to ~/.blerc
 Link bat/config					to /etc/bat/config
 Link chroncal 					to ~/.config/chroncal
 Link dms/dankcal				to ~/.config/dankcal
@@ -146,14 +81,6 @@ Link gopass/config			to ~/.config/gopass/config
 Link helix/config.toml	to ~/.config/helix/config.toml
 Link helix/lang.toml		to ~/.config/helix/languages.toml
 Link ly/config.ini			to /etc/ly/config.ini
-
-# === DANGER! ====================
-# Link dms/niri						to ~/.config/niri  # BUT ONLY IF SHELL IS DMS
-# Link niri/config.kdl		to ~/.config/niri/config.kdl
-# Link niri/animation			to ~/.config/niri/animation
-# Link niri/display				to ~/.config/niri/display
-# ===
-
 Link qmk        				to ~/.config/qmk
 Link starship/config		to ~/.config/starship.toml
 Link taskdog/cli.toml		to ~/.config/taskdog/cli.toml
@@ -162,3 +89,10 @@ Link tldr/config.toml		to ~/.config/tealdeer/config.toml
 Link xdg/dirs 					to ~/.config/user-dirs.dirs   # /etc is preferable
 Link yazi								to ~/.config/yazi
 Process aichat/config.yaml.tmpl 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
+
+# === DANGER! ====================
+# Link dms/niri						to ~/.config/niri  # BUT ONLY IF SHELL IS DMS
+# Link niri/config.kdl		to ~/.config/niri/config.kdl
+# Link niri/animation			to ~/.config/niri/animation
+# Link niri/display				to ~/.config/niri/display
+# ===
