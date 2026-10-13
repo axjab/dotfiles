@@ -10,15 +10,18 @@
 # uncategorized
 alias as='as-user'
 
-## === file management =======================
+# === Productivity
+alias cal='chroncal'
+
+# === file management =======================
 alias fm=thunar
 
-alias -r='chmod -r'
-alias +r='chmod +r'
-alias -w='chmod -w'
-alias +w='chmod +w'
-alias -x='chmod -x'
-alias +x='chmod +x'
+alias -- -r='chmod -r'
+alias -- +r='chmod +r'
+alias -- -w='chmod -w'
+alias -- +w='chmod +w'
+alias -- -x='chmod -x'
+alias -- +x='chmod +x'
 
 has bat && alias cat='bat'
 alias compress='tar -czvf'

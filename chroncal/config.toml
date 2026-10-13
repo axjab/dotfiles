@@ -12,7 +12,7 @@ list_format = "detail"
 # Default forward window (days) for event list.
 event_list_days = 30
 # Confirm before quitting with q or Ctrl+C.
-confirm_quit = true
+confirm_quit = false
 
 [soft_delete]
 # Days to retain soft-deleted rows.
