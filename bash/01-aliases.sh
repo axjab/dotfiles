@@ -10,9 +10,6 @@
 # uncategorized
 alias as='as-user'
 
-# === Productivity
-alias cal='chroncal'
-
 # === file management =======================
 alias fm=thunar
 
