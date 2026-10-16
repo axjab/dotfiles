@@ -48,32 +48,32 @@ Install kdiff3
 # 				It does not suffice to maintain /etc/hosts
 # 				hosts.alj.cx --> (/etc/machine-info, /etc/hosts, ~/.ssh/config)
 
-Host firelink at 100.121.116.55  # headless server
-	at=100.121.116.55
-	user=ash
-:
+# Host firelink at 100.121.116.55  # headless server
+# 	at=100.121.116.55
+# 	user=ash
+# :
 
-Host majula at 100.109.130.76  # headless server
-	at=100.109.130.76
-	user=solaire
-:
+# Host majula at 100.109.130.76  # headless server
+# 	at=100.109.130.76
+# 	user=solaire
+# :
 
-Host xenon at 100.123.39.117   # nvidia gaming pc
-	at=100.123.39.117
-	user=axjab
-:
+# Host xenon at 100.123.39.117   # nvidia gaming pc
+# 	at=100.123.39.117
+# 	user=axjab
+# :
 
-Host luminous at 100.95.238.38    # nvidia gaming pc
-	at='100.95.238.38'
-	user=axjab
-:
+# Host luminous at 100.95.238.38    # nvidia gaming pc
+# 	at='100.95.238.38'
+# 	user=axjab
+# :
 
-Host repo at 100.109.130.76
-	user=git
-:
-Host store at 100.109.130.76
-	user=store
-:
+# Host repo at 100.109.130.76
+# 	user=git
+# :
+# Host store at 100.109.130.76
+# 	user=store
+# :
 
 Host service charm			at firelink
 Host service thales-nats	at majula

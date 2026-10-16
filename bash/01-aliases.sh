@@ -10,6 +10,22 @@
 # uncategorized
 alias as='as-user'
 
+# === System control
+# sudo not required for some system commands
+for cmd in mount umount shutdown poweroff reboot ; do
+	alias $cmd="sudo $cmd"
+done; unset cmd
+alias sys='systemctl --user'
+alias Sys='sudo systemctl'
+alias status='systemctl --user status'
+alias Status='systemctl status'
+alias sys-reload='sudo systemctl daemon-reload'
+alias journal='sudo journalctl -u'
+
+# === Tmux
+alias attach='tmux attach -t'
+alias ts="tmux ls"
+
 # === file management =======================
 alias fm=thunar
 
@@ -25,14 +41,13 @@ alias compress='tar -czvf'
 alias extract='tar -xzvf'
 alias tarlist='tar -tzvf'
 alias zip='zip -v'
-alias cp='cp -vi'
-alias mv='mv -vi'
 alias rm='rm -vi'
+has rsync && alias cp="rsync -avhP" || alias cp='cp -vi'
+alias mv='mv -vi'
 alias mkdir='mkdir -v'
 alias rmdir='rmdir -v'
 alias chmod='chmod -v'
 alias grep='grep --color=auto'
-# ======================================
 
 # === Git
 alias stage='git add'
@@ -68,11 +83,6 @@ alias lls='ll --total-size'                      # + sizes (slower)
 alias ld="eza $eza_git --only-dirs  --all --smart-group --no-filesize"  # dirs only
 alias lf="eza $eza_git --only-files --all --smart-group --total-size"   # files only
 # navigation ========================================================
-
-# Systemctl
-alias sys='sudo systemctl'
-alias journal='sudo journalctl -u'
-alias sys-reload='sudo systemctl daemon-reload'
 
 ## network manager (nmcli)
 alias wifi='nmcli dev wifi'
@@ -111,22 +121,6 @@ alias xh=hx
 #     alias unmount-ssd="udisksctl unmount -b /dev/nvme0n1p1"
 # fi
 # 
-# if [ $(command -v ranger) ]; then
-#     alias r="ranger"
-#     alias fm="ranger"
-# fi
-# 
-# if [ $(command -v broot) ]; then
-#     alias br='broot -dhp'
-#     alias bs='broot --sizes'
-# fi
-# 
-# if [ $(command -v ptsh) ]; then
-#     # alias ls='ptls -la'
-#     alias me-in=ptpwd
-#     alias mkdir=ptmkdir
-#     # alias touch=pttouch
-# fi
 # 
 # if [ $(command -v yt-dlp) ]; then
 #     alias yta-aac="yt-dlp --extract-audio --audio-format aac "
@@ -153,7 +147,6 @@ alias xh=hx
 # alias flix="notflix"
 # alias dmenu='dmenu -i -l 10 -fn "Iosevka Nerd Font" -p "Select File: " -nb "#282a36" -nf "#f8f8f2" -sf "#44475a" -sb "#bd93f9" '
 # alias s='startx'
-# alias mail="neomutt"
 # alias t='bpytop'
 # alias tty='tty-clock -C6 -c -t'
 # alias weather='clrscr && curl -s wttr.in/gwalior | head -n $(($(curl -s wttr.in/gwalior | wc -l)  - 2)) | tail -n $(($(curl -s wttr.in/gwalior | wc -l)  - 4))'
@@ -210,32 +203,6 @@ alias xh=hx
 # 
 # alias npm-update='sudo npm install npm@latest -g'
 # 
-# # alias todoe='nvim ~/Dropbox/writing/notes/To-do.md'
-# alias nvconfig="cd ~/.config/nvim && nvim init.lua"
-# alias zedit="nvim ~/zsh/.zshrc"
-# alias bedit="nvim ~/.bashrc"
-# alias fedit="nvim $XDG_CONFIG_HOME/fish/config.fish"
-# alias visudo="nvim /etc/sudoers"
-# alias vim="vim -u ~/.config/vim/.vimrc"
-# 
-# alias reboot="sudo /sbin/reboot"
-# alias poweroff="sudo /sbin/poweroff"
-# alias halt="sudo /sbin/halt"
-# alias shutdown="sudo /sbin/shutdown"
-# alias flighton='sudo rfkill block all'
-# alias flightoff='sudo rfkill unblock all'
-# alias snr='sudo service network-manager restart'
-# alias logout="bspc quit"
-# alias suspend="systemctl suspend; locklauncher"
-# alias cls="clear"
-# alias clr="clear"
-# alias clrscr='echo -en "\x1b[2J\x1b[1;1H" ; echo; header; echo'
-# 
-# ## Get fastest mirrors
-# alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
-# alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
-# alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
-# alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
 # 
 # alias kev="xev -event keyboard"
 # 
@@ -294,10 +261,6 @@ alias xh=hx
 # alias sorter='sort -n -r'
 # alias unexport='unset'
 # 
-# alias cp="rsync -WavP --human-readable --progress"
-# alias mv='mv -i'
-# # alias rm="trash --trash-dir='$HOME/.Trash' --recursive"
-# 
 # alias -s pdf=zathura
 # alias -s ps=gv
 # alias -s dvi=xdvi
@@ -308,13 +271,4 @@ alias xh=hx
 # alias -s rar="unrar l"
 # alias -s tar="tar tf"
 # alias -s tar.gz="echo "
-# alias -s ace="unace l"
-# 
-# # Tmux Aliases
-# alias attach='tmux attach -t'
-# alias ts="tmux ls"
-# 
-# # sudo not required for some system commands
-# for command in mount umount sv pacman updatedb su shutdown poweroff reboot ; do
-# 	alias $command="sudo $command"
-# done; unset command
+# alias -s ace="unace l" 
