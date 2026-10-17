@@ -76,8 +76,8 @@ alias .-='cd -'
 alias cdi='cd "$(gum file -a --height=20 --directory)"'
 eza_core="--header --long --icons --group-directories-first --time-style=relative --sort Name --ignore-glob='lost+found'"
 eza_git="$eza_core --git --git-repos"
-alias l="eza $eza_core"
-alias ls='l --smart-group --no-filesize'         # simple view
+alias l="eza"
+alias ls="eza $eza_core --smart-group --no-filesize"
 alias ll="eza $eza_git --group --no-filesize"    # full view
 alias lls='ll --total-size'                      # + sizes (slower)
 alias ld="eza $eza_git --only-dirs  --all --smart-group --no-filesize"  # dirs only

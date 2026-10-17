@@ -28,6 +28,7 @@ Install wlr-randr   						# control settings via CLI
 Install wl-clipboard
 Install fonts-noto-color-emoji
 Install xdg-desktop-portal  		# for Teams screen sharing
+Install xdg-desktop-portal-gtk  # for system light/dark theme?
 Install wev
 Install asciidoctor
 Install cmake
@@ -111,6 +112,7 @@ Link ghostty						to ~/.config/ghostty
 Link gopass/config			to ~/.config/gopass/config
 Link helix/config.toml	to ~/.config/helix/config.toml
 Link helix/lang.toml		to ~/.config/helix/languages.toml
+Link jrnl               to ~/.config/jrnl
 Link ly/config.ini			to /etc/ly/config.ini
 Link qmk        				to ~/.config/qmk
 Link starship/config		to ~/.config/starship.toml

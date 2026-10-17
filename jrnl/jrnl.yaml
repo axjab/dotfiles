@@ -1,0 +1,21 @@
+
+version: '4.6'
+colors:
+  body: none
+  date: green
+  tags: yellow
+  title: cyan
+default_hour: 9
+default_minute: 0
+editor: hx
+encrypt: false
+highlight: true
+indent_character: '|'   # try nothing
+journals:
+  default:
+    journal: $HOME/jrnl/
+  work: $HOME/src/jrnl/
+linewrap: 79   # try auto
+tagsymbols: '+@'
+template: false
+timeformat: '%F %r'
