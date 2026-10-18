@@ -112,8 +112,8 @@ Link ghostty						to ~/.config/ghostty
 Link gopass/config			to ~/.config/gopass/config
 Link helix/config.toml	to ~/.config/helix/config.toml
 Link helix/lang.toml		to ~/.config/helix/languages.toml
-Link jrnl               to ~/.config/jrnl
 Link ly/config.ini			to /etc/ly/config.ini
+Link nb/cli.nbrc        to ~/.nbrc
 Link qmk        				to ~/.config/qmk
 Link starship/config		to ~/.config/starship.toml
 Link taskdog/cli.toml		to ~/.config/taskdog/cli.toml

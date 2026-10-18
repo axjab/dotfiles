@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+###############################################################################
+# .nbrc
+#
+# Configuration file for `nb`, a command line note-taking, bookmarking,
+# and knowledge base application with encryption, search, Git-backed syncing,
+# and more in a single portable script.
+#
+# Edit this file manually or manage settings using the `nb settings`
+# subcommand. Configuration options are set as environment variables, eg:
+#   export NB_ENCRYPTION_TOOL=gpg
+#
+# https://github.com/xwmx/nb
+###############################################################################
+
+
+NB_LIMIT="${NB_LIMIT:-auto^35}"
+
+# Colors — vibrant, cartoon-inspired
+red=$'\e[38;2;255;55;65m'
+org=$'\e[38;2;255;145;0m'
+ylw=$'\e[38;2;255;215;0m'
+grn=$'\e[38;2;40;220;75m'
+blu=$'\e[38;2;45;140;255m'
+cyn=$'\e[38;2;0;210;255m'
+pur=$'\e[38;2;170;80;255m'
+pnk=$'\e[38;2;255;65;170m'
+wht=$'\e[38;2;245;245;245m'
+rst=$'\e[0m'
+
+# Indicators
+NB_INDICATOR_AUDIO="${cyn}󰖀${rst}"
+NB_INDICATOR_BOOKMARK="${red}󰃀${rst}"
+NB_INDICATOR_DOCUMENT="${wht}󰈙${rst}"
+NB_INDICATOR_EBOOK="${blu}󰂽${rst}"
+NB_INDICATOR_ENCRYPTED="${ylw}󰌾${rst}"
+NB_INDICATOR_FOLDER="${ylw}󰝰${rst}"
+NB_INDICATOR_IMAGE="${grn}󰋩${rst}"
+NB_INDICATOR_PINNED="${red}󰐃${rst}"
+NB_INDICATOR_TODO="${org}󰄱${rst} "
+NB_INDICATOR_TODO_DONE="${grn}󰄵${rst}"
+NB_INDICATOR_VIDEO="${pnk}󰕧${rst}"
