@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
 
-# === NOTE
+# === TODO
 # There are PENDING tasks in ./README.md
-# 1. MOVE ALL HOSTS data to host of embers live inventory (source of truth)
-# 2. Peers information (/etc/hosts, ~/.ssh/config) must be synced to hosts of embers API
-# 3. Considering making an APT package?
-# 4. Host is expected to be kindled with
-# 		https://raw.githubusercontent.com/axjab/etc/server/kindle.sh
-# 		THIS IS ONLY THE PROTOTYPE. The new script will be hosted at
-# 		https://hosts.alj.cx/kindle.sh
-# 		instead.
-# 5. STEPS: Connect -> Dependencies -> Identity -> Enrollement -> Provisioning -> Inspection
+# 1. Host is expected to be kindled with https://hosts.alj.cx/kindle.sh (https://raw.githubusercontent.com/axjab/etc/server/kindle.sh)
+# 2. Populate /etc/hosts by calling Hosts of Embers API
+# 3. Move Install section to an APT package, invoked by hosts.alj.cx/kindle.sh
+
+# STEPS: Connect -> Dependencies -> Identity -> Enrollement -> Provisioning -> Inspection
 
 # === Dependencies
 
@@ -19,6 +15,7 @@ Install ddcutil									# for external monitor control
 Install power-profiles-daemon		# for battery mode support
 Install pipewire								# for audio support
 Install curl
+Install ghostty                 # for SSH terminal compatibiliy
 Install sshfs
 Install gnupg2
 Install rsync
@@ -34,48 +31,20 @@ Install asciidoctor
 Install cmake
 Install make
 Install pipx  									# for Python applications like Taskdog
-# curl https://sh.rustup.rs -sSf| sh # for Rust applications like bluetui and impala
 Install	eza
 Install tree
 Install kdiff3
 # Install cmatrix
 # Install taskdog-ui via pipx
-
+# Scripts:
+# curl tailscale...
+# curl ghostty....
+# curl https://sh.rustup.rs -sSf| sh # for Rust applications like bluetui and impala
 # curl https://starship.rs/install.sh -sS | sh
+# and more...
 # ===
 
-# === HOSTS ******************************************
-# TODO: DISCOVER HOSTS FROM hosts.alj.cx
-# 				It does not suffice to maintain /etc/hosts
-# 				hosts.alj.cx --> (/etc/machine-info, /etc/hosts, ~/.ssh/config)
-
-# Host firelink at 100.121.116.55  # headless server
-# 	at=100.121.116.55
-# 	user=ash
-# :
-
-# Host majula at 100.109.130.76  # headless server
-# 	at=100.109.130.76
-# 	user=solaire
-# :
-
-# Host xenon at 100.123.39.117   # nvidia gaming pc
-# 	at=100.123.39.117
-# 	user=axjab
-# :
-
-# Host luminous at 100.95.238.38    # nvidia gaming pc
-# 	at='100.95.238.38'
-# 	user=axjab
-# :
-
-# Host repo at 100.109.130.76
-# 	user=git
-# :
-# Host store at 100.109.130.76
-# 	user=store
-# :
-
+# /etc/hosts
 Host service charm			at firelink
 Host service thales-nats	at majula
 Host service wiki			at localhost
@@ -83,23 +52,10 @@ Host service nats			at firelink
 Host service pocketbase		at majula
 Host service uptime-kuma	at majula
 
-# === DATA ********************************************
-# Replace with `embers sync`
-Sync /exe from 'gh:axjab/executables'  							# move to kindle.sh: apt install/upgrade <fire theme?>
-Sync /data/vault from  'repo:vault'    							# move to embers sync
-Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY	# move to kindle.sh and check with embers doctor
-Sync /data/helix	with 'ssh://majula//data/helix'  # BAD: SLOW
-Sync /data/dns		with 'ssh://majula//data/dns'
-Link /data/timewarrior.git to		~/.local/share/timewarrior
-Sync /data/timewarrior.git from 'repo:timewarrior'
-
 # CONFIGURATION ***********************************
 
 Process env.tmpl to ~/.env
-
-# already included in DMS
-# Link /usr/bin/pinentry-curses to /usr/bin/pinentry
-
+Process aichat/config.yaml.tmpl 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
 Link bash								to ~/.bash
 Link bash/rc  					to ~/.bashrc
 Link bat/config					to /etc/bat/config
@@ -115,17 +71,22 @@ Link helix/lang.toml		to ~/.config/helix/languages.toml
 Link ly/config.ini			to /etc/ly/config.ini
 Link nb/cli.nbrc        to ~/.nbrc
 Link qmk        				to ~/.config/qmk
+Link ssh.config         to ~/.ssh/config
 Link starship/config		to ~/.config/starship.toml
 Link taskdog/cli.toml		to ~/.config/taskdog/cli.toml
 Link timewarrior			  to ~/.config/timewarrior
 Link tldr/config.toml		to ~/.config/tealdeer/config.toml
 Link xdg/dirs 					to ~/.config/user-dirs.dirs   # /etc is preferable
 Link yazi								to ~/.config/yazi
-Process aichat/config.yaml.tmpl 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
 
-# === DANGER! ====================
-# Link dms/niri						to ~/.config/niri  # BUT ONLY IF SHELL IS DMS
-# Link niri/config.kdl		to ~/.config/niri/config.kdl
-# Link niri/animation			to ~/.config/niri/animation
-# Link niri/display				to ~/.config/niri/display
-# ===
+# niri skipped, display is a different problem
+
+# === DATA ********************************************
+# Replace with `embers sync`
+Sync /exe from 'gh:axjab/executables'  							# move to kindle.sh: apt install/upgrade <fire theme?>
+Sync /data/vault from  'repo:vault'    							# move to embers sync
+Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY	# move to kindle.sh and check with embers doctor
+Sync /data/helix	with 'ssh://majula//data/helix'  # BAD: SLOW
+Sync /data/dns		with 'ssh://majula//data/dns'
+Link /data/timewarrior.git to		~/.local/share/timewarrior
+Sync /data/timewarrior.git from 'repo:timewarrior'
