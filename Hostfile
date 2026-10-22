@@ -61,6 +61,7 @@ Link bash/rc  					to ~/.bashrc
 Copy bat/config					to /etc/bat/config
 Link chroncal 					to ~/.config/chroncal
 Link dms/dankcal				to ~/.config/dankcal
+Link dtop               to ~/.config/dtop
 # Link git/config					to /etc/gitconfig   # BAD: other users CANNOT read from other users home
 Link git/config					to ~/.gitconfig
 Link gh/config					to ~/.config/gh/config.yml

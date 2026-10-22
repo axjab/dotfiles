@@ -1,0 +1,24 @@
+
+# == All ==
+# Whether to show all containers including stopped, exited, and paused.
+# Possible values: true, false
+all: true
+
+# == Hosts ==
+# Docker host(s) to connect to. You can specify multiple hosts to monitor
+# them simultaneously.
+# Possible values for host: local, ssh://user@host, tcp://host:port, tls://host:port
+# Optional fields per host: dozzle (URL), filter (list of Docker filters)
+hosts:
+  - host: local
+  - host: ssh://majula
+  #   filter:
+  #     - status=running
+  #     - label=environment=production
+  - host: ssh://firelink
+  - host: ssh://old-shrine
+
+# == Sort ==
+# Default sort field for the container list.
+# Possible values: uptime, name, cpu, memory
+sort: uptime
