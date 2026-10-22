@@ -29,6 +29,10 @@ alias ts="tmux ls"
 # === file management =======================
 alias fm=thunar
 
+alias -- +a='sudo chattr +a'  # makes file open in append mode only
+alias -- -a='sudo chattr -a'
+alias -- +i='sudo chattr +i'  # makes file immutable
+alias -- -i='sudo chattr -i'
 alias -- -r='chmod -r'
 alias -- +r='chmod +r'
 alias -- -w='chmod -w'

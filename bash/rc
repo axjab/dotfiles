@@ -2,6 +2,10 @@
 
 # Current average startup: 60ms (>300ms with ble.sh)
 
+# === TODO
+# 1. Set timeout for every script
+# import 99-xxxxxx 300ms
+
 # NON-INTERACTIVE GUARD
 [[ $- != *i* ]] && return
 

@@ -58,17 +58,17 @@ Process env.tmpl to ~/.env
 Process aichat/config.yaml.tmpl 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
 Link bash								to ~/.bash
 Link bash/rc  					to ~/.bashrc
-Link bat/config					to /etc/bat/config
+Copy bat/config					to /etc/bat/config
 Link chroncal 					to ~/.config/chroncal
 Link dms/dankcal				to ~/.config/dankcal
-Link git/config					to /etc/gitconfig
+# Link git/config					to /etc/gitconfig   # BAD: other users CANNOT read from other users home
 Link git/config					to ~/.gitconfig
 Link gh/config					to ~/.config/gh/config.yml
 Link ghostty						to ~/.config/ghostty
 Link gopass/config			to ~/.config/gopass/config
 Link helix/config.toml	to ~/.config/helix/config.toml
 Link helix/lang.toml		to ~/.config/helix/languages.toml
-Link ly/config.ini			to /etc/ly/config.ini
+# Copy ly/config.ini			to /etc/ly/config.ini
 Link nb/cli.nbrc        to ~/.nbrc
 Link qmk        				to ~/.config/qmk
 Link ssh.config         to ~/.ssh/config
