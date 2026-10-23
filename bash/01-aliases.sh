@@ -10,6 +10,9 @@
 # uncategorized
 alias as='as-user'
 
+# work specific
+alias start-sitaware="uv run $HOME/src/gateway-manager/src/gateway_manager/main.py --HQ=true -g sitaware"
+
 # === System control
 # sudo not required for some system commands
 for cmd in mount umount shutdown poweroff reboot ; do

@@ -10,6 +10,10 @@
 
 # === Dependencies
 
+# NEW:
+#   - dtop --> monitor containers
+#   - jolt --> monitor battery
+#   - pik  --> monitor ports and processes
 Install network-manager					# for nmcli and nmtui
 Install ddcutil									# for external monitor control
 Install power-profiles-daemon		# for battery mode support
