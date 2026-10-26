@@ -16,7 +16,7 @@ hosts:
   #     - status=running
   #     - label=environment=production
   - host: ssh://firelink
-  - host: ssh://old-shrine
+  - host: ssh://old_shrine
 
 # == Sort ==
 # Default sort field for the container list.
