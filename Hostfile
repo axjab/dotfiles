@@ -1,54 +1,38 @@
 #!/usr/bin/env bash
 
-# === TODO
+# Install APT repos from https://apt.alj.cx/install
+# Then sudo apt install core
+
+# === TODO ===
 # There are PENDING tasks in ./README.md
-# 1. Host is expected to be kindled with https://hosts.alj.cx/kindle.sh (https://raw.githubusercontent.com/axjab/etc/server/kindle.sh)
-# 2. Populate /etc/hosts by calling Hosts of Embers API
-# 3. Move Install section to an APT package, invoked by hosts.alj.cx/kindle.sh
+# 1. MOVE TO ANSIBLE
+# 2. Sync /etc/hosts to remote (Hosts of Embers API?)
+# 3. Kindle with https://hosts.alj.cx/kindle.sh OR dedicated script
 
-# STEPS: Connect -> Dependencies -> Identity -> Enrollement -> Provisioning -> Inspection
 
-# === Dependencies
+# STEPS:
+# - Connect: manual
+# - Dependencies: curl apt.alj.cx/install CALLED VIA https://hosts.alj.cx/kindle
+# - Identity & enrollement: hosts.alj.cx/kindle
+# - Provisioning: ansible
+# - Inspection: hostdr
 
-# NEW:
-#   - dtop --> monitor containers
-#   - jolt --> monitor battery
-#   - pik  --> monitor ports and processes
-Install network-manager					# for nmcli and nmtui
-Install ddcutil									# for external monitor control
-Install power-profiles-daemon		# for battery mode support
-Install pipewire								# for audio support
-Install curl
-Install ghostty                 # for SSH terminal compatibiliy
-Install sshfs
-Install gnupg2
-Install rsync
-Install jq
-Install tmux
-Install wlr-randr   						# control settings via CLI
-Install wl-clipboard
-Install fonts-noto-color-emoji
-Install xdg-desktop-portal  		# for Teams screen sharing
-Install xdg-desktop-portal-gtk  # for system light/dark theme?
-Install wev
-Install asciidoctor
-Install cmake
-Install make
-Install pipx  									# for Python applications like Taskdog
-Install	eza
-Install tree
-Install kdiff3
-# Install cmatrix
-# Install taskdog-ui via pipx
-# Scripts:
-# curl tailscale...
-# curl ghostty....
-# curl https://sh.rustup.rs -sSf| sh # for Rust applications like bluetui and impala
-# curl https://starship.rs/install.sh -sS | sh
-# and more...
-# ===
 
-# /etc/hosts
+# ONCE:
+Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY	# move to kindle.sh and check with embers doctor
+
+# DAILY:
+sudo apt update
+sudo apt upgrade
+# - gopass sync
+Sync /data/helix	with 'ssh://majula//data/helix'  # BAD: SLOW
+Sync /data/dns		with 'ssh://majula//data/dns'
+Link /data/timewarrior.git to		~/.local/share/timewarrior
+Sync /data/timewarrior.git from 'repo:timewarrior'
+
+
+
+# TODO: MOVE TO /etc/hosts without revealing IP
 Host service charm			at firelink
 Host service thales-nats	at majula
 Host service wiki			at localhost
@@ -56,7 +40,9 @@ Host service nats			at firelink
 Host service pocketbase		at majula
 Host service uptime-kuma	at majula
 
+
 # CONFIGURATION ***********************************
+# TODO: move to ansible or keep as is?
 
 Process env.tmpl to ~/.env
 Process aichat/config.yaml.tmpl 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
@@ -82,16 +68,5 @@ Link taskdog/cli.toml		to ~/.config/taskdog/cli.toml
 Link timewarrior			  to ~/.config/timewarrior
 Link tldr/config.toml		to ~/.config/tealdeer/config.toml
 Link xdg/dirs 					to ~/.config/user-dirs.dirs   # /etc is preferable
+Link xdg/portals.conf   to ~/.config/xdg-desktop-portal/niri-portals.conf  # FOR SCREENSHARING
 Link yazi								to ~/.config/yazi
-
-# niri skipped, display is a different problem
-
-# === DATA ********************************************
-# Replace with `embers sync`
-Sync /exe from 'gh:axjab/executables'  							# move to kindle.sh: apt install/upgrade <fire theme?>
-Sync /data/vault from  'repo:vault'    							# move to embers sync
-Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY	# move to kindle.sh and check with embers doctor
-Sync /data/helix	with 'ssh://majula//data/helix'  # BAD: SLOW
-Sync /data/dns		with 'ssh://majula//data/dns'
-Link /data/timewarrior.git to		~/.local/share/timewarrior
-Sync /data/timewarrior.git from 'repo:timewarrior'
