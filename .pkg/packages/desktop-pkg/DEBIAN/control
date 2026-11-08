@@ -1,0 +1,16 @@
+Package: desktop-pkg
+Version: 0.0.0
+Section: metapackages
+Priority: important
+Architecture: all
+Maintainer: axjab <axjab@github.com>
+Description: Desktop tools and dependencies
+ Installs the shared core package together with monitor controls,
+ desktop portals, and Wayland utilities.
+Depends: core,
+ ddcutil,
+ xdg-desktop-portal,
+ xdg-desktop-portal-gtk,
+ wev,
+ wlr-randr,
+ wl-clipboard
