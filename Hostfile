@@ -50,16 +50,14 @@ Link bash								to ~/.bash
 Link bash/rc  					to ~/.bashrc
 Copy bat/config					to /etc/bat/config
 Link chroncal 					to ~/.config/chroncal
-Link dms/dankcal				to ~/.config/dankcal
+Link dux/dankcal				to ~/.config/dankcal
 Link dtop               to ~/.config/dtop
-# Link git/config					to /etc/gitconfig   # BAD: other users CANNOT read from other users home
-Link git/config					to ~/.gitconfig
-Link gh/config					to ~/.config/gh/config.yml
+Link git/config.toml		to ~/.gitconfig
+# Link gh/config					to ~/.config/gh/config.yml
 Link ghostty						to ~/.config/ghostty
 Link gopass/config			to ~/.config/gopass/config
 Link helix/config.toml	to ~/.config/helix/config.toml
 Link helix/lang.toml		to ~/.config/helix/languages.toml
-# Copy ly/config.ini			to /etc/ly/config.ini
 Link nb/cli.nbrc        to ~/.nbrc
 Link qmk        				to ~/.config/qmk
 Link ssh.config         to ~/.ssh/config
