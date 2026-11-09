@@ -60,7 +60,7 @@ Link helix/config.toml	to ~/.config/helix/config.toml
 Link helix/lang.toml		to ~/.config/helix/languages.toml
 Link nb/cli.nbrc        to ~/.nbrc
 Link qmk        				to ~/.config/qmk
-Link ssh.config         to ~/.ssh/config
+Link ssh/config         to ~/.ssh/config
 Link starship/config		to ~/.config/starship.toml
 Link taskdog/cli.toml		to ~/.config/taskdog/cli.toml
 Link timewarrior			  to ~/.config/timewarrior
