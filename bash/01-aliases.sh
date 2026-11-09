@@ -10,9 +10,6 @@
 # uncategorized
 alias as='as-user'
 
-# work specific
-alias start-sitaware="uv run $HOME/src/gateway-manager/src/gateway_manager/main.py --HQ=true -g sitaware"
-
 # === System control
 # sudo not required for some system commands
 for cmd in mount umount shutdown poweroff reboot ; do
@@ -30,7 +27,7 @@ alias attach='tmux attach -t'
 alias ts="tmux ls"
 
 # === file management =======================
-alias fm=thunar
+alias fm=dfiles
 
 alias -- +a='sudo chattr +a'  # makes file open in append mode only
 alias -- -a='sudo chattr -a'
@@ -43,7 +40,8 @@ alias -- +w='chmod +w'
 alias -- -x='chmod -x'
 alias -- +x='chmod +x'
 
-has bat && alias cat='bat'
+has batcat && alias cat='batcat'
+has ripgrep && alias grep="ripgrep"
 alias compress='tar -czvf'
 alias extract='tar -xzvf'
 alias tarlist='tar -tzvf'
@@ -104,22 +102,10 @@ alias xh=hx
 ###################################################################################################################################
 
 # 
-# if [ $(command -v logo-ls) ]; then
-#     alias lls="logo-ls"
-#     alias lla="logo-ls -l --all"
-# fi
-# 
-# if [ $(command -v ripgrep) ]; then
-#     alias grep="ripgrep"
-# fi
-# 
 # if [ $(command -v go-mtpfs) ]; then
 #     alias mount-phone="go-mtpfs $HOME/Phone &>/dev/null & disown"
 # fi
 # 
-# if [ $(command -v fusermount) ]; then
-#     alias unmount-phone="fusermount -u $HOME/Phone"
-# fi
 # 
 # if [ $(command -v udisksctl) ]; then
 #     alias mount-iso="udisksctl loop-setup -r -f"
@@ -129,17 +115,6 @@ alias xh=hx
 # fi
 # 
 # 
-# if [ $(command -v yt-dlp) ]; then
-#     alias yta-aac="yt-dlp --extract-audio --audio-format aac "
-#     alias yta-best="yt-dlp --extract-audio --audio-format best "
-#     alias yta-flac="yt-dlp --extract-audio --audio-format flac "
-#     alias yta-m4a="yt-dlp --extract-audio --audio-format m4a "
-#     alias yta-mp3="yt-dlp --extract-audio --audio-format mp3 "
-#     alias yta-opus="yt-dlp --extract-audio --audio-format opus "
-#     alias yta-vorbis="yt-dlp --extract-audio --audio-format vorbis "
-#     alias yta-wav="yt-dlp --extract-audio --audio-format wav "
-#     alias ytv-best="yt-dlp -f bestvideo+bestaudio "
-# fi
 # 
 # if [ $(command -v duf) ]; then
 #     alias df='duf'
@@ -148,11 +123,6 @@ alias xh=hx
 # fi
 # alias tsm='transmission-cli -D -u 10 -w ~/Downloads/torrents'
 # alias zth='zathura'
-# alias f="clr && fzf"
-# alias music="youtube-viewer"
-# alias anime="ani-cli"
-# alias flix="notflix"
-# alias dmenu='dmenu -i -l 10 -fn "Iosevka Nerd Font" -p "Select File: " -nb "#282a36" -nf "#f8f8f2" -sf "#44475a" -sb "#bd93f9" '
 # alias s='startx'
 # alias t='bpytop'
 # alias tty='tty-clock -C6 -c -t'
@@ -161,8 +131,6 @@ alias xh=hx
 # alias wal='feh --bg-fill -z'
 # alias lock='xscreensaver-command -lock'
 # alias tmux="TERM=screen-256color-bce tmux"
-# alias cat='bat'
-# alias nano='nano -00x'
 # alias du='ncdu -x --color off'
 # alias ncmpcpp='ncmpcpp ncmpcpp_directory=$HOME/.config/ncmpcpp/'
 # alias spotify='spt'
@@ -219,8 +187,6 @@ alias xh=hx
 # alias fzi="$HOME/.fzfimg.sh"
 # alias fzr="fzf --layout=reverse --prompt ' ' --pointer '=>' --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
 # 
-# alias yt="ytfzf -t"
-# alias startx='startx -- -keeptty >~/.xorg.log 2>&1'
 # 
 # alias ....='cd ../../../'
 # alias .....='cd ../../../../'
