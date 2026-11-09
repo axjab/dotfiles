@@ -48,12 +48,11 @@ Process env.tmpl to ~/.env
 Process aichat/config.yaml.tmpl 	to ~/.config/aichat/config.yaml    # if u can get secret for ~/.env, a symlink would suffice
 Link bash								to ~/.bash
 Link bash/rc  					to ~/.bashrc
-Copy bat/config					to /etc/bat/config
+# Copy bat/config					to /etc/bat/config
 Link chroncal 					to ~/.config/chroncal
 Link dux/dankcal				to ~/.config/dankcal
 Link dtop               to ~/.config/dtop
 Link git/config.toml		to ~/.gitconfig
-# Link gh/config					to ~/.config/gh/config.yml
 Link ghostty						to ~/.config/ghostty
 Link gopass/config			to ~/.config/gopass/config
 Link helix/config.toml	to ~/.config/helix/config.toml
