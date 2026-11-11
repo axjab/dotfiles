@@ -25,7 +25,12 @@ Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY	# move to kindle.sh and check
 sudo apt update
 sudo apt upgrade
 # - gopass sync
-Sync /data/helix	with 'ssh://majula//data/helix'  # BAD: SLOW
+# Sync /data/helix	with 'ssh://majula//data/helix'  # BAD: SLOW
+
+echo ""
+error "SKIPPED Helix sync, too long"
+echo ""
+
 Sync /data/dns		with 'ssh://majula//data/dns'
 Link /data/timewarrior.git to		~/.local/share/timewarrior
 Sync /data/timewarrior.git from 'repo:timewarrior'
