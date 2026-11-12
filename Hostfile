@@ -62,6 +62,7 @@ Link ghostty						to ~/.config/ghostty
 Link gopass/config			to ~/.config/gopass/config
 Link helix/config.toml	to ~/.config/helix/config.toml
 Link helix/lang.toml		to ~/.config/helix/languages.toml
+Link niri               to ~/.config/niri
 Link nb/cli.nbrc        to ~/.nbrc
 Link qmk        				to ~/.config/qmk
 Link ssh/config         to ~/.ssh/config
