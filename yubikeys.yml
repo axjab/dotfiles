@@ -1,0 +1,12 @@
+
+keys:
+
+  - serial_number: 42163996
+    device_type: YubiKey 5C NFC
+    id: cccccdjegvbr
+    note: main key
+
+  - serial_number: 42163997
+    device_type: YubiKey 5C NFC
+    id: cccccdjegvbt
+    note: spare key

@@ -6,6 +6,8 @@
 # 1. Set timeout for every script
 # import 99-xxxxxx 300ms
 
+echo "User bashrc started"
+
 # NON-INTERACTIVE GUARD
 [[ $- != *i* ]] && return
 

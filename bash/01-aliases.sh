@@ -55,6 +55,7 @@ alias chmod='chmod -v'
 alias grep='grep --color=auto'
 
 # === Git
+alias g='git'
 alias stage='git add'
 alias clone='git clone'
 alias commit="git commit -v"
