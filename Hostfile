@@ -11,31 +11,17 @@
 
 
 # STEPS:
-# - Connect: manual
+# - Connect: manual (store script in hardware)
 # - Dependencies: curl apt.alj.cx/install CALLED VIA https://hosts.alj.cx/kindle
 # - Identity & enrollement: hosts.alj.cx/kindle
 # - Provisioning: ansible
 # - Inspection: hostdr
-
-
-# ONCE:
-Copy sudo/secure-path to /etc/sudoers.d/ READ-ONLY	# move to kindle.sh and check with embers doctor
 
 # DAILY:
 sudo apt update
 sudo apt upgrade
 # - gopass sync
 # Sync /data/helix	with 'ssh://majula//data/helix'  # BAD: SLOW
-
-echo ""
-error "SKIPPED Helix sync, too long"
-echo ""
-
-Sync /data/dns		with 'ssh://majula//data/dns'
-Link /data/timewarrior.git to		~/.local/share/timewarrior
-Sync /data/timewarrior.git from 'repo:timewarrior'
-
-
 
 # TODO: MOVE TO /etc/hosts without revealing IP
 Host service charm			at firelink
