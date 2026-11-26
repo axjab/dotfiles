@@ -8,7 +8,7 @@
 [recipients]
 	# check = false
 	 	 # Check recipients hash. The global config option takes precedence over local ones here for security reasons.
-	hash = 4c8cb47f03aa25d3c9637528682a830f83eb5b630e330b21d4cfd4e04b03b934
+	hash = 082568b0ec53db9133c29603c51976b1356d63e64538a6a46eade9568a3f2be6
 		 # SHA256 hash of the recipients file.
 		 # Used to notify the user when the recipients files change.
 		 # Not set, nor read at the local level for security reasons.
