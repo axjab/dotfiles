@@ -10,6 +10,10 @@
 # uncategorized
 alias as='as-user'
 
+# === Auth
+
+has ykman && alias otp='ykman oath accounts code'
+
 # === System control
 # sudo not required for some system commands
 for cmd in mount umount shutdown poweroff reboot ; do
