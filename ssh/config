@@ -21,6 +21,7 @@ Host github gh
 Host gitlab
 	Hostname gitlab.thalesdigital.io
 	User git
+	# userspace <fname>.<lname>/
 
 Host archive arc
 	Hostname majula
@@ -29,6 +30,12 @@ Host archive arc
 Host git repo
     Hostname majula
 	User git
+
+Host forge
+	Hostname majula
+	User git
+	Port 222
+	# userspace: TBD
 
 Host www web
 	Hostname firelink
