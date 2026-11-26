@@ -1,50 +1,48 @@
 [init]
-	defaultBranch = "master"
+    defaultBranch = master
 
 [user]
-	name = "axjab"
-	email = "axjab@github.com"
+    name = axjab
+    email = axjab@github.com
 
 [core]
-	editor = "hx"
+    editor = hx
 
 [fetch]
-	# auto-prune remote branch
-	prune = true
-
-# [pull]
-	# rebase = false
+    prune = true
 
 [alias]
-	ac = "! git add . && git commit -v"
-	br = "branch"
-	co = "checkout"
-	cm = "commit -v"
-	cmm = "commit -vm"
-	df = "diff"
-	dfs = "diff --staged"
-	fe = "fetch"
-	lg1 = "log --all --decorate --oneline --graph"
-	lg2 = log --graph --all --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
-	lg3 = log --graph --abbrev-commit --all --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
-	lg = ! git lg2
-	last = log -1 HEAD
-	pu = push
-	pul = "! f() { git pull -v && git lg -$1 ; }; f"
-	unstage = reset HEAD --
-	st = status -s
-	sta = status
-	stash = "stash -m"
-	sw = switch
-	lo = "! f() { git log --no-color --no-decorate | bat -n -l 'Git log' ; }; f"
-	# up = "! git remote update -p; git merge --ff-only @{u}"
-	# send = "! f() { git commit -v && git push; }; f"
-	sync = "! f() { git add . && git commit -v && git pull && git push; }; f"
+    # Everyday commands
+    ac = !git add . && git commit -v
+    br = branch
+    co = checkout
+    cm = commit -v
+    cmm = commit -vm
+    df = diff
+    dfs = diff --staged
+    fe = fetch
+    pu = push
+    st = status -s
+    sta = status
+    sw = switch
+    unstage = reset HEAD --
 
+    # History
+    lg1 = log --all --decorate --oneline --graph
+    lg2 = log --graph --all --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
+    lg3 = log --graph --abbrev-commit --all --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+    lg = !git lg2
+    last = log -1 HEAD
+    lo = !f() { git log --no-color --no-decorate | bat -n -l 'Git log'; }; f
 
-# [remotes]
-	# gh = "github"
-	# up = github majula
+    # Workflows
+    pul = !f() { git pull -v && git lg -$1; }; f
+    sync = !f() { git add . && git commit -v && git pull && git push; }; f
 
-# [remote]
-	# pushDefault = gh
+[url "github:axjab/"]
+    insteadOf = github:
+    insteadOf = github:axjab/
+
+[url "forge:axjab/"]
+    insteadOf = forge:
+    insteadOf = forge:axjab/
